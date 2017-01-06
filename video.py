@@ -60,6 +60,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		# Convert to greyscale
 		image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
+		# Blur the image
+		image = cv2.GaussianBlur(image, (5, 5), 0)
+
 		if key == ord("p"):
 			# Actually filter and process the image
 			oldtime = time.time()
