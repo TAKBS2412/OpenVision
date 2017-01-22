@@ -4,6 +4,7 @@ from picamera import PiCamera
 import time
 import cv2
 import image_proc
+import numpy as np
 
 # Initializes the camera
 def initCamera(res):
@@ -39,7 +40,7 @@ def procImage(image, res, lowerh, lowers, lowerv, higherh, highers, higherv):
 
 	# Filter out image according to HSV color range
 	HSVmask = cv2.inRange(image, lower_range, higher_range)
-	image = cv2.bitwise_and(image, image, mask=mask)
+	image = cv2.bitwise_and(image, image, mask=HSVmask)
 
 	# Convert to greyscale
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -50,7 +51,7 @@ def procImage(image, res, lowerh, lowers, lowerv, higherh, highers, higherv):
 # image - the HSV-filtered image to process
 def getLargestContour(image):
 	# Find contours
-	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KC05)
+	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
 
 	# If no contours have been found, quit
 	if len(contours) == 0:
@@ -69,6 +70,5 @@ def getLargestContour(image):
 	M = cv2.moments(largestCnt)
 	cx = int(M["m10"]/M["m00"])
 	cy = int(M["m01"]/M["m00"])
-	
 
-	
+	return largestCnt
