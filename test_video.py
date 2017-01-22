@@ -18,16 +18,17 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
 	# Grab array representing image
 	image = frame.array
-
+		
 	# Show the frame
 	cv2.imshow("Frame", image)
 	
 	# Get the currently pressed key
-	key = cv2.waitKey(1) && 0xFF
+	key = cv2.waitKey(1)
 
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
 
 	# Break from loop if q key is pressed
+	print(chr(key))
 	if key == ord("q"):
 		break
