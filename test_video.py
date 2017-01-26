@@ -32,8 +32,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	if filterHSV:
 		# HSV filter the image
 		image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-		lower_range = np.array([80, 0, 0])
-		higher_range = np.array([179, 255, 255])
+		lower_range = np.array([80, 40, 0])
+		higher_range = np.array([130, 255, 200])
 		HSVmask = cv2.inRange(image, lower_range, higher_range)
 		image = cv2.bitwise_and(image, image, mask=HSVmask)
 		image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
