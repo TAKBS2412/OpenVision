@@ -5,6 +5,7 @@ import time
 import cv2
 import image_proc
 import numpy as np
+import sys
 
 # Initializes the camera
 def initCamera(res):
