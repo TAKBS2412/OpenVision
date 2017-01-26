@@ -31,5 +31,5 @@ def getDistance(hpx, tcm, tpx, theta):
 # d - distance in cm
 # tpx - height of the target in px
 # cx - x-coord. of the contour's centroid
-def getHorizAngle(hpx, tcm, d, tpx):
+def getHorizAngle(hpx, tcm, d, tpx, cx):
 	return np.arctan((tcm*(cx/2-hpx))/(d*tpx))
