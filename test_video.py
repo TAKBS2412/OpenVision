@@ -18,9 +18,25 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 # Flags for image processing
 filterHSV = False # Whether we apply HSV filtering or not
 
+# HSV Values to filter
+lowerh = 80
+lowers = 40
+lowerv = 0
+
+higherh = 130 
+highers = 255
+higherv = 200
+
+adjustHigher = True # Whether to adjust the higher or lower HSV values
+raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
 # Image resolution
 resolution = camera.resolution
 imgwpx, imghpx = resolution
+
+# Prints out the HSV values for filtering
+def printHSV():
+	print("Upper HSV: " + str(higherh) + ", " + str(highers) + ", " + str(higherv))
+	print("Lower HSV: " + str(lowerh) + ", " + str(lowers) + ", " + str(lowerv))
 
 # Capture and display frames from camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
@@ -33,12 +49,18 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
 	if key == ord("f"):
 		filterHSV = not filterHSV
+
+	if key == ord("u"):
+		adjustHigher = not adjustHigher
+
+	if key == ord("r"):
+		raiseValue *= -1
 	
 	if filterHSV:
 		# HSV filter the image
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-		lower_range = np.array([80, 40, 0])
-		higher_range = np.array([130, 255, 200])
+		lower_range = np.array([lowerh, lowers, lowerv])
+		higher_range = np.array([higherh, highers, higherv])
 		HSVmask = cv2.inRange(img, lower_range, higher_range)
 		img = cv2.bitwise_and(img, img, mask=HSVmask)
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -54,7 +76,27 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
 			print("Distance (cm): " + str(distance))
 			print("Angle (radians): " + str(image_proc.getHorizAngle(imghpx, 5.08, distance, hpx, image.getContourCentroidCoords(largestCnt)[0])))
-
+		elif key == ord("h"):
+			if adjustHigher:
+				higherh += raiseValue
+				printHSV()
+			else:
+				lowerh += raiseValue
+				printHSV()
+		elif key == ord("s"):
+			if adjustHigher:
+				highers += raiseValue
+				printHSV()
+			else:
+				lowers += raiseValue
+				printHSV()
+		elif key == ord("v"):
+			if adjustHigher:
+				higherv += raiseValue
+				printHSV()
+			else:
+				lowers += raiseValue
+				printHSV()
 	# Show the frame
 	cv2.imshow("Frame", img)
 	
@@ -64,3 +106,5 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# Break from loop if q key is pressed
 	if key == ord("q"):
 		break
+
+
