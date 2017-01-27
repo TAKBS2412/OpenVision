@@ -63,8 +63,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# Process the image
 	if procImage:
 		largestCnt = image.getLargestContour(img)
-		boundingrect = cv2.minAreaRect(largestCnt)
-		wpx, hpx = boundingrect[1]
+		boundingrect = cv2.boundingRect(largestCnt)
+		hpx, wpx = boundingrect[2:]
 		viewangle = 0.826
 		
 		# Find the centroid's coordinates
