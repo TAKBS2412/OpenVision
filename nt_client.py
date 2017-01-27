@@ -1,44 +1,57 @@
 #!/usr/bin/env python3
 #
-# This is a NetworkTables client (eg, the DriverStation/coprocessor side).
-# You need to tell it the IP address of the NetworkTables server (the
-# robot or simulator).
-#
-# This shows how to use a listener to listen for changes in NetworkTables
-# values. This will print out any changes detected on the SmartDashboard
-# table.
-#
+# A NetworkTables client that performs vision processing constantly and sends the calculated data to the roboRIO
 
-import sys
-import time
 from networktables import NetworkTables
 
-# To see messages from networktables, you must setup logging
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-#if len(sys.argv) != 2:
-#    print("Error: specify an IP to connect to!")
-#    exit(0)
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+import time
+import cv2
+import image_proc
+import numpy as np
+import sys
 
-#ip = sys.argv[1]
+import image
+import image_proc
+
 ip = "10.24.12.105"
 
 NetworkTables.initialize(server=ip)
 
-
-def valueChanged(table, key, value, isNew):
-    print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isNew))
-    table.putNumber('Y', value)
-
-def connectionListener(connected, info):
-    print(info, '; Connected=%s' % connected)
-
-
-NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
-
 sd = NetworkTables.getTable("datatable")
-sd.addTableListener(valueChanged)
+
+imgwpx = 640
+imghpx = 480
+resolution = (imgwpx, imghpx) 
+camera = image.initCamera(resolution)
 
 while True:
-    time.sleep(1)
+	# Do vision processing stuff here
+	angle = distance = 0 # Default values
+	targetsFound = False
+	# The vision processing stuff below will set the above variables
+	img = image.takePicture(camera)
+	img = image.procImage(img, resolution, 80, 40, 0, 130, 255, 200)
+	largestCnt = image.getLargestContour(img)
+	if largestCnt is None:
+		# No targets found
+		targetsFound = False
+		print("No targets found!")
+	else:
+		targetsFound = True
+		boundingrect = cv2.minAreaRect(largestCnt)
+		wpx, hpx = boundingrect[1]
+		viewangle = 0.698
+		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
+		angle = image_proc.getHorizAngle(imghpx, 5.08, distance, hpx, image.getContourCentroidCoords(largestCnt)[0])
+		print("Angle: " + str(angle))
+		print("Distance: " + str(distance))
+
+	# Send the variables to the roboRIO
+	sd.putNumber("angle", angle)
+	sd.putNumber("distance", distance)
+	sd.putBoolean("targetsFound", targetsFound)
