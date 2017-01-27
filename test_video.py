@@ -20,11 +20,11 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 # HSV Values to filter
 lowerh = 50
 lowers = 235
-lowerv = 0
+lowerv = 0 #8 for red raspberry pi
 
 higherh = 65
 highers = 255
-higherv = 30
+higherv = 40 # 45 for red raspberry pi
 
 adjustHigher = True # Whether to adjust the higher or lower HSV values
 raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
@@ -68,13 +68,18 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		largestCnt = image.getLargestContour(img)
 		boundingrect = cv2.minAreaRect(largestCnt)
 		wpx, hpx = boundingrect[1]
-		viewangle = 0.698
+		viewangle = 0.826
+		
+		# Find the centroid's coordinates
+		cx, cy = image.getContourCentroidCoords(largestCnt)
 
+		# Print out information
+		print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
 		print("Height (px): " + str(hpx))
 		print("Width (px): " + str(wpx))
 		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
 		print("Distance (cm): " + str(distance))
-		print("Angle (radians): " + str(image_proc.getHorizAngle(imghpx, 5.08, distance, hpx, image.getContourCentroidCoords(largestCnt)[0])))
+		print("Angle (radians): " + str(image_proc.getHorizAngle(imghpx, 5.08, distance, hpx, cx)))
 	elif key == ord("h"):
 		if adjustHigher:
 			higherh += raiseValue
