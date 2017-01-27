@@ -35,7 +35,7 @@ while True:
 	targetsFound = False
 	# The vision processing stuff below will set the above variables
 	img = image.takePicture(camera)
-	img = image.procImage(img, resolution, 80, 40, 0, 130, 255, 200)
+	img = image.procImage(img, resolution, 50, 235, 0, 65, 255, 40)
 	largestCnt = image.getLargestContour(img)
 	if largestCnt is None:
 		# No targets found
