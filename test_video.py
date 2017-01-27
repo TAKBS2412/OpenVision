@@ -17,6 +17,8 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 
 # Flags for image processing
 
+procImage = False # Whether to calculate distance or not
+
 # HSV Values to filter
 lowerh = 50
 lowers = 235
@@ -50,12 +52,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	img = frame.array
 	oldimg = img
 
-	if key == ord("u"):
-		adjustHigher = not adjustHigher
-
-	if key == ord("r"):
-		raiseValue *= -1
-	
 	# HSV filter the image
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 	lower_range = np.array([lowerh, lowers, lowerv])
@@ -63,8 +59,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	HSVmask = cv2.inRange(img, lower_range, higher_range)
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	if key == ord("p"):
-		# Process the image
+
+	# Process the image
+	if procImage:
 		largestCnt = image.getLargestContour(img)
 		boundingrect = cv2.minAreaRect(largestCnt)
 		wpx, hpx = boundingrect[1]
@@ -80,6 +77,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
 		print("Distance (cm): " + str(distance))
 		print("Angle (radians): " + str(image_proc.getHorizAngle(imghpx, 5.08, distance, hpx, cx)))
+
+	if key == ord("u"):
+		adjustHigher = not adjustHigher
+	if key == ord("r"):
+		raiseValue *= -1
+	if key == ord("p"):
+		procImage = not procImage
 	elif key == ord("h"):
 		if adjustHigher:
 			higherh += raiseValue
