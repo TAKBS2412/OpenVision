@@ -95,7 +95,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 				higherv += raiseValue
 				printHSV()
 			else:
-				lowers += raiseValue
+				lowerv += raiseValue
 				printHSV()
 	# Show the frame
 	cv2.imshow("Frame", img)
