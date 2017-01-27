@@ -79,7 +79,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		print("Width (px): " + str(wpx))
 		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
 		print("Distance (cm): " + str(distance))
-		print("Angle (radians): " + str(image_proc.getHorizAngle(imghpx, 5.08, distance, hpx, cx)))
+		print("Angle (radians): " + str(image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, cx)))
 
 	if key == ord("u"):
 		adjustHigher = not adjustHigher

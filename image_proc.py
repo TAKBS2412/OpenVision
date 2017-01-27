@@ -24,12 +24,12 @@ def getDistance(hpx, tcm, tpx, theta):
 	return (hpx*tcm)/(2*tpx*np.tan(theta/2))
 
 # Finds the angle from the target to the middle of the robot's field of view
-# The contour is an array of array representing the target, and it's centroid is located roughly in the center
+# The contour is an array of array representing the target, and its centroid is located roughly in the center
 # This function takes the following parameters:
-# hpx - height of the image in pixels
+# wpx - width of the image in pixels
 # tcm - height of the target in cm
 # d - distance in cm
 # tpx - height of the target in px
-# cx - x-coord. of the contour's centroid
-def getHorizAngle(hpx, tcm, d, tpx, cx):
-	return np.arctan((tcm*(cx/2-hpx))/(d*tpx))
+# cx - x-coord. of the contour's centroid in px
+def getHorizAngle(wpx, tcm, d, tpx, cx):
+	return np.arctan(tcm*(cx-wpx/2)/(tpx*d))
