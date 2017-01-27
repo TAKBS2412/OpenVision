@@ -76,6 +76,41 @@ def getLargestContour(image):
 			largestCnt = cnt
 	return largestCnt
 
+# Finds the largest and second-largest contour in the processed image
+# image - the HSV-filtered image to process
+# Returns None if no targets were found
+# Otherwise, returns an array - the first element is the largest contour, the second is the second-largest contour
+def getLargestContour(image):
+	# Find contours
+	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
+
+	# If no contours have been found, quit
+	if len(contours) == 0:
+		#sys.exit("Error: No targets found!")
+		return None
+
+	# Find the largest contour
+	largestCntArea = 0 # Area of the largest contour
+	largestCnt = None
+	secondLargestCntArea = 0 # Area of the second largest contour
+	secondLargestCnt = None
+	for cnt in contours:
+		cntArea = cv2.contourArea(cnt)
+		polygonArea = cv2.contourArea(np.int0(cv2.boxPoints(cv2.minAreaRect(cnt))))
+		if polygonArea == 0: continue
+		percentFilled = cntArea/polygonArea*100
+		if percentFilled < 80: continue
+		print(str(percentFilled) + "%")
+
+		if cntArea > largestCntArea:
+			secondLargestCntArea = largestCntArea
+			secondLargestCnt = largestCnt
+			largestCntArea = cntArea
+			largestCnt = cnt
+	return largestCnt
+
+
+
 # Finds the x and y coordinates of the contours's centroid
 # Returns an array with the centroid's x and y coordinates as the first and second elements
 def getContourCentroidCoords(contour):
