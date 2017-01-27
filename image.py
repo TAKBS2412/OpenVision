@@ -50,13 +50,15 @@ def procImage(image, res, lowerh, lowers, lowerv, higherh, highers, higherv):
 
 # Finds the largest contour in the processed image
 # image - the HSV-filtered image to process
+# Returns None if no targets were found
 def getLargestContour(image):
 	# Find contours
 	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
 
 	# If no contours have been found, quit
 	if len(contours) == 0:
-		sys.exit("Error: No targets found!")
+		#sys.exit("Error: No targets found!")
+		return None
 
 	# Find the largest contour
 	largestCntArea = 0 # Area of the largest contour
