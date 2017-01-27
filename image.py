@@ -65,10 +65,15 @@ def getLargestContour(image):
 	largestCnt = None
 	for cnt in contours:
 		cntArea = cv2.contourArea(cnt)
+		polygonArea = cv2.contourArea(np.int0(cv2.boxPoints(cv2.minAreaRect(cnt))))
+		if polygonArea == 0: continue
+		percentFilled = cntArea/polygonArea*100
+		if percentFilled < 80: continue
+		print(str(percentFilled) + "%")
+
 		if cntArea > largestCntArea:
 			largestCntArea = cntArea
 			largestCnt = cnt
-	
 	return largestCnt
 
 # Finds the x and y coordinates of the contours's centroid
