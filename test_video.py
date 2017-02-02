@@ -93,6 +93,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		else:
 			lowerv += raiseValue
 			printHSV()
+	if key == ord("w"):
+		# Write the image files
+		cv2.imwrite("orig.jpg", oldimg)
+		cv2.imwrite("proc.jpg", img)
+		print("Images written.")
+
 	# Show the original and processed frames
 	cv2.imshow("Original Frame", oldimg)
 	cv2.imshow("Processed Frame", img)
