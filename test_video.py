@@ -18,13 +18,13 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 # Flags for image processing
 
 # HSV Values to filter
-lowerh = 60
-lowers = 0
-lowerv = 0#255
+lowerh = 50
+lowers = 235
+lowerv = 0
 
-higherh = 90#91
-highers = 255#163
-higherv = 255
+higherh = 65
+highers = 255
+higherv = 30
 
 adjustHigher = True # Whether to adjust the higher or lower HSV values
 raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
