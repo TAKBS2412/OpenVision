@@ -65,7 +65,9 @@ def getLargestContour(image):
 	largestCnt = None
 	for cnt in contours:
 		cntArea = cv2.contourArea(cnt)
-		polygonArea = cv2.contourArea(np.int0(cv2.boxPoints(cv2.minAreaRect(cnt))))
+		a = cv2.minAreaRect(cnt)
+		b = cv2.boxPoints(a)
+		polygonArea = cv2.contourArea(b)
 		if polygonArea == 0: continue
 		percentFilled = cntArea/polygonArea*100
 		if percentFilled < 80: continue
@@ -76,11 +78,28 @@ def getLargestContour(image):
 			largestCnt = cnt
 	return largestCnt
 
+# Finds all the contours in the image iamge and sorts them by size (largest to smallest)
+# Returns an array of the sorted contours. If no contours have been found, returns an empty array
+def sortContours(image):
+	# Find contours
+	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
+
+	# If no contours have been found, quit
+	if len(contours) == 0:
+		#sys.exit("Error: No targets found!")
+		return []
+	# Sort the contours using DSU (Decorate-Sort-Undecorate)
+	# "Decorate" the array
+	decorated = [(cv2.contourArea(cnt), cv2.contourArea(cnt)/cv2.contourArea(np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))) if cv2.contourArea(np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))) else 0, cnt) for cnt in contours]
+	npDecorated = np.array(decorated, dtype=object)
+	# Sort the array
+	sortedarr = np.sort(npDecorated)	
+
 # Finds the largest and second-largest contour in the processed image
 # image - the HSV-filtered image to process
 # Returns None if no targets were found
 # Otherwise, returns an array - the first element is the largest contour, the second is the second-largest contour
-def getLargestContour(image):
+def getSecondLargestContour(image):
 	# Find contours
 	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
 
@@ -96,7 +115,10 @@ def getLargestContour(image):
 	secondLargestCnt = None
 	for cnt in contours:
 		cntArea = cv2.contourArea(cnt)
-		polygonArea = cv2.contourArea(np.int0(cv2.boxPoints(cv2.minAreaRect(cnt))))
+		a = cv2.minAreaRect(cnt)
+		b = cv2.boxPoints(a)
+		c = np.int0(b)
+		polygonArea = cv2.contourArea(c)
 		if polygonArea == 0: continue
 		percentFilled = cntArea/polygonArea*100
 		if percentFilled < 80: continue
