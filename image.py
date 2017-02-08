@@ -129,7 +129,7 @@ def getSecondLargestContour(image):
 			secondLargestCnt = largestCnt
 			largestCntArea = cntArea
 			largestCnt = cnt
-	return largestCnt
+	return [largestCnt, secondLargestCnt]
 
 
 
