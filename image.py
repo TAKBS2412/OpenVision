@@ -28,10 +28,9 @@ def takePicture(camera):
 
 # Process the image (apply HSV filtering, convert to greyscale)
 # image - the image to process
-# res - the resolution of the image, as a tuple (width, height)
 # lowerh, lowers, lowerv - lower HSV values for filtering
 # higherh, highers, higherv - higher HSV values for filtering
-def procImage(image, res, lowerh, lowers, lowerv, higherh, highers, higherv):
+def procImage(image, lowerh, lowers, lowerv, higherh, highers, higherv):
 	
 	# Blur the image
 	image = cv2.GaussianBlur(image, (5, 5), 0)
