@@ -26,7 +26,7 @@ lowerv = 30 #8 for red raspberry pi
 
 higherh = 65
 highers = 255
-higherv = 80 # 45 for red raspberry pi
+higherv = 110 # 45 for red raspberry pi
 
 adjustHigher = True # Whether to adjust the higher or lower HSV values
 raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
@@ -65,7 +65,16 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	# Process the image
 	if procImage:
-		largestCnt, secondLargestCnt = image.getSecondLargestContour(img)
+		contours = image.getSecondLargestContour(img)
+		if contours == None:
+			# Clear the stream for the next frame
+			rawCapture.truncate(0)
+			continue
+		largestCnt, secondLargestCnt = contours
+		if largestCnt == None or secondLargestCnt == None:
+			# Clear the stream for the next frame
+			rawCapture.truncate(0)
+			continue
 		boundingrect = cv2.minAreaRect(largestCnt)
 		wpx = max(boundingrect[1])
 		hpx = min(boundingrect[1])
@@ -74,17 +83,22 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		viewangle = 0.726
 		
 		# Find the centroid's coordinates
-		cx, cy = image.getContourCentroidCoords(largestCnt)
-		cx2, cy2 = image.getContourCentroidCoords(secondLargestCnt)
-		pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
-
-		# Print out information
-		print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
-		print("Height (px): " + str(hpx))
-		print("Width (px): " + str(wpx))
-		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
-		print("Distance (cm): " + str(distance))
-		print("Angle (radians): " + str(image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)))
+		cntcoords = image.getContourCentroidCoords(largestCnt)
+		cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
+		if cntcoords == None or cnt2coords == None:
+			pass
+		else:
+			cx, cy = cntcoords
+			cx2, cy2 = cnt2coords
+			pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
+			
+			# Print out information
+			print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
+			print("Height (px): " + str(hpx))
+			print("Width (px): " + str(wpx))
+			distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
+			print("Distance (cm): " + str(distance))
+			print("Angle (radians): " + str(image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)))
 
 
 	if key == ord("u"):

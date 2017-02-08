@@ -38,7 +38,7 @@ lowerv = 30 #8 for red raspberry pi
 
 higherh = 65
 highers = 255
-higherv = 80 # 45 for red raspberry pi
+higherv = 110 # 45 for red raspberry pi
 
 # Lower the shutter_speed
 camera.shutter_speed = 200
@@ -69,14 +69,19 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		viewangle = 0.726
 		
 		# Find the centroid's coordinates
-		cx, cy = image.getContourCentroidCoords(largestCnt)
-		cx2, cy2 = image.getContourCentroidCoords(secondLargestCnt)
-		pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
-		
-		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
-		angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)
-		print("Angle: " + str(angle))
-		print("Distance: " + str(distance))
+		cntcoords = image.getContourCentroidCoords(largestCnt)
+		cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
+		if cntcoords == None or cnt2coords == None:
+			targetsFound = False
+		else:
+			cx, cy = cntcoords
+			cx2, cy2 = cnt2coords
+			pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
+			
+			distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
+			angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)
+			print("Angle: " + str(angle))
+			print("Distance: " + str(distance))
 
 	# Send the variables to the roboRIO
 	sd.putNumber("angle", angle)

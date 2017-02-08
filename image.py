@@ -143,6 +143,8 @@ def getSecondLargestContour(image):
 # Returns an array with the centroid's x and y coordinates as the first and second elements
 def getContourCentroidCoords(contour):
 	M = cv2.moments(contour)
+	if M["m00"] == 0:
+		return None
 	cx = int(M["m10"]/M["m00"])
 	cy = int(M["m01"]/M["m00"])
 	return [cx, cy]
