@@ -29,25 +29,52 @@ imghpx = 480
 resolution = (imgwpx, imghpx) 
 camera = image.initCamera(resolution)
 
-while True:
+rawCapture = PiRGBArray(camera, size=resolution)
+
+# HSV Values to filter
+lowerh = 50
+lowers = 235
+lowerv = 30 #8 for red raspberry pi
+
+higherh = 65
+highers = 255
+higherv = 80 # 45 for red raspberry pi
+
+# Lower the shutter_speed
+camera.shutter_speed = 200
+
+for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+		
+	img = frame.array
+
 	# Do vision processing stuff here
 	angle = distance = 0 # Default values
 	targetsFound = False
+	
 	# The vision processing stuff below will set the above variables
-	img = image.takePicture(camera)
-	img = image.procImage(img, resolution, 50, 235, 0, 65, 255, 40)
-	largestCnt = image.getLargestContour(img)
-	if largestCnt is None:
+	img = image.procImage(img, lowerh, lowers, lowerv, higherh, highers, higherv)
+	largestCnt = secondLargestCnt = None
+	contours = image.getSecondLargestContour(img)
+	if contours is not None: largestCnt, secondLargestCnt = contours
+	if largestCnt is None or secondLargestCnt is None:
 		# No targets found
 		targetsFound = False
 		print("No targets found!")
 	else:
 		targetsFound = True
 		boundingrect = cv2.minAreaRect(largestCnt)
-		wpx, hpx = boundingrect[1]
-		viewangle = 0.698
+		wpx = max(boundingrect[1])
+		hpx = min(boundingrect[1])
+		
+		viewangle = 0.726
+		
+		# Find the centroid's coordinates
+		cx, cy = image.getContourCentroidCoords(largestCnt)
+		cx2, cy2 = image.getContourCentroidCoords(secondLargestCnt)
+		pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
+		
 		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
-		angle = image_proc.getHorizAngle(imghpx, 5.08, distance, hpx, image.getContourCentroidCoords(largestCnt)[0])
+		angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)
 		print("Angle: " + str(angle))
 		print("Distance: " + str(distance))
 
@@ -55,3 +82,6 @@ while True:
 	sd.putNumber("angle", angle)
 	sd.putNumber("distance", distance)
 	sd.putBoolean("targetsFound", targetsFound)
+
+	# Clear the stream for the next frame
+	rawCapture.truncate(0)
