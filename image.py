@@ -125,7 +125,6 @@ def getSecondLargestContour(image):
 		if polygonArea == 0: continue
 		percentFilled = cntArea/polygonArea*100
 		if percentFilled < 80: continue
-		print(str(percentFilled) + "%")
 
 		if cntArea > largestCntArea:
 			secondLargestCntArea = largestCntArea
