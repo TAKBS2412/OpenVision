@@ -40,7 +40,7 @@ def printHSV():
 	print("Lower HSV: " + str(lowerh) + ", " + str(lowers) + ", " + str(lowerv))
 
 # Lower the shutter_speed
-camera.shutter_speed = 100
+camera.shutter_speed = 200
 
 # Capture and display frames from camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
