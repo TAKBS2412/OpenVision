@@ -63,7 +63,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	HSVmask = cv2.inRange(img, lower_range, higher_range)
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-# Process the image
+	# Process the image
 	if procImage:
 		largestCnt, secondLargestCnt = image.getSecondLargestContour(img)
 		boundingrect = cv2.minAreaRect(largestCnt)
