@@ -34,7 +34,7 @@ def takePicture(camera):
 def procImage(image, res, lowerh, lowers, lowerv, higherh, highers, higherv):
 	
 	# Blur the image
-	img = cv2.GaussianBlur(img, (5, 5), 0)
+	image = cv2.GaussianBlur(image, (5, 5), 0)
 
 	# Convert image to HSV
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
