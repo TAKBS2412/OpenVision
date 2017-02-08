@@ -71,7 +71,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		hpx = min(boundingrect[1])
 		print(len(boundingrect[1]))	
 		
-		viewangle = 0.826
+		viewangle = 0.726
 		
 		# Find the centroid's coordinates
 		cx, cy = image.getContourCentroidCoords(largestCnt)
