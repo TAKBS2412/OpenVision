@@ -50,6 +50,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
 	# Grab array representing image
 	img = frame.array
+
+	# Blur the image
+	img = cv2.GaussianBlur(img, (5, 5), 0)
+	
 	oldimg = img
 
 	# HSV filter the image
