@@ -59,10 +59,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	HSVmask = cv2.inRange(img, lower_range, higher_range)
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-	# Process the image
+# Process the image
 	if procImage:
-		largestCnt = image.getLargestContour(img)
+		largestCnt, secondLargestCnt = image.getSecondLargestContour(img)
 		boundingrect = cv2.minAreaRect(largestCnt)
 		wpx = max(boundingrect[1])
 		hpx = min(boundingrect[1])
@@ -72,6 +71,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		
 		# Find the centroid's coordinates
 		cx, cy = image.getContourCentroidCoords(largestCnt)
+		cx2, cy2 = image.getContourCentroidCoords(secondLargestCnt)
+		pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
 
 		# Print out information
 		print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
@@ -79,7 +80,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		print("Width (px): " + str(wpx))
 		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
 		print("Distance (cm): " + str(distance))
-		print("Angle (radians): " + str(image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, cx)))
+		print("Angle (radians): " + str(image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)))
+
 
 	if key == ord("u"):
 		adjustHigher = not adjustHigher
