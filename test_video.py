@@ -22,7 +22,7 @@ procImage = False # Whether to calculate distance or not
 # HSV Values to filter
 lowerh = 50
 lowers = 235
-lowerv = 40 #8 for red raspberry pi
+lowerv = 30 #8 for red raspberry pi
 
 higherh = 65
 highers = 255
