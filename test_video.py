@@ -20,7 +20,7 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 procImage = False # Whether to calculate distance or not
 
 # HSV Values to filter
-lowerh = 50
+lowerh = 25
 lowers = 235
 lowerv = 40 #8 for red raspberry pi
 
@@ -59,21 +59,22 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	HSVmask = cv2.inRange(img, lower_range, higher_range)
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-# Process the image
+	# Process the image
 	if procImage:
 		largestCnt, secondLargestCnt = image.getSecondLargestContour(img)
 		boundingrect = cv2.minAreaRect(largestCnt)
 		wpx = max(boundingrect[1])
 		hpx = min(boundingrect[1])
 		print(len(boundingrect[1]))	
-		
+		boundingrect2 = cv2.minAreaRect(secondLargestCnt)
+	
 		viewangle = 0.826
 		
-		# Find the centroid's coordinates
-		cx, cy = image.getContourCentroidCoords(largestCnt)
-		cx2, cy2 = image.getContourCentroidCoords(secondLargestCnt)
-		pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
-
+		# Find the peg's coordinates
+		print(boundingrect)
+		print(boundingrect2)
+		xcoords = [pt[0] for pt in zip(boundingrect, boundingrect2)]
+		print(xcoords)
 		# Print out information
 		print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
 		print("Height (px): " + str(hpx))
