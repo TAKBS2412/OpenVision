@@ -39,7 +39,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	img = frame.array
 
 	# Do vision processing stuff here
-	angle = distance = 0 # Default values
+	angle = distance = ratio = 0 # Default values
 	targetsFound = False
 	
 	# The vision processing stuff below will set the above variables
@@ -58,7 +58,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			boundingrect = cv2.minAreaRect(largestCnt)
 			wpx = max(boundingrect[1])
 			hpx = min(boundingrect[1])
-			
+			ratio = wpx/hpx
 			viewangle = 0.726
 			
 			# Find the centroid's coordinates
@@ -76,11 +76,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 				angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)
 				print("Angle: " + str(angle))
 				print("Distance: " + str(distance))
-
+				print("Peg close: " + str(ratio < 2))
 	# Send the variables to the roboRIO
 	sd.putNumber("angle", angle)
 	sd.putNumber("distance", distance)
+	sd.putBoolean("pegclose", ratio < 2)
 	sd.putBoolean("targetsFound", targetsFound)
-
+	
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
