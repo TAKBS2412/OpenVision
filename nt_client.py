@@ -33,15 +33,15 @@ rawCapture = PiRGBArray(camera, size=resolution)
 
 # HSV Values to filter
 lowerh = 50
-lowers = 235
+lowers = 205
 lowerv = 30 #8 for red raspberry pi
 
 higherh = 65
 highers = 255
-higherv = 110 # 45 for red raspberry pi
+higherv = 125 # 45 for red raspberry pi
 
 # Lower the shutter_speed
-camera.shutter_speed = 200
+camera.shutter_speed = 300
 
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 		
@@ -71,7 +71,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		# Find the centroid's coordinates
 		cntcoords = image.getContourCentroidCoords(largestCnt)
 		cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
-		if cntcoords == None or cnt2coords == None:
+		if cntcoords is None or cnt2coords is None:
+			print("Invalid contours!")
 			targetsFound = False
 		else:
 			cx, cy = cntcoords
