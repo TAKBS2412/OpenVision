@@ -31,15 +31,6 @@ camera = image.initCamera(resolution)
 
 rawCapture = PiRGBArray(camera, size=resolution)
 
-# HSV Values to filter
-lowerh = 50
-lowers = 205
-lowerv = 30 #8 for red raspberry pi
-
-higherh = 65
-highers = 255
-higherv = 125 # 45 for red raspberry pi
-
 # Lower the shutter_speed
 camera.shutter_speed = 300
 
@@ -52,37 +43,39 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	targetsFound = False
 	
 	# The vision processing stuff below will set the above variables
-	img = image.procImage(img, lowerh, lowers, lowerv, higherh, highers, higherv)
-	largestCnt = secondLargestCnt = None
-	contours = image.getSecondLargestContour(img)
-	if contours is not None: largestCnt, secondLargestCnt = contours
-	if largestCnt is None or secondLargestCnt is None:
-		# No targets found
-		targetsFound = False
-		print("No targets found!")
-	else:
-		targetsFound = True
-		boundingrect = cv2.minAreaRect(largestCnt)
-		wpx = max(boundingrect[1])
-		hpx = min(boundingrect[1])
-		
-		viewangle = 0.726
-		
-		# Find the centroid's coordinates
-		cntcoords = image.getContourCentroidCoords(largestCnt)
-		cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
-		if cntcoords is None or cnt2coords is None:
-			print("Invalid contours!")
+	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+	thresh = cv2.threshold(img, 20, 255, cv2.THRESH_BINARY)
+	if thresh is not None:
+		ret, img = thresh
+		contours = image.getSecondLargestContour(img)
+		if contours is not None: largestCnt, secondLargestCnt = contours
+		if largestCnt is None or secondLargestCnt is None:
+			# No targets found
 			targetsFound = False
+			print("No targets found!")
 		else:
-			cx, cy = cntcoords
-			cx2, cy2 = cnt2coords
-			pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
+			targetsFound = True
+			boundingrect = cv2.minAreaRect(largestCnt)
+			wpx = max(boundingrect[1])
+			hpx = min(boundingrect[1])
 			
-			distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
-			angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)
-			print("Angle: " + str(angle))
-			print("Distance: " + str(distance))
+			viewangle = 0.726
+			
+			# Find the centroid's coordinates
+			cntcoords = image.getContourCentroidCoords(largestCnt)
+			cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
+			if cntcoords is None or cnt2coords is None:
+				print("Invalid contours!")
+				targetsFound = False
+			else:
+				cx, cy = cntcoords
+				cx2, cy2 = cnt2coords
+				pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
+				
+				distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
+				angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)
+				print("Angle: " + str(angle))
+				print("Distance: " + str(distance))
 
 	# Send the variables to the roboRIO
 	sd.putNumber("angle", angle)
