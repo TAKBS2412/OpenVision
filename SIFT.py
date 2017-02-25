@@ -3,7 +3,7 @@ import cv2
 
 MIN_MATCH_COUNT = 10
 
-img1 = cv2.imread('test.jpg',0)          # queryImage
+img1 = cv2.imread('test.jpg',0)		  # queryImage
 img2 = cv2.imread('cropped.jpg',0) # trainImage
 
 # Initiate SIFT detector
@@ -24,23 +24,23 @@ matches = flann.knnMatch(des1,des2,k=2)
 # store all the good matches as per Lowe's ratio test.
 good = []
 for m,n in matches:
-    if m.distance < 0.7*n.distance:
-        good.append(m)
+	if m.distance < 0.7*n.distance:
+		good.append(m)
 
 if len(good)>MIN_MATCH_COUNT:
-    src_pts = np.float32([ kp1[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
-    dst_pts = np.float32([ kp2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
+	src_pts = np.float32([ kp1[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
+	dst_pts = np.float32([ kp2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
 
-    M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
-    print(M)
-    matchesMask = mask.ravel().tolist()
+	M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
+	print(M)
+	matchesMask = mask.ravel().tolist()
 
-    h,w = img1.shape
-    pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
-    dst = cv2.perspectiveTransform(pts,M)
+	h,w = img1.shape
+	pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
+	dst = cv2.perspectiveTransform(pts,M)
 
-    img2 = cv2.polylines(img2,[np.int32(dst)],True,255,3, cv2.LINE_AA)
+	img2 = cv2.polylines(img2,[np.int32(dst)],True,255,3, cv2.LINE_AA)
 
 else:
-    print "Not enough matches are found - %d/%d" % (len(good),MIN_MATCH_COUNT)
-    matchesMask = None
+	print "Not enough matches are found - %d/%d" % (len(good),MIN_MATCH_COUNT)
+	matchesMask = None
