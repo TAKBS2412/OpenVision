@@ -42,6 +42,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
 	if key == ord("f"):
 		filterimg = not filterimg # Toggle the filterimg flag
+	if key == ord("w"):
+		cv2.imwrite("test.jpg", image)
 
 	if filterimg:
 		# Convert to HSV
