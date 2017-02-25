@@ -34,9 +34,13 @@ rawCapture = PiRGBArray(camera, size=resolution)
 # Lower the shutter_speed
 camera.shutter_speed = 300
 
+# If we've already saved an image
+imagesaved = False
+
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 		
 	img = frame.array
+	oldimg = img
 
 	# Do vision processing stuff here
 	angle = distance = ratio = 0 # Default values
@@ -53,6 +57,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			# No targets found
 			targetsFound = False
 			print("No targets found!")
+			if not imagesaved:
+				cv2.imwrite("no-targets-found.jpg", oldimg)
+				cv2.imwrite("no-targets-found_proc.jpg", img)
+				imagesaved = True
 		else:
 			targetsFound = True
 			boundingrect = cv2.minAreaRect(largestCnt)
@@ -67,6 +75,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			if cntcoords is None or cnt2coords is None:
 				print("Invalid contours!")
 				targetsFound = False
+				if not imagesaved:
+					cv2.imwrite("invalid-contours.jpg", oldimg)
+					cv2.imwrite("invalid-contours-proc.jpg", img)
+					imagesaved = True
 			else:
 				cx, cy = cntcoords
 				cx2, cy2 = cnt2coords
@@ -74,13 +86,18 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 				
 				distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
 				angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)
+				pegclose = ratio < 2
 				print("Angle: " + str(angle))
 				print("Distance: " + str(distance))
-				print("Peg close: " + str(ratio < 2))
+				print("Peg close: " + str(pegclose))
+				if pegclose and not imagesaved:
+					cv2.imwrite("pegclose.jpg", oldimg)
+					cv2.imwrite("pegclose-proc.jpg", img)
+					imagesaved = True
 	# Send the variables to the roboRIO
 	sd.putNumber("angle", angle)
 	sd.putNumber("distance", distance)
-	sd.putBoolean("pegclose", ratio < 2)
+	sd.putBoolean("pegclose", pegclose) 
 	sd.putBoolean("targetsFound", targetsFound)
 	
 	# Clear the stream for the next frame
