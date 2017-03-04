@@ -56,13 +56,16 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	
 	oldimg = img
 
+	'''
 	# HSV filter the image
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 	lower_range = np.array([lowerh, lowers, lowerv])
 	higher_range = np.array([higherh, highers, higherv])
 	HSVmask = cv2.inRange(img, lower_range, higher_range)
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
+	'''
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+	img = cv2.threshold(img, 20, 255, cv2.THRESH_BINARY)
 	# Process the image
 	if procImage:
 		contours = image.getSecondLargestContour(img)
@@ -74,7 +77,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		largestCnt, secondLargestCnt = contours
 		if largestCnt is None or secondLargestCnt is None:
 			# Clear the stream for the next frame
-			print("Invaid contours!")
+			print("Invalid contours!")
 			rawCapture.truncate(0)
 			continue
 		boundingrect = cv2.minAreaRect(largestCnt)
