@@ -18,7 +18,7 @@ import sys
 import image
 import image_proc
 
-ip = "10.24.12.105"
+ip = "10.24.12.2"
 
 NetworkTables.initialize(server=ip)
 
