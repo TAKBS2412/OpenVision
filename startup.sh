@@ -1,4 +1,5 @@
 #! /bin/bash
 source ~/.profile
 workon cv
-python nt_client.py 2> /home/pi/src/logs/error.log
+echo "-----------------------" >> /home/pi/src/logs/output.log
+python nt_client.py >> /home/pi/src/logs/output.log 2>&1
