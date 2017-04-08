@@ -65,7 +65,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
 	'''
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	img = cv2.threshold(img, 20, 255, cv2.THRESH_BINARY)
+	_, img = cv2.threshold(img, 15, 255, cv2.THRESH_BINARY)
 	# Process the image
 	if procImage:
 		contours = image.getSecondLargestContour(img)
