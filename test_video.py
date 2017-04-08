@@ -49,7 +49,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	key = cv2.waitKey(1)
 
 	# Grab array representing image
-	img = frame.array
+	#img = frame.array
+	img = cv2.imread("pegclose.jpg")
 
 	# Blur the image
 	img = cv2.GaussianBlur(img, (5, 5), 0)
