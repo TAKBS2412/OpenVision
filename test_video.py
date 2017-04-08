@@ -20,6 +20,7 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 procImage = False # Whether to calculate distance or not
 
 # HSV Values to filter
+'''
 lowerh = 50
 lowers = 205
 lowerv = 30 #8 for red raspberry pi
@@ -27,17 +28,19 @@ lowerv = 30 #8 for red raspberry pi
 higherh = 65
 highers = 255
 higherv = 125 # 45 for red raspberry pi
-
+'''
 adjustHigher = True # Whether to adjust the higher or lower HSV values
 raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
 # Image resolution
 resolution = camera.resolution
 imgwpx, imghpx = resolution
 
+'''
 # Prints out the HSV values for filtering
 def printHSV():
 	print("Upper HSV: " + str(higherh) + ", " + str(highers) + ", " + str(higherv))
 	print("Lower HSV: " + str(lowerh) + ", " + str(lowers) + ", " + str(lowerv))
+'''
 
 # Lower the shutter_speed
 camera.shutter_speed = 300
@@ -113,6 +116,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		raiseValue *= -1
 	if key == ord("p"):
 		procImage = not procImage
+	'''
 	elif key == ord("h"):
 		if adjustHigher:
 			higherh += raiseValue
@@ -134,6 +138,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		else:
 			lowerv += raiseValue
 			printHSV()
+	'''	
 	if key == ord("w"):
 		# Write the image files
 		cv2.imwrite("orig.jpg", oldimg)
