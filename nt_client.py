@@ -44,7 +44,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
 	# Do vision processing stuff here
 	angle = distance = ratio = 0 # Default values
-	targetsFound = False
+	targetsFound = pegclose = False
 	
 	# The vision processing stuff below will set the above variables
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
