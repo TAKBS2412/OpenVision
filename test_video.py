@@ -29,6 +29,11 @@ higherh = 65
 highers = 255
 higherv = 125 # 45 for red raspberry pi
 '''
+
+# Threshold values to filter
+lowerthresh = 130
+higherthresh = 255
+
 adjustHigher = True # Whether to adjust the higher or lower HSV values
 raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
 # Image resolution
@@ -69,7 +74,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
 	'''
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	_, img = cv2.threshold(img, 15, 255, cv2.THRESH_BINARY)
+	_, img = cv2.threshold(img, lowerthresh, higherthresh, cv2.THRESH_BINARY)
 	# Process the image
 	if procImage:
 		contours = image.getSecondLargestContour(img)
@@ -116,6 +121,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		raiseValue *= -1
 	if key == ord("p"):
 		procImage = not procImage
+	elif key == ord("t"):
+		if adjustHigher:
+			higherthresh += raiseValue
+		else:
+			lowerthresh += raiseValue
+		print("Lower threshold: " + str(lowerthresh))
+		print("Higher threshold: " + str(higherthresh))
+
 	'''
 	elif key == ord("h"):
 		if adjustHigher:
