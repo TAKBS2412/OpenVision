@@ -89,9 +89,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			print("Invalid contours!")
 			rawCapture.truncate(0)
 			continue
+		'''
 		boundingrect = cv2.minAreaRect(largestCnt)
-		wpx = max(boundingrect[1])
-		hpx = min(boundingrect[1])
+		wpx = min(boundingrect[1])
+		hpx = max(boundingrect[1])
+		'''
+		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
 		print("Ratio: " + str(wpx/hpx))
 		
 		viewangle = 0.726
