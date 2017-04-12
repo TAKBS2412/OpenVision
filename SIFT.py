@@ -27,6 +27,12 @@ for m,n in matches:
 	if m.distance < 0.7*n.distance:
 		good.append(m)
 
+img3 = None
+img3 = cv2.drawMatches(img1,kp1,img2,kp2,good, img3, flags=2)
+cv2.imshow("Matches", img3)
+cv2.waitKey(0)
+
+
 if len(good)>MIN_MATCH_COUNT:
 	src_pts = np.float32([ kp1[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
 	dst_pts = np.float32([ kp2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
