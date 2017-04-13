@@ -1,6 +1,11 @@
 import numpy as np
 import cv2
 
+'''
+An example of a FLANN based Matcher (Fast Library for Approximate Nearest Neighbors).
+See docs.opencv.org/trunk/dc/dc3/tutorial_py_matcher.html
+'''
+
 MIN_MATCH_COUNT = 10
 
 img1 = cv2.imread('test.jpg',0)		  # queryImage
