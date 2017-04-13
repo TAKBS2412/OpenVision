@@ -28,7 +28,7 @@ matches = sorted(matches, key = lambda x:x.distance)
 
 # Draw the matches.
 img3 = None
-img3 = cv2.drawMatches(img1,kp1,img2,kp2,good,img3, flags=2)
+img3 = cv2.drawMatches(img1,kp1,img2,kp2,matches,img3, flags=2)
 cv2.imshow("Matches", img3)
 cv2.waitKey(0)
 
