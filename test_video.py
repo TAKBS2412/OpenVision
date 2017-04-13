@@ -20,15 +20,13 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 procImage = False # Whether to calculate distance or not
 
 # HSV Values to filter
-'''
-lowerh = 50
-lowers = 205
-lowerv = 30 #8 for red raspberry pi
+lowerh = 48
+lowers = 100
+lowerv = 27 #8 for red raspberry pi
 
-higherh = 65
+higherh = 83
 highers = 255
-higherv = 125 # 45 for red raspberry pi
-'''
+higherv = 236 # 45 for red raspberry pi
 
 # Threshold values to filter
 lowerthresh = 130
@@ -40,12 +38,10 @@ raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if 
 resolution = camera.resolution
 imgwpx, imghpx = resolution
 
-'''
 # Prints out the HSV values for filtering
 def printHSV():
 	print("Upper HSV: " + str(higherh) + ", " + str(highers) + ", " + str(higherv))
 	print("Lower HSV: " + str(lowerh) + ", " + str(lowers) + ", " + str(lowerv))
-'''
 
 # Lower the shutter_speed
 camera.shutter_speed = 300
@@ -65,16 +61,19 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	
 	oldimg = img
 
-	'''
 	# HSV filter the image
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 	lower_range = np.array([lowerh, lowers, lowerv])
 	higher_range = np.array([higherh, highers, higherv])
 	HSVmask = cv2.inRange(img, lower_range, higher_range)
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
-	'''
-	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+	
+	hsvimg = img
+	
+	# Convert the HSV-filtered image to grayscale and filter it using threshold
+	img = cv2.split(img)[2]
 	_, img = cv2.threshold(img, lowerthresh, higherthresh, cv2.THRESH_BINARY)
+
 	# Process the image
 	if procImage:
 		contours = image.getSecondLargestContour(img)
@@ -132,7 +131,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		print("Lower threshold: " + str(lowerthresh))
 		print("Higher threshold: " + str(higherthresh))
 
-	'''
 	elif key == ord("h"):
 		if adjustHigher:
 			higherh += raiseValue
@@ -154,7 +152,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		else:
 			lowerv += raiseValue
 			printHSV()
-	'''	
 	if key == ord("w"):
 		# Write the image files
 		cv2.imwrite("orig.jpg", oldimg)
@@ -163,6 +160,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
 	# Show the original and processed frames
 	cv2.imshow("Original Frame", oldimg)
+	cv2.imshow("HSV filtered Frame", hsvimg)
 	cv2.imshow("Processed Frame", img)
 	
 	# Clear the stream for the next frame
