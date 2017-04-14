@@ -7,8 +7,8 @@ An example of Brute-Force Matching with ORB Descriptors (faster than SIFT).
 See docs.opencv.org/trunk/dc/dc3/tutorial_py_matcher.html
 '''
 
-img1 = cv2.imread('test.jpg',0)	   # queryImage
-img2 = cv2.imread('cropped.jpg',0) # trainImage
+img1 = cv2.imread('pegclose.jpg',0)	 # queryImage
+img2 = cv2.imread('green_targets.jpg',0) # trainImage
 
 # Initiate ORB detector
 orb = cv2.ORB_create()
@@ -16,6 +16,7 @@ orb = cv2.ORB_create()
 # find the keypoints and descriptors with ORB
 kp1, des1 = orb.detectAndCompute(img1,None)
 kp2, des2 = orb.detectAndCompute(img2,None)
+
 
 # Create BFMatcher object
 bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)

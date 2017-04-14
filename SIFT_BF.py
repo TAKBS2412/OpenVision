@@ -6,8 +6,8 @@ An example of a Brute Force matcher using SIFT's BFMatcher.
 See docs.opencv.org/trunk/dc/dc3/tutorial_py_matcher.html
 '''
 
-img1 = cv2.imread('test.jpg',0)	   # queryImage
-img2 = cv2.imread('cropped.jpg',0) # trainImage
+img1 = cv2.imread('pegclose.jpg',0)	 # queryImage
+img2 = cv2.imread('green_targets.jpg',0) # trainImage
 
 # Initiate SIFT detector
 sift = cv2.xfeatures2d.SIFT_create()
