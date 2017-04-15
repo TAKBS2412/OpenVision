@@ -36,7 +36,7 @@ resolution = camera.resolution
 imgwpx, imghpx = resolution
 
 # Images to process
-images = ["pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg"]
+images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg"]
 index = 0 # Array index for which image to process (in the above array, images)
 
 # Prints out the HSV values for filtering
