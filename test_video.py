@@ -1,4 +1,5 @@
 # Import libraries
+from __future__ import division
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import time
@@ -90,7 +91,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		hpx = max(boundingrect[1])
 		'''
 		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
-		print("Ratio: " + str(wpx/hpx))
+		print("Ratio: " + str(hpx/wpx))
 		
 		viewangle = 0.726
 		
