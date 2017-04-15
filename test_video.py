@@ -30,9 +30,14 @@ higherv = 255 # 45 for red raspberry pi
 
 adjustHigher = True # Whether to adjust the higher or lower HSV values
 raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
+
 # Image resolution
 resolution = camera.resolution
 imgwpx, imghpx = resolution
+
+# Images to process
+images = ["pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg"]
+index = 0 # Array index for which image to process (in the above array, images)
 
 # Prints out the HSV values for filtering
 def printHSV():
@@ -50,7 +55,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
 	# Grab array representing image
 	#img = frame.array
-	img = cv2.imread("pegclose.jpg")
+	img = cv2.imread(images[index])
 
 	# Blur the image
 	img = cv2.GaussianBlur(img, (5, 5), 0)
@@ -140,7 +145,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		cv2.imwrite("orig.jpg", oldimg)
 		cv2.imwrite("proc.jpg", img)
 		print("Images written.")
-
+	if key == 81:
+		index = index - 1 if index > 0 else len(images)-1
+	elif key == 83:
+		index = index + 1 if index < len(images)-1 else 0
 	# Show the original and processed frames
 	cv2.imshow("Original Frame", oldimg)
 	cv2.imshow("Processed Frame", img)
