@@ -105,7 +105,7 @@ def sortContours(image):
 def getSecondLargestContour(image):
 	# Find contours
 	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
-
+	
 	# If no contours have been found, quit
 	if len(contours) == 0:
 		#sys.exit("Error: No targets found!")
@@ -124,7 +124,7 @@ def getSecondLargestContour(image):
 		polygonArea = cv2.contourArea(c)
 		if polygonArea == 0: continue
 		percentFilled = cntArea/polygonArea*100
-		if percentFilled < 80: continue
+		if percentFilled < 70: continue
 
 		if cntArea > largestCntArea:
 			secondLargestCntArea = largestCntArea
