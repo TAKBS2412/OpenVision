@@ -87,6 +87,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			rawCapture.truncate(0)
 			continue
 		boundingrect = cv2.minAreaRect(largestCnt)
+		print(points.find_points(boundingrect))
 		wpx = min(boundingrect[1])
 		hpx = max(boundingrect[1])
 		'''
