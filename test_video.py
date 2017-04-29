@@ -7,6 +7,7 @@ import cv2
 import image # Custom library
 import image_proc # Another custom library
 import numpy as np
+import points
 
 # Initialize the camera
 camera = image.initCamera((640, 480))
@@ -37,7 +38,7 @@ resolution = camera.resolution
 imgwpx, imghpx = resolution
 
 # Images to process
-images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg"]
+images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg", "orig.jpg"]
 index = 0 # Array index for which image to process (in the above array, images)
 
 # Prints out the HSV values for filtering
@@ -85,12 +86,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			print("Invalid contours!")
 			rawCapture.truncate(0)
 			continue
-		'''
 		boundingrect = cv2.minAreaRect(largestCnt)
 		wpx = min(boundingrect[1])
 		hpx = max(boundingrect[1])
 		'''
 		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
+		'''
 		print("Ratio: " + str(hpx/wpx))
 		
 		viewangle = 0.726
