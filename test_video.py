@@ -37,6 +37,9 @@ raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if 
 resolution = camera.resolution
 imgwpx, imghpx = resolution
 
+# Camera's viewangle
+viewangle = 0.726
+
 # Images to process
 images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg", "orig.jpg"]
 index = 0 # Array index for which image to process (in the above array, images)
@@ -86,17 +89,60 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			print("Invalid contours!")
 			rawCapture.truncate(0)
 			continue
+		
+		epsilon = 0.05*cv2.arcLength(largestCnt, True)
+		approx = cv2.approxPolyDP(largestCnt, epsilon, True)
+		pts = []
+		for point in approx:
+			pts.append(point[0])
+		pts = np.array(pts)
+		'''
 		boundingrect = cv2.minAreaRect(largestCnt)
-		print(points.find_points(boundingrect))
+		print("Boundingrect: " + str(boundingrect))
+		pts = points.find_points(boundingrect)
+		'''
+		
+		pts = points.order_points(pts)
+	
+		# Find the horizontal skew from pts and using the distance formula.
+		left_height = np.abs(np.sqrt((pts[0][0] - pts[3][0])**2 + (pts[0][1] - pts[3][1])**2))
+		print("Left height: " + str(left_height))
+
+		right_height = np.abs(np.sqrt((pts[2][0] - pts[1][0])**2 + (pts[2][1] - pts[1][1])**2))
+		print("Right height: " + str(right_height))
+
+		left_distance = image_proc.getDistance(imghpx, 5.08, left_height, viewangle)
+		print("Left distance: " + str(left_distance))
+
+		right_distance = image_proc.getDistance(imghpx, 5.08, right_height, viewangle)
+		print("Right distance: " + str(right_distance))
+
+		delta_distance = right_distance - left_distance
+		print("Delta distance: " + str(delta_distance))
+		
+		print(delta_distance)
+		skew = np.arcsin(delta_distance/5.08)
+		print("Calculated skew: " + str(skew))
+
+
+		left_width = np.abs(np.sqrt((pts[0][0] - pts[1][0])**2 + (pts[0][1] - pts[1][1])**2))
+		right_width = np.abs(np.sqrt((pts[2][0] - pts[3][0])**2 + (pts[2][1] - pts[3][1])**2))
+
+		wpx = max(left_width, right_width)
+		hpx = max(left_height, right_height)
+
+	
+		'''
 		wpx = min(boundingrect[1])
 		hpx = max(boundingrect[1])
+		'''
+
 		'''
 		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
 		'''
 		print("Ratio: " + str(hpx/wpx))
 		
-		viewangle = 0.726
-		
+				
 		# Find the centroid's coordinates
 		cntcoords = image.getContourCentroidCoords(largestCnt)
 		cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
