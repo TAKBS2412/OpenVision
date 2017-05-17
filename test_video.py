@@ -7,6 +7,7 @@ import cv2
 import image # Custom library
 import image_proc # Another custom library
 import numpy as np
+import datetime
 
 # Initialize the camera
 camera = image.initCamera((640, 480))
@@ -148,8 +149,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			printHSV()
 	if key == ord("w"):
 		# Write the image files
-		cv2.imwrite("orig.jpg", oldimg)
-		cv2.imwrite("proc.jpg", img)
+		filename = "../Pictures/Camera Roll/" + str(datetime.datetime.now()).replace(" ", "_") # Use current date as filename.
+		cv2.imwrite(filename + ".jpg", oldimg)
+		cv2.imwrite(filename + "_proc.jpg", img)
 		print("Images written.")
 	if key == ord("i"):
 		# Toggle usevideo
