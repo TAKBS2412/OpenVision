@@ -8,6 +8,7 @@ import image # Custom library
 import image_proc # Another custom library
 import numpy as np
 import points
+import datetime
 
 # Initialize the camera
 camera = image.initCamera((640, 480))
@@ -32,6 +33,9 @@ higherv = 255 # 45 for red raspberry pi
 
 adjustHigher = True # Whether to adjust the higher or lower HSV values
 raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
+
+
+usevideo = True # Whether to read from video or from a file
 
 # Image resolution
 resolution = camera.resolution
@@ -59,8 +63,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	key = cv2.waitKey(1)
 
 	# Grab array representing image
-	#img = frame.array
-	img = cv2.imread(images[index])
+	if usevideo:
+		img = frame.array
+	else:
+		img = cv2.imread(images[index])
 
 	# Blur the image
 	img = cv2.GaussianBlur(img, (5, 5), 0)
@@ -191,9 +197,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			printHSV()
 	if key == ord("w"):
 		# Write the image files
-		cv2.imwrite("orig.jpg", oldimg)
-		cv2.imwrite("proc.jpg", img)
+		filename = "../Pictures/Camera Roll/" + str(datetime.datetime.now()).replace(" ", "_") # Use current date as filename.
+		cv2.imwrite(filename + ".jpg", oldimg)
+		cv2.imwrite(filename + "_proc.jpg", img)
 		print("Images written.")
+	if key == ord("i"):
+		# Toggle usevideo
+		usevideo = not usevideo
 	if key == 81:
 		index = index - 1 if index > 0 else len(images)-1
 	elif key == 83:

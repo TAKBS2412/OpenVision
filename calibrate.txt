@@ -1,0 +1,11 @@
+processing chessboard.jpg... ok
+
+RMS: 0.302328109162
+camera matrix:
+ [[ 758.40160714    0.          342.53490655]
+ [   0.          758.42721521  234.84867559]
+ [   0.            0.            1.        ]]
+distortion coefficients:  [  1.79743534e-01  -1.42635852e+00   7.71523281e-03   5.17037684e-04
+   1.85754662e+01]
+
+Undistorted image written to: ./output/chessboard_chess.png_undistorted.png
