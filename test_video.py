@@ -37,6 +37,8 @@ raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if 
 
 usevideo = True # Whether to read from video or from a file
 
+endloop = False
+
 # Image resolution
 resolution = camera.resolution
 imgwpx, imghpx = resolution
@@ -56,9 +58,59 @@ def printHSV():
 # Lower the shutter_speed
 camera.shutter_speed = 300
 
+# Updates all of the flags/settings based on which key was pressed.
+def update(key):
+	global adjustHigher, raiseValue, procImage, higherh, highers, higherv, lowerh, lowers, lowerv, usevideo, index, endloop
+	if key == ord("u"):
+		adjustHigher = not adjustHigher
+	if key == ord("r"):
+		raiseValue *= -1
+	if key == ord("p"):
+		procImage = not procImage
+	elif key == ord("h"):
+		if adjustHigher:
+			higherh += raiseValue
+			printHSV()
+		else:
+			lowerh += raiseValue
+			printHSV()
+	elif key == ord("s"):
+		if adjustHigher:
+			highers += raiseValue
+			printHSV()
+		else:
+			lowers += raiseValue
+			printHSV()
+	elif key == ord("v"):
+		if adjustHigher:
+			higherv += raiseValue
+			printHSV()
+		else:
+			lowerv += raiseValue
+			printHSV()
+	if key == ord("w"):
+		# Write the image files
+		filename = "../Pictures/Camera Roll/" + str(datetime.datetime.now()).replace(" ", "_") # Use current date as filename.
+		cv2.imwrite(filename + ".jpg", oldimg)
+		cv2.imwrite(filename + "_proc.jpg", img)
+		print("Images written.")
+	if key == ord("i"):
+		# Toggle usevideo
+		usevideo = not usevideo
+	if key == 81:
+		index = index - 1 if index > 0 else len(images)-1
+	elif key == 83:
+		print("test")
+		index = index + 1 if index < len(images)-1 else 0
+	if key == ord("q"):
+		endloop = True
+
 # Capture and display frames from camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
-	
+	# Break from loop if needed.
+	if endloop:
+		break
+
 	# Get the currently pressed key
 	key = cv2.waitKey(1)
 
@@ -88,12 +140,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			# Clear the stream for the next frame
 			rawCapture.truncate(0)
 			print("Contours not found!")
+			update(key)
 			continue
 		largestCnt, secondLargestCnt = contours
 		if largestCnt is None or secondLargestCnt is None:
 			# Clear the stream for the next frame
 			print("Contours not found!")
 			rawCapture.truncate(0)
+			update(key)
 			continue
 		
 		epsilon = 0.05*cv2.arcLength(largestCnt, True)
@@ -165,55 +219,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			print("Angle (radians): " + str(image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)))
 
 
-	if key == ord("u"):
-		adjustHigher = not adjustHigher
-	if key == ord("r"):
-		raiseValue *= -1
-	if key == ord("p"):
-		procImage = not procImage
-	elif key == ord("h"):
-		if adjustHigher:
-			higherh += raiseValue
-			printHSV()
-		else:
-			lowerh += raiseValue
-			printHSV()
-	elif key == ord("s"):
-		if adjustHigher:
-			highers += raiseValue
-			printHSV()
-		else:
-			lowers += raiseValue
-			printHSV()
-	elif key == ord("v"):
-		if adjustHigher:
-			higherv += raiseValue
-			printHSV()
-		else:
-			lowerv += raiseValue
-			printHSV()
-	if key == ord("w"):
-		# Write the image files
-		filename = "../Pictures/Camera Roll/" + str(datetime.datetime.now()).replace(" ", "_") # Use current date as filename.
-		cv2.imwrite(filename + ".jpg", oldimg)
-		cv2.imwrite(filename + "_proc.jpg", img)
-		print("Images written.")
-	if key == ord("i"):
-		# Toggle usevideo
-		usevideo = not usevideo
-	if key == 81:
-		index = index - 1 if index > 0 else len(images)-1
-	elif key == 83:
-		index = index + 1 if index < len(images)-1 else 0
+	update(key)	
 	# Show the original and processed frames
 	cv2.imshow("Original Frame", oldimg)
 	cv2.imshow("Processed Frame", img)
 	
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
-
-	# Break from loop if q key is pressed
-	if key == ord("q"):
-		break
-
 
