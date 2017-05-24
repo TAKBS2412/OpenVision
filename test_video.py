@@ -87,12 +87,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		if contours is None:
 			# Clear the stream for the next frame
 			rawCapture.truncate(0)
-			print("Invalid contours!")
+			print("Contours not found!")
 			continue
 		largestCnt, secondLargestCnt = contours
 		if largestCnt is None or secondLargestCnt is None:
 			# Clear the stream for the next frame
-			print("Invalid contours!")
+			print("Contours not found!")
 			rawCapture.truncate(0)
 			continue
 		
@@ -102,10 +102,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		for point in approx:
 			pts.append(point[0])
 		pts = np.array(pts)
-		'''
+		
 		boundingrect = cv2.minAreaRect(largestCnt)
 		print("Boundingrect: " + str(boundingrect))
 		pts = points.find_points(boundingrect)
+	
 		'''
 		
 		pts = points.order_points(pts)
@@ -137,15 +138,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		wpx = max(left_width, right_width)
 		hpx = max(left_height, right_height)
 
-	
-		'''
 		wpx = min(boundingrect[1])
 		hpx = max(boundingrect[1])
 		'''
 
-		'''
 		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
-		'''
 		print("Ratio: " + str(hpx/wpx))
 		
 				
