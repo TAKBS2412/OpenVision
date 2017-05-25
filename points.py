@@ -46,19 +46,19 @@ def find_straight_rect(pts):
 	# Find the width of the new rectangle
 	widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
 	widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
-	maxWidth = max(int(widthA), int(widthB))
+	maxWidth = max(int(widthA), int(widthB)) - 1
 
 	# Find the height of the new image
 	heightA = np.sqrt(((tr[0] - br[0]) ** 2) + ((tr[1] - br[1]) ** 2))
 	heightB = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2))
-	maxHeight = max(int(heightA), int(heightB))
+	maxHeight = max(int(heightA), int(heightB)) - 1
 
 	# Use the top-left corner to compute the rest of the rectangle
 	straightrect = np.array([
 		tl,
 		[tl[0] + maxWidth, tl[1]],
-		[tl[0] + maxWidth, t1[1] + maxHeight],
-		[tl[0], t1[1] + maxHeight]
+		[tl[0] + maxWidth, tl[1] + maxHeight],
+		[tl[0], tl[1] + maxHeight]
 	], dtype = "float32")
 
 	# Return the straightened rectangle
