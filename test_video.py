@@ -47,7 +47,8 @@ imgwpx, imghpx = resolution
 viewangle = 0.726
 
 # Images to process
-images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg", "orig.jpg"]
+#images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg", "orig.jpg"]
+images = ["calibration/pink_20cm_0deg", "calibration/pink_20cm_30deg", "calibration/pink_20cm_30deg_skew"]
 index = 0 # Array index for which image to process (in the above array, images)
 
 # Prints out the HSV values for filtering
@@ -56,7 +57,7 @@ def printHSV():
 	print("Lower HSV: " + str(lowerh) + ", " + str(lowers) + ", " + str(lowerv))
 
 # Lower the shutter_speed
-camera.shutter_speed = 300
+#camera.shutter_speed = 300
 
 # Updates all of the flags/settings based on which key was pressed.
 def update(key):
