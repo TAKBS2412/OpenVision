@@ -41,15 +41,8 @@ usevideo = True # Whether to read from video or from a file
 endloop = False
 
 # Image resolution
-resolution = constants.camera.resolution
-imgwpx, imghpx = resolution
+imgwpx, imghpx = constants.camera.resolution
 
-# Camera's viewangle
-viewangle = 0.726
-
-# Images to process
-#images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg", "orig.jpg"]
-images = ["calibration/green_60cm_20deg", "calibration/green_90cm_20deg", "calibration/green_120cm_20deg", "calibration/green_60cm_10deg", "calibration/green_90cm_10deg", "calibration/green_120cm_10deg"]
 index = 0 # Array index for which image to process (in the above array, images)
 
 lastoldimgname = ""
@@ -102,10 +95,10 @@ def update(key):
 		# Toggle usevideo
 		usevideo = not usevideo
 	if key == 81:
-		index = index - 1 if index > 0 else len(images)-1
+		index = index - 1 if index > 0 else len(constants.images)-1
 	elif key == 83:
 		print("test")
-		index = index + 1 if index < len(images)-1 else 0
+		index = index + 1 if index < len(constants.images)-1 else 0
 	if key == ord("q"):
 		endloop = True
 
@@ -122,7 +115,7 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 	if usevideo:
 		img = frame.array
 	else:
-		img = cv2.imread(images[index])
+		img = cv2.imread(constants.images[index])
 
 	# Blur the image
 	img = cv2.GaussianBlur(img, (5, 5), 0)
@@ -184,10 +177,10 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 		right_height = np.abs(np.sqrt((pts[2][0] - pts[1][0])**2 + (pts[2][1] - pts[1][1])**2))
 		print("Right height: " + str(right_height))
 
-		left_distance = image_proc.getDistance(imghpx, 5.08, left_height, viewangle)
+		left_distance = image_proc.getDistance(imghpx, 5.08, left_height, constants.viewangle)
 		print("Left distance: " + str(left_distance))
 
-		right_distance = image_proc.getDistance(imghpx, 5.08, right_height, viewangle)
+		right_distance = image_proc.getDistance(imghpx, 5.08, right_height, constants.viewangle)
 		print("Right distance: " + str(right_distance))
 
 		delta_distance = right_distance - left_distance
@@ -226,14 +219,14 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 			print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
 			print("Height (px): " + str(hpx))
 			print("Width (px): " + str(wpx))
-			distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
+			distance = image_proc.getDistance(imghpx, 5.08, hpx, constants.viewangle)
 			print("Distance (cm): " + str(distance))
 			print("Angle (radians): " + str(image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)))
 
 
 	update(key)	
 	# Show the original and processed frames
-	oldimgname = images[index]
+	oldimgname = constants.images[index]
 	if usevideo:
 		oldimgname = "Live camera feed"
 	cv2.imshow(oldimgname, oldimg)
