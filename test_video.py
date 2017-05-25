@@ -6,17 +6,18 @@ import time
 import cv2
 import image # Custom library
 import image_proc # Another custom library
+import Constants # Yet another custom library
 import numpy as np
 import points
 import datetime
 
-# Initialize the camera
-camera = image.initCamera((640, 480))
+# Create Constants
+constants = Constants.Constants()
 
 # Let the camera warm up
 time.sleep(0.1)
 
-rawCapture = PiRGBArray(camera, size=(640, 480))
+rawCapture = PiRGBArray(constants.camera, size=(640, 480))
 
 # Flags for image processing
 
@@ -40,7 +41,7 @@ usevideo = True # Whether to read from video or from a file
 endloop = False
 
 # Image resolution
-resolution = camera.resolution
+resolution = constants.camera.resolution
 imgwpx, imghpx = resolution
 
 # Camera's viewangle
@@ -59,7 +60,7 @@ def printHSV():
 	print("Lower HSV: " + str(lowerh) + ", " + str(lowers) + ", " + str(lowerv))
 
 # Lower the shutter_speed
-#camera.shutter_speed = 300
+#constants.camera.shutter_speed = 300
 
 # Updates all of the flags/settings based on which key was pressed.
 def update(key):
@@ -109,7 +110,7 @@ def update(key):
 		endloop = True
 
 # Capture and display frames from camera
-for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
+for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
 	# Break from loop if needed.
 	if endloop:
 		break
