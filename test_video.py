@@ -23,11 +23,11 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 procImage = False # Whether to calculate distance or not
 
 # HSV Values to filter
-lowerh = 50
-lowers = 200
-lowerv = 30 #8 for red raspberry pi
+lowerh = 160
+lowers = 0
+lowerv = 0 #8 for red raspberry pi
 
-higherh = 65
+higherh = 179
 highers = 255
 higherv = 255 # 45 for red raspberry pi
 
@@ -47,8 +47,7 @@ imgwpx, imghpx = resolution
 viewangle = 0.726
 
 # Images to process
-#images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg", "orig.jpg"]
-images = ["calibration/pink_20cm_0deg", "calibration/pink_20cm_30deg", "calibration/pink_20cm_30deg_skew"]
+images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg", "orig.jpg"]
 index = 0 # Array index for which image to process (in the above array, images)
 
 # Prints out the HSV values for filtering
