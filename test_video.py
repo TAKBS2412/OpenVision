@@ -23,11 +23,11 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 procImage = False # Whether to calculate distance or not
 
 # HSV Values to filter
-lowerh = 160
-lowers = 0
-lowerv = 0 #8 for red raspberry pi
+lowerh = 50
+lowers = 200
+lowerv = 30 #8 for red raspberry pi
 
-higherh = 179
+higherh = 65
 highers = 255
 higherv = 255 # 45 for red raspberry pi
 
