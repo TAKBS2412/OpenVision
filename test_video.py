@@ -35,13 +35,9 @@ higherv = 255 # 45 for red raspberry pi
 adjustHigher = True # Whether to adjust the higher or lower HSV values
 raiseValue = 1 # If raiseValue is 1, then 1 will be added to the HSV values; if raiseValue is -1, then 1 will be subtracted from the HSV values
 
-
 usevideo = True # Whether to read from video or from a file
 
 endloop = False
-
-# Image resolution
-imgwpx, imghpx = constants.camera.resolution
 
 index = 0 # Array index for which image to process (in the above array, images)
 
@@ -177,10 +173,10 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 		right_height = np.abs(np.sqrt((pts[2][0] - pts[1][0])**2 + (pts[2][1] - pts[1][1])**2))
 		print("Right height: " + str(right_height))
 
-		left_distance = image_proc.getDistance(imghpx, 5.08, left_height, constants.viewangle)
+		left_distance = image_proc.getDistance(constants.imghpx, 5.08, left_height, constants.viewangle)
 		print("Left distance: " + str(left_distance))
 
-		right_distance = image_proc.getDistance(imghpx, 5.08, right_height, constants.viewangle)
+		right_distance = image_proc.getDistance(constants.imghpx, 5.08, right_height, constants.viewangle)
 		print("Right distance: " + str(right_distance))
 
 		delta_distance = right_distance - left_distance
@@ -219,9 +215,9 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 			print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
 			print("Height (px): " + str(hpx))
 			print("Width (px): " + str(wpx))
-			distance = image_proc.getDistance(imghpx, 5.08, hpx, constants.viewangle)
+			distance = image_proc.getDistance(constants.imghpx, 5.08, hpx, constants.viewangle)
 			print("Distance (cm): " + str(distance))
-			print("Angle (radians): " + str(image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)))
+			print("Angle (radians): " + str(image_proc.getHorizAngle(constants.imgwpx, 5.08, distance, hpx, pegx)))
 
 
 	update(key)	
