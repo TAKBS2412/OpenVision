@@ -160,6 +160,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		boundingrect = cv2.minAreaRect(largestCnt)
 		print("Boundingrect: " + str(boundingrect))
 		pts = points.find_points(boundingrect)
+		straight_pts = np.insert(points.find_straight_rect(pts), 2, 0, axis = 1)
+		
+		# Find rotation vector from pts and straight_pts
+		#s = np.array([[1288.28889, 0, 74.5903466], [0, 1291.14257, 153.495243], [0, 0, 1]])
+		s = np.array([[1, 0, 1], [0, 1, 1], [0, 0, 1]])
+		retval, rvec, tvec = cv2.solvePnP(straight_pts, pts, s, None)
+		print(rvec)
+
 	
 		'''
 		
