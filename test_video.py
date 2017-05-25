@@ -51,6 +51,8 @@ viewangle = 0.726
 images = ["calibration/green_60cm_20deg", "calibration/green_90cm_20deg", "calibration/green_120cm_20deg", "calibration/green_60cm_10deg", "calibration/green_90cm_10deg", "calibration/green_120cm_10deg"]
 index = 0 # Array index for which image to process (in the above array, images)
 
+lastoldimgname = ""
+
 # Prints out the HSV values for filtering
 def printHSV():
 	print("Upper HSV: " + str(higherh) + ", " + str(highers) + ", " + str(higherv))
@@ -230,8 +232,15 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
 	update(key)	
 	# Show the original and processed frames
-	cv2.imshow("Original Frame", oldimg)
+	oldimgname = images[index]
+	if usevideo:
+		oldimgname = "Live camera feed"
+	cv2.imshow(oldimgname, oldimg)
 	cv2.imshow("Processed Frame", img)
+
+	if lastoldimgname and lastoldimgname != oldimgname:
+		cv2.destroyWindow(lastoldimgname)
+	lastoldimgname = oldimgname
 	
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
