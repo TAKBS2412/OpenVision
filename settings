@@ -1,3 +1,4 @@
 imgwpx=640
 imghpx=480
 viewangle=0.726
+images=calibration/green_60cm_20deg, calibration/green_90cm_20deg, calibration/green_120cm_20deg, calibration/green_60cm_10deg, calibration/green_90cm_10deg, calibration/green_120cm_10deg
