@@ -12,7 +12,7 @@ import points
 import datetime
 
 # Create Constants
-constants = Constants.Constants()
+constants = Constants.Constants("settings")
 
 # Let the camera warm up
 time.sleep(0.1)
