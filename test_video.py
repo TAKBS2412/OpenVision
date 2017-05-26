@@ -17,7 +17,7 @@ constants = Constants.Constants()
 # Let the camera warm up
 time.sleep(0.1)
 
-rawCapture = PiRGBArray(constants.camera, size=(640, 480))
+rawCapture = PiRGBArray(constants.camera, size=constants.camera.resolution)
 
 # Flags for image processing
 
