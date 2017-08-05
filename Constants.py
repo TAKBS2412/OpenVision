@@ -8,8 +8,6 @@ class Constants:
 		self.camera = camera = image.initCamera((int(self.values["imgwpx"]), int(self.values["imghpx"]))) # Initialize the camera.
 		self.viewangle = self.values["viewangle"] # The camera's viewangle.
 		self.images = self.values["images"].split(", ") # The images to process.
-		print(self.images)
-		#self.images = ["no-targets-found.jpg", "pegclose.jpg", "waamv/orig0.jpg", "waamv/orig1.jpg", "waamv/orig2.jpg", "waamv/orig3.jpg", "waamv/orig4.jpg", "orig.jpg"]
                 self.imgwpx, self.imghpx = self.camera.resolution # Image resolution.
         def readFromFile(self, filename):
                 self.values = {}
