@@ -16,3 +16,5 @@ class Constants:
                                 self.values[spl[0]] = ast.literal_eval(spl[1][:-1])
         def getValue(self, constantname):
                 return self.values[constantname]
+        def setValue(self, constantname, newconstantvalue):
+                self.values[constantname] = newconstantvalue
