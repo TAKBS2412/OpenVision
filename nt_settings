@@ -1,0 +1,12 @@
+ip="192.168.0.5"
+tablename="datatable"
+imgwpx=640
+imghpx=480
+viewangle=0.726
+lowerh=50
+lowers=200
+lowerv=30
+higherh=65
+highers=255
+higherv=255
+imagesaved=False

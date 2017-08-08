@@ -14,36 +14,21 @@ import sys
 
 import image
 import image_proc
+import Constants
 
-ip = "10.24.12.2"
+# Create Constants
+constants = Constants.Constants("nt_settings")
 
-NetworkTables.initialize(server=ip)
+NetworkTables.initialize(server=constants.getValue("ip"))
 
-sd = NetworkTables.getTable("datatable")
+sd = NetworkTables.getTable(constants.getValue("tablename"))
 
-imgwpx = 640
-imghpx = 480
-resolution = (imgwpx, imghpx) 
-camera = image.initCamera(resolution)
-
-rawCapture = PiRGBArray(camera, size=resolution)
+rawCapture = PiRGBArray(constants.camera, size=constants.camera.resolution)
 
 # Lower the shutter_speed
-camera.shutter_speed = 300
+constants.camera.shutter_speed = 300
 
-# HSV Values to filter
-lowerh = 50
-lowers = 200
-lowerv = 30 #8 for red raspberry pi
-
-higherh = 65
-highers = 255
-higherv = 255 # 45 for red raspberry pi
-
-# If we've already saved an image
-imagesaved = False
-
-for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 		
 	#img = frame.array
 	img = cv2.imread("waamv/orig2.jpg")
@@ -57,8 +42,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	
 	# HSV filter the image
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-	lower_range = np.array([lowerh, lowers, lowerv])
-	higher_range = np.array([higherh, highers, higherv])
+	lower_range = np.array([constants.getValue("lowerh"), constants.getValue("lowers"), constants.getValue("lowerv")])
+	higher_range = np.array([constants.getValue("higherh"), constants.getValue("highers"), constants.getValue("higherv")])
 	HSVmask = cv2.inRange(img, lower_range, higher_range)
 	img = cv2.bitwise_and(img, img, mask=HSVmask)
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -104,8 +89,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		cx2, cy2 = cnt2coords
 		pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
 				
-		distance = image_proc.getDistance(imghpx, 5.08, hpx, viewangle)
-		angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, pegx)
+		distance = image_proc.getDistance(constants.getValue("imghpx"), 5.08, hpx, viewangle)
+		angle = image_proc.getHorizAngle(constants.getValue("imgwpx"), 5.08, distance, hpx, pegx)
 		pegclose = ratio < 2
 		
 		print("Ratio: " + str(ratio))
