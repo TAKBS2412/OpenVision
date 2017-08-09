@@ -8,6 +8,7 @@ import image # Custom library
 import image_proc # Another custom library
 import Constants # Yet another custom library
 import ImageFiltering # Yet another custom library
+import ImageProc # Yet another custom library
 import numpy as np
 import points
 import datetime
@@ -17,6 +18,9 @@ constants = Constants.Constants("settings")
 
 # Create ImageFiltering
 imagefilter = ImageFiltering.ImageFiltering()
+
+# Create ImageProc
+imageproc = ImageProc.ImageProc()
 
 # Let the camera warm up
 time.sleep(0.1)
@@ -95,26 +99,20 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 
 	img = imagefilter.filterImage(img, constants)
 
-	# Process the image
+	
 	if constants.getValue("procImage"):
-		contours = image.getSecondLargestContour(img)
+		contours = imageproc.procImage(img, constants)
 		if contours is None:
-			# Clear the stream for the next frame
-			rawCapture.truncate(0)
-			print("Contours not found!")
-			update(key)
-			continue
-		largestCnt, secondLargestCnt = contours
-		if largestCnt is None or secondLargestCnt is None:
 			# Clear the stream for the next frame
 			print("Contours not found!")
 			rawCapture.truncate(0)
 			update(key)
 			continue
 
+		largestCnt, secondLargestCnt = contours
+
 		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
 		print("Ratio: " + str(hpx/wpx))
-		
 				
 		# Find the centroid's coordinates
 		cntcoords = image.getContourCentroidCoords(largestCnt)
