@@ -7,12 +7,16 @@ import cv2
 import image # Custom library
 import image_proc # Another custom library
 import Constants # Yet another custom library
+import ImageFiltering # Yet another custom library
 import numpy as np
 import points
 import datetime
 
 # Create Constants
 constants = Constants.Constants("settings")
+
+# Create ImageFiltering
+imagefilter = ImageFiltering.ImageFiltering()
 
 # Let the camera warm up
 time.sleep(0.1)
@@ -87,18 +91,9 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 	else:
 		img = cv2.imread(constants.getValue("images")[constants.getValue("index")])
 
-	# Blur the image
-	img = cv2.GaussianBlur(img, (5, 5), 0)
-	
 	oldimg = img
 
-	# HSV filter the image
-	img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-	lower_range = np.array([constants.getValue("lowerh"), constants.getValue("lowers"), constants.getValue("lowerv")])
-	higher_range = np.array([constants.getValue("higherh"), constants.getValue("highers"), constants.getValue("higherv")])
-	HSVmask = cv2.inRange(img, lower_range, higher_range)
-	img = cv2.bitwise_and(img, img, mask=HSVmask)
-	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+	img = imagefilter.filterImage(img, constants)
 
 	# Process the image
 	if constants.getValue("procImage"):
