@@ -9,6 +9,7 @@ import image_proc # Another custom library
 import Constants # Yet another custom library
 import ImageFiltering # Yet another custom library
 import ImageProc # Yet another custom library
+import TargetProc # Yet another custom library
 import numpy as np
 import points
 import datetime
@@ -21,6 +22,9 @@ imagefilter = ImageFiltering.ImageFiltering()
 
 # Create ImageProc
 imageproc = ImageProc.ImageProc()
+
+# Create TargetProc
+targetproc = TargetProc.TargetProc()
 
 # Let the camera warm up
 time.sleep(0.1)
@@ -109,30 +113,8 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 			update(key)
 			continue
 
-		largestCnt, secondLargestCnt = contours
-
-		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
-		print("Ratio: " + str(hpx/wpx))
-				
-		# Find the centroid's coordinates
-		cntcoords = image.getContourCentroidCoords(largestCnt)
-		cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
-		if cntcoords == None or cnt2coords == None:
-			pass
-		else:
-			cx, cy = cntcoords
-			cx2, cy2 = cnt2coords
-			pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
-			
-			# Print out information
-			print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
-			print("Height (px): " + str(hpx))
-			print("Width (px): " + str(wpx))
-			distance = image_proc.getDistance(constants.imghpx, 5.08, hpx, constants.getValue("viewangle"))
-			print("Distance (cm): " + str(distance))
-			print("Angle (radians): " + str(image_proc.getHorizAngle(constants.imgwpx, 5.08, distance, hpx, pegx)))
-
-
+		targetproc.procTarget(constants, contours)
+		
 	update(key)	
 	# Show the original and processed frames
 	oldimgname = constants.getValue("images")[constants.getValue("index")]
