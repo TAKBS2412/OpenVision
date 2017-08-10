@@ -6,12 +6,11 @@ import image_proc # Another custom library
 A class that processes targets.
 '''
 class TargetProc:
-	def procTarget(self, constants, contours):
+	def procTarget(self, constants, contours, updater):
 		largestCnt, secondLargestCnt = contours
 
 		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
-		print("Ratio: " + str(hpx/wpx))
-				
+						
 		# Find the centroid's coordinates
 		cntcoords = image.getContourCentroidCoords(largestCnt)
 		cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
@@ -21,13 +20,7 @@ class TargetProc:
 			cx, cy = cntcoords
 			cx2, cy2 = cnt2coords
 			pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
-			
 			# Print out information
-			print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
-			print("Height (px): " + str(hpx))
-			print("Width (px): " + str(wpx))
 			distance = image_proc.getDistance(constants.imghpx, 5.08, hpx, constants.getValue("viewangle"))
-			print("Distance (cm): " + str(distance))
-			print("Angle (radians): " + str(image_proc.getHorizAngle(constants.imgwpx, 5.08, distance, hpx, pegx)))
-
-
+			angle = image_proc.getHorizAngle(constants.imgwpx, 5.08, distance, hpx, pegx)
+			updater.printData(cx, cy, hpx, wpx, distance, angle)

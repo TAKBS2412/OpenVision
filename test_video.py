@@ -10,6 +10,7 @@ import Constants # Yet another custom library
 import ImageFiltering # Yet another custom library
 import ImageProc # Yet another custom library
 import TargetProc # Yet another custom library
+import Updater # Yet another custom library
 import numpy as np
 import points
 import datetime
@@ -26,15 +27,13 @@ imageproc = ImageProc.ImageProc()
 # Create TargetProc
 targetproc = TargetProc.TargetProc()
 
+# Create Updater
+updater = Updater.Updater()
+
 # Let the camera warm up
 time.sleep(0.1)
 
 rawCapture = PiRGBArray(constants.camera, size=constants.camera.resolution)
-
-# Prints out the HSV values for filtering
-def printHSV():
-	print("Upper HSV: " + str(constants.getValue("higherh")) + ", " + str(constants.getValue("highers")) + ", " + str(constants.getValue("higherv")))
-	print("Lower HSV: " + str(constants.getValue("lowerh")) + ", " + str(constants.getValue("lowers")) + ", " + str(constants.getValue("lowerv")))
 
 # Lower the shutter_speed
 #constants.camera.shutter_speed = 300
@@ -50,30 +49,30 @@ def update(key):
 	elif key == ord("h"):
 		if constants.getValue("adjustHigher"):
 			constants.setValue("higherh", constants.getValue("higherh") + constants.getValue("raiseValue"))
-			printHSV()
+			updater.printHSV(constants)
 		else:
 			constants.setValue("lowerh", constants.getValue("lowerh") + constants.getValue("raiseValue"))
-			printHSV()
+			updater.printHSV(constants)
 	elif key == ord("s"):
 		if constants.getValue("adjustHigher"):
 			constants.setValue("highers", constants.getValue("highers") + constants.getValue("raiseValue"))
-			printHSV()
+			updater.printHSV(constants)
 		else:
 			constants.setValue("lowers", constants.getValue("lowers") + constants.getValue("raiseValue"))
-			printHSV()
+			updater.printHSV(constants)
 	elif key == ord("v"):
 		if constants.getValue("adjustHigher"):
 			constants.setValue("higherv", constants.getValue("higherv") + constants.getValue("raiseValue"))
-			printHSV()
+			updater.printHSV(constants)
 		else:
 			constants.setValue("lowerv", constants.getValue("lowerv") + constants.getValue("raiseValue"))
-			printHSV()
+			updater.printHSV(constants)
 	if key == ord("w"):
 		# Write the image files
 		filename = "../Pictures/Camera Roll/" + str(datetime.datetime.now()).replace(" ", "_") # Use current date as filename.
 		cv2.imwrite(filename + ".jpg", oldimg)
 		cv2.imwrite(filename + "_proc.jpg", img)
-		print("Images written.")
+		updater.imgWritten()
 	if key == ord("i"):
 		# Toggle usevideo
 		constants.setValue("usevideo", not constants.getValue("usevideo"))
@@ -108,25 +107,15 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 		contours = imageproc.procImage(img, constants)
 		if contours is None:
 			# Clear the stream for the next frame
-			print("Contours not found!")
+			updater.contoursNotFound()
 			rawCapture.truncate(0)
 			update(key)
 			continue
 
-		targetproc.procTarget(constants, contours)
+		targetproc.procTarget(constants, contours, updater)
 		
 	update(key)	
-	# Show the original and processed frames
-	oldimgname = constants.getValue("images")[constants.getValue("index")]
-	if constants.getValue("usevideo"):
-		oldimgname = "Live camera feed"
-	cv2.imshow(oldimgname, oldimg)
-	cv2.imshow("Processed Frame", img)
-
-	if constants.getValue("lastoldimgname") and constants.getValue("lastoldimgname") != oldimgname:
-		cv2.destroyWindow(constants.getValue("lastoldimgname"))
-	constants.setValue("lastoldimgname", oldimgname)
-	
+	updater.updateGUI(constants, img, oldimg)
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
 
