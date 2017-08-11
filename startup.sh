@@ -6,4 +6,4 @@ workon cv
 ping 10.24.12.1 -c 10 > /home/pi/src/logs/ping.log
 
 echo "-----------------------" >> /home/pi/src/logs/output.log
-python ~/src/nt_client.py >> /home/pi/src/logs/output.log 2>&1
+python ~/src/competition/nt_client.py >> /home/pi/src/logs/output.log 2>&1
