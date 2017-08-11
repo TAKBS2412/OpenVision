@@ -23,6 +23,15 @@ class Updater:
 		print("Width (px): " + str(wpx))
 		print("Distance (cm): " + str(distance))
 		print("Angle (radians): " + str(angle))
+	
+	# Sends data using NetworkTables.
+	def sendData(self, sd, angle, distance, pegclose, targetsFound):
+		# Send the variables to the roboRIO
+		sd.putNumber("angle", angle)
+		sd.putNumber("distance", distance)
+		sd.putBoolean("pegclose", pegclose) 
+		sd.putBoolean("targetsFound", targetsFound)
+
 
 	# Prints out the HSV values for filtering
 	def printHSV(self, constants):

@@ -15,9 +15,12 @@ import sys
 import image
 import image_proc
 import Constants
+import Updater
 
 # Create Constants
 constants = Constants.Constants("nt_settings")
+
+updater = Updater.Updater()
 
 NetworkTables.initialize(server=constants.getValue("ip"))
 
@@ -31,7 +34,7 @@ constants.camera.shutter_speed = 300
 for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 		
 	#img = frame.array
-	img = cv2.imread("waamv/orig2.jpg")
+	img = cv2.imread("../waamv/orig2.jpg")
 	oldimg = img
 
 	# Do vision processing stuff here
@@ -54,10 +57,10 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 		# No targets found
 		targetsFound = False
 		print("No targets found!")
-		if not imagesaved:
+		if not constants.getValue("imagesaved"):
 			cv2.imwrite("no-targets-found.jpg", oldimg)
 			cv2.imwrite("no-targets-found_proc.jpg", img)
-			imagesaved = True
+			constants.setValue("imagesaved", True)
 		# Clear the stream for the next frame
 		rawCapture.truncate(0)
 		continue
@@ -66,10 +69,10 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 		# Invalid contours
 		targetsFound = False
 		print("Invalid contours!")
-		if not imagesaved:
+		if not constants.getValue("imagesaved"):
 			cv2.imwrite("invalid-contours.jpg", oldimg)
 			cv2.imwrite("invalid-contours-proc.jpg", img)
-			imagesaved = True
+			constants.setValue("imagesaved", True)
 		# Clear the stream for the next frame
 		rawCapture.truncate(0)
 		continue
@@ -97,16 +100,11 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 		print("Angle: " + str(angle))
 		print("Distance: " + str(distance))
 		print("Peg close: " + str(pegclose))
-		if pegclose and not imagesaved:
+		if pegclose and not constants.getValue("imagesaved"):
 			cv2.imwrite("pegclose.jpg", oldimg)
 			cv2.imwrite("pegclose-proc.jpg", img)
-			imagesaved = True
-
-	# Send the variables to the roboRIO
-	sd.putNumber("angle", angle)
-	sd.putNumber("distance", distance)
-	sd.putBoolean("pegclose", pegclose) 
-	sd.putBoolean("targetsFound", targetsFound)
-	
+			constants.setValue("imagesaved", True)
+	updater.sendData(sd, angle, distance, pegclose, targetsFound)
+		
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
