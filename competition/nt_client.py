@@ -2,7 +2,6 @@
 #
 # A NetworkTables client that performs vision processing constantly and sends the calculated data to the roboRIO
 from __future__ import division
-from networktables import NetworkTables
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 
@@ -22,9 +21,6 @@ constants = Constants.Constants("nt_settings")
 
 updater = Updater.Updater()
 
-NetworkTables.initialize(server=constants.getValue("ip"))
-
-sd = NetworkTables.getTable(constants.getValue("tablename"))
 
 rawCapture = PiRGBArray(constants.camera, size=constants.camera.resolution)
 
@@ -104,7 +100,7 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 			cv2.imwrite("pegclose.jpg", oldimg)
 			cv2.imwrite("pegclose-proc.jpg", img)
 			constants.setValue("imagesaved", True)
-	updater.sendData(sd, angle, distance, pegclose, targetsFound)
+	updater.sendData(constants.sd, angle, distance, pegclose, targetsFound)
 		
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
