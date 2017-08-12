@@ -1,3 +1,5 @@
+ip="192.168.0.5"
+tablename="datatable"
 imgwpx=640
 imghpx=480
 viewangle=0.726
@@ -15,3 +17,4 @@ usevideo=True
 endloop=False
 index=0
 lastoldimgname=""
+imagesaved=False
