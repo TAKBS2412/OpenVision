@@ -43,5 +43,15 @@ class Updater:
 		print("Images written.")
 
 	# Called when no contours have been found.
-	def contoursNotFound(self):
+	def contoursNotFound(self, constants, img, oldimg):
 		print("Contours not found!")
+		if not constants.getValue("imagesaved"):
+			cv2.imwrite("no-targets-found.jpg", oldimg)
+			cv2.imwrite("no-targets-found-proc.jpg", img)
+			constants.setValue("imagesaved", True)
+	# Called when the peg is close.
+	def pegclose(self, constants, img, oldimg):
+		if not constants.getValue("imagesaved"):
+			cv2.imwrite("pegclose.jpg", oldimg)
+			cv2.imwrite("pegclose-proc.jpg", img)
+			constants.setValue("imagesaved", True)

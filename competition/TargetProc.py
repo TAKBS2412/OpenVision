@@ -26,4 +26,4 @@ class TargetProc:
 			pegclose = hpx/wpx < 2
 			updater.printData(cx, cy, hpx, wpx, distance, angle)
 			updater.sendData(constants.sd, angle, distance, pegclose, True)
-
+		return pegclose

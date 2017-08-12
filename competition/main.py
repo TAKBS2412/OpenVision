@@ -65,13 +65,15 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 		contours = imageproc.procImage(img, constants)
 		if contours is None:
 			# Clear the stream for the next frame
-			updater.contoursNotFound()
+			updater.contoursNotFound(constants, img, oldimg)
 			rawCapture.truncate(0)
 			keyupdater.update(constants, key, updater, img, oldimg)
 			updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			continue
 
-		targetproc.procTarget(constants, contours, updater)
+		pegclose = targetproc.procTarget(constants, contours, updater)
+		if pegclose:
+			updater.pegclose(constants, img, oldimg)
 		
 	keyupdater.update(constants, key, updater, img, oldimg)
 	updater.updateGUI(constants, img, oldimg)
