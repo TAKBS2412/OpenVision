@@ -16,14 +16,12 @@ class Updater:
 			cv2.destroyWindow(constants.getValue("lastoldimgname"))
 		constants.setValue("lastoldimgname", oldimgname)
 	# Prints data.
-	def printData(self, cx, cy, hpx, wpx, distance, angle):
-		print("Ratio: " + str(hpx/wpx))
-		print("Centroid coordinates: (" + str(cx) + ", " + str(cy) + ")")
-		print("Height (px): " + str(hpx))
-		print("Width (px): " + str(wpx))
-		print("Distance (cm): " + str(distance))
-		print("Angle (radians): " + str(angle))
-	
+	def printData(self, ratio, angle, distance, pegclose):
+		print("Ratio: " + str(ratio))
+		print("Angle: " + str(angle))
+		print("Distance: " + str(distance))
+		print("Peg close: " + str(pegclose))
+
 	# Sends data using NetworkTables.
 	def sendData(self, sd, angle, distance, pegclose, targetsFound):
 		# Send the variables to the roboRIO
