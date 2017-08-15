@@ -18,3 +18,4 @@ endloop=False
 index=0
 lastoldimgname=""
 imagesaved=False
+useGUI=True

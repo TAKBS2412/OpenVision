@@ -46,9 +46,10 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 	# Break from loop if needed.
 	if constants.getValue("endloop"):
 		break
-
-	# Get the currently pressed key
-	key = cv2.waitKey(1)
+	
+	# Get the currently pressed key if useGUI is enabled.
+	if constants.getValue("useGUI"):
+		key = cv2.waitKey(1)
 
 	# Grab array representing image
 	if constants.getValue("usevideo"):
@@ -74,9 +75,9 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 		pegclose = targetproc.procTarget(constants, contours, updater)
 		if pegclose:
 			updater.pegclose(constants, img, oldimg)
-		
-	keyupdater.update(constants, key, updater, img, oldimg)
-	updater.updateGUI(constants, img, oldimg)
+	if constants.getValue("useGUI"):		
+		keyupdater.update(constants, key, updater, img, oldimg)
+		updater.updateGUI(constants, img, oldimg)
 	
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)

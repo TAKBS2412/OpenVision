@@ -1,6 +1,6 @@
 import cv2
 '''
-This class displays the GUI (test_video.py only) and prints/logs data.
+This class displays the GUI and prints/logs data, depending on the settings in Constants.
 '''
 class Updater:
 	# Updates the GUI.
