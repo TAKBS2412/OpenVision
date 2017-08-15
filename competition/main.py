@@ -68,7 +68,10 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 			# Clear the stream for the next frame
 			updater.contoursNotFound(constants, img, oldimg)
 			rawCapture.truncate(0)
-			keyupdater.update(constants, key, updater, img, oldimg)
+			if constants.getValue("useGUI"):		
+				keyupdater.update(constants, key, updater, img, oldimg)
+				updater.updateGUI(constants, img, oldimg)
+
 			if constants.getValue("senddata"):
 				updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			continue
