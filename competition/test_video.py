@@ -13,7 +13,6 @@ import TargetProc # Yet another custom library
 import Updater # Yet another custom library
 import KeyUpdater
 import numpy as np
-import points
 
 # Create Constants
 constants = Constants.Constants("settings")
