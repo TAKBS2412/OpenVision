@@ -10,8 +10,9 @@ class Constants:
                 self.readFromFile(filename)
 		self.camera = camera = image.initCamera((self.values["imgwpx"], self.values["imghpx"])) # Initialize the camera.
                 self.imgwpx, self.imghpx = self.camera.resolution # Image resolution.
-		NetworkTables.initialize(server=self.getValue("ip"))
-		self.sd = NetworkTables.getTable(self.getValue("tablename"))
+		if self.getValue("senddata"):
+			NetworkTables.initialize(server=self.getValue("ip"))
+			self.sd = NetworkTables.getTable(self.getValue("tablename"))
         def readFromFile(self, filename):
                 self.values = {}
                 with open(filename, "r") as f:
