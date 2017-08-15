@@ -15,30 +15,36 @@ class KeyUpdater:
 		elif key == ord("h"):
 			if constants.getValue("adjustHigher"):
 				constants.setValue("higherh", constants.getValue("higherh") + constants.getValue("raiseValue"))
-				updater.printHSV(constants)
+				if constants.getValue("printdata"):
+					updater.printHSV(constants)
 			else:
 				constants.setValue("lowerh", constants.getValue("lowerh") + constants.getValue("raiseValue"))
-				updater.printHSV(constants)
+				if constants.getValue("printdata"):
+					updater.printHSV(constants)
 		elif key == ord("s"):
 			if constants.getValue("adjustHigher"):
 				constants.setValue("highers", constants.getValue("highers") + constants.getValue("raiseValue"))
-				updater.printHSV(constants)
+				if constants.getValue("printdata"):
+					updater.printHSV(constants)
 			else:
 				constants.setValue("lowers", constants.getValue("lowers") + constants.getValue("raiseValue"))
-				updater.printHSV(constants)
+				if constants.getValue("printdata"):
+					updater.printHSV(constants)
 		elif key == ord("v"):
 			if constants.getValue("adjustHigher"):
 				constants.setValue("higherv", constants.getValue("higherv") + constants.getValue("raiseValue"))
-				updater.printHSV(constants)
+				if constants.getValue("printdata"):
+					updater.printHSV(constants)
 			else:
 				constants.setValue("lowerv", constants.getValue("lowerv") + constants.getValue("raiseValue"))
-				updater.printHSV(constants)
+				if constants.getValue("printdata"):
+					updater.printHSV(constants)
 		if key == ord("w"):
 			# Write the image files
 			filename = "../Pictures/Camera Roll/" + str(datetime.datetime.now()).replace(" ", "_") # Use current date as filename.
 			cv2.imwrite(filename + ".jpg", oldimg)
 			cv2.imwrite(filename + "_proc.jpg", img)
-			updater.imgWritten()
+			updater.imgWritten(constants)
 		if key == ord("i"):
 			# Toggle usevideo
 			constants.setValue("usevideo", not constants.getValue("usevideo"))

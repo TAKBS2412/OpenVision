@@ -19,4 +19,5 @@ index=0
 lastoldimgname=""
 imagesaved=False
 useGUI=True
-senddata=True
+senddata=False
+printdata=False
