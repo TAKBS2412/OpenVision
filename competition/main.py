@@ -16,7 +16,7 @@ import numpy as np
 #import points
 
 # Create Constants
-constants = Constants.Constants("settings")
+constants = Constants.Constants("/home/pi/src/competition/settings")
 
 # Create ImageFiltering
 imagefilter = ImageFiltering.ImageFiltering()
