@@ -1,110 +1,49 @@
-#!/usr/bin/env python
-
-'''
-camera calibration for distorted images with chess board samples
-reads distorted images, calculates the calibration and write undistorted images
-usage:
-    calibrate.py [--debug <output path>] [--square_size] [<image mask>]
-default values:
-    --debug:    ./output/
-    --square_size: 1.0
-    <image mask> defaults to ../data/left*.jpg
-'''
-
-# Python 2/3 compatibility
-from __future__ import print_function
-
 import numpy as np
 import cv2
+import glob
 
-# local modules
-from common import splitfn
+width = 9
+height = 6
 
-# built-in modules
-import os
+# termination criteria
+criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
-if __name__ == '__main__':
-    import sys
-    import getopt
-    from glob import glob
+# prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
+objp = np.zeros((width*height,3), np.float32)
+objp[:,:2] = np.mgrid[0:width,0:height].T.reshape(-1,2)
 
-    args, img_mask = getopt.getopt(sys.argv[1:], '', ['debug=', 'square_size='])
-    args = dict(args)
-    args.setdefault('--debug', './output/')
-    args.setdefault('--square_size', 1.0)
-    if not img_mask:
-        img_mask = '../data/left*.jpg'  # default
-    else:
-        img_mask = img_mask[0]
+# Arrays to store object points and image points from all the images.
+objpoints = [] # 3d point in real world space
+imgpoints = [] # 2d points in image plane.
 
-    img_names = glob(img_mask)
-    debug_dir = args.get('--debug')
-    if not os.path.isdir(debug_dir):
-        os.mkdir(debug_dir)
-    square_size = float(args.get('--square_size'))
+images = glob.glob('/home/pi/Pictures/Chessboard/*.jpg')
+for fname in images:
+    img = cv2.imread(fname)
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
-    pattern_size = (9, 6)
-    pattern_points = np.zeros((np.prod(pattern_size), 3), np.float32)
-    pattern_points[:, :2] = np.indices(pattern_size).T.reshape(-1, 2)
-    pattern_points *= square_size
+    # Find the chess board corners
+    ret2, corners = cv2.findChessboardCorners(gray, (width, height),None)
 
-    obj_points = []
-    img_points = []
-    h, w = 0, 0
-    img_names_undistort = []
-    for fn in img_names:
-        print('processing %s... ' % fn, end='')
-        img = cv2.imread(fn, 0)
-        if img is None:
-            print("Failed to load", fn)
-            continue
+    # If found, add object points, image points (after refining them)
+    if ret2 == True:
+        objpoints.append(objp)
 
-        h, w = img.shape[:2]
-        found, corners = cv2.findChessboardCorners(img, pattern_size)
-        if found:
-            term = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 30, 0.1)
-            cv2.cornerSubPix(img, corners, (5, 5), (-1, -1), term)
-
-        if debug_dir:
-            vis = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-            cv2.drawChessboardCorners(vis, pattern_size, corners, found)
-            path, name, ext = splitfn(fn)
-            outfile = debug_dir + name + '_chess.png'
-            cv2.imwrite(outfile, vis)
-            if found:
-                img_names_undistort.append(outfile)
-
-        if not found:
-            print('chessboard not found')
-            continue
-
-        img_points.append(corners.reshape(-1, 2))
-        obj_points.append(pattern_points)
-
-        print('ok')
-
-    # calculate camera distortion
-    rms, camera_matrix, dist_coefs, rvecs, tvecs = cv2.calibrateCamera(obj_points, img_points, (w, h), None, None)
-
-    print("\nRMS:", rms)
-    print("camera matrix:\n", camera_matrix)
-    print("distortion coefficients: ", dist_coefs.ravel())
-
-    # undistort the image with the calibration
-    print('')
-    for img_found in img_names_undistort:
-        img = cv2.imread(img_found)
-
-        h,  w = img.shape[:2]
-        newcameramtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, dist_coefs, (w, h), 1, (w, h))
-
-        dst = cv2.undistort(img, camera_matrix, dist_coefs, None, newcameramtx)
-
-        # crop and save the image
-        x, y, w, h = roi
-        dst = dst[y:y+h, x:x+w]
-        outfile = img_found + '_undistorted.png'
-        print('Undistorted image written to: %s' % outfile)
-        cv2.imwrite(outfile, dst)
-
-    cv2.destroyAllWindows()
+        cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
+        imgpoints.append(corners)
+		
+	ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
+	print("---------------------------------")
+	print(fname)
+	print("\n")
+	print("ret: " + str(ret))
+	print("mtx: " + str(mtx))
+	print("dist: " + str(dist))
+	print("rvecs: " + str(rvecs))
+	print("tvecs: " + str(tvecs))
+		
+        # Draw and display the corners
+        cv2.drawChessboardCorners(img, (width,height), corners,ret2)
+        cv2.imshow('img',img)
+        cv2.waitKey(500)
+ 
+cv2.destroyAllWindows()
