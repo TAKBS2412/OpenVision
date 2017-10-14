@@ -23,9 +23,10 @@ class TargetProc:
 			# Print out information
 			distance = image_proc.getDistance(constants.imghpx, 5.08, hpx, constants.getValue("viewangle"))
 			angle = image_proc.getHorizAngle(constants.imgwpx, 5.08, distance, hpx, pegx)
-			pegclose = hpx/wpx < 2
+			ratio = float(hpx)/float(wpx)
+			pegclose = ratio < 2
 			if constants.getValue("printdata"):
-				updater.printData(hpx/wpx, angle, distance, pegclose)
+				updater.printData(ratio, angle, distance, pegclose)
 			if constants.getValue("senddata"):
 				updater.sendData(constants.sd, angle, distance, pegclose, True)
 		return pegclose
