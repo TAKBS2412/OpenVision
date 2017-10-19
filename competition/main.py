@@ -75,8 +75,11 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 			if constants.getValue("senddata"):
 				updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			continue
-
+		
 		pegclose = targetproc.procTarget(constants, contours, updater)
+		img = np.zeros((constants.getValue("imghpx"), constants.getValue("imgwpx"), 3), np.uint8)		
+		cv2.drawContours(img, contours, -1, (0, 255, 0), cv2.FILLED)
+
 		if pegclose:
 			updater.pegclose(constants, img, oldimg)
 	if constants.getValue("useGUI"):		
