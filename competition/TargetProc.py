@@ -6,6 +6,7 @@ import image_proc # Another custom library
 A class that processes targets.
 '''
 class TargetProc:
+	# Calculates the distance, angle, and height to width ratio of the specified contour.
 	def procTarget(self, constants, contours, updater):
 		largestCnt, secondLargestCnt = contours
 
@@ -30,3 +31,9 @@ class TargetProc:
 			if constants.getValue("senddata"):
 				updater.sendData(constants.sd, angle, distance, pegclose, True)
 		return pegclose
+	
+	# Returns a polygonal approximation of the specified target.
+	def approxTarget(self, contour):
+		x, y, w, h = cv2.boundingRect(contour)
+		print("Width: " + str(w))
+		return cv2.approxPolyDP(contour, 0.05*cv2.arcLength(contour, True), True)
