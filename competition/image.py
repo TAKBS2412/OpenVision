@@ -6,6 +6,7 @@ import cv2
 import image_proc
 import numpy as np
 import sys
+import TargetProc
 
 # Initializes the camera
 def initCamera(res):
@@ -117,13 +118,16 @@ def getSecondLargestContour(image):
 	secondLargestCnt = None
 	for cnt in contours:
 		cntArea = cv2.contourArea(cnt)
-		a = cv2.minAreaRect(cnt)
-		b = cv2.boxPoints(a)
-		c = np.int0(b)
-		polygonArea = cv2.contourArea(c)
+		approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
+		
+		if len(approx) != 4: continue
+
+		polygonArea = cv2.contourArea(approx)
 		if polygonArea == 0: continue
 		percentFilled = cntArea/polygonArea*100
 		if percentFilled < 70: continue
+
+		if len(approx) != 4: continue
 
 		if cntArea > largestCntArea:
 			secondLargestCntArea = largestCntArea
