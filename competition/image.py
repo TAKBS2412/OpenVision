@@ -123,7 +123,7 @@ def getSecondLargestContour(image):
 		if len(approx) != 4: continue
 
 		polygonArea = cv2.contourArea(approx)
-		if polygonArea == 0: continue
+		if polygonArea == 0 or cntArea == 0: continue
 		percentFilled = polygonArea/cntArea*100
 		if percentFilled < 70: continue
 
