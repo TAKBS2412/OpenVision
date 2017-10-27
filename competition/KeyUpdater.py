@@ -41,7 +41,7 @@ class KeyUpdater:
 					updater.printHSV(constants)
 		if key == ord("w"):
 			# Write the image files
-			filename = "../../Pictures/Camera Roll/" + str(datetime.datetime.now()).replace(" ", "_") # Use current date as filename.
+			filename = "/home/pi/Pictures/Camera Roll/" + str(datetime.datetime.now()).replace(" ", "_") # Use current date as filename.
 			cv2.imwrite(filename + ".jpg", oldimg)
 			cv2.imwrite(filename + "_proc.jpg", img)
 			updater.imgWritten(constants)
