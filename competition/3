@@ -8,27 +8,19 @@ A class that processes targets.
 class TargetProc:
 	# Calculates the distance, angle, and height to width ratio of the specified contour.
 	def procTarget(self, constants, contours, updater):
-                if len(contours) == 1:
-                        largestCnt = contours[0]
-                else: 
-        		largestCnt, secondLargestCnt = contours
+		largestCnt, secondLargestCnt = contours
 
 		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
 						
 		# Find the centroid's coordinates
 		cntcoords = image.getContourCentroidCoords(largestCnt)
-                if len(contours) == 2:
-		        cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
-		        if cnt2coords == None:
-		        	pass
-		if cntcoords == None:
+		cnt2coords = image.getContourCentroidCoords(secondLargestCnt)
+		if cntcoords == None or cnt2coords == None:
 			pass
 		else:
 			cx, cy = cntcoords
-                        pegx = cx
-                        if len(contours) == 2:
-			        cx2, cy2 = cnt2coords
-			        pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
+			cx2, cy2 = cnt2coords
+			pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
 			# Print out information
 			distance = image_proc.getDistance(constants.imghpx, 5.08, hpx, constants.getValue("viewangle"))
 			angle = image_proc.getHorizAngle(constants.imgwpx, 5.08, distance, hpx, pegx)
@@ -44,4 +36,4 @@ class TargetProc:
 	def approxTarget(self, contour):
 		x, y, w, h = cv2.boundingRect(contour)
 		print("Width: " + str(w))
-		return cv2.approxPolyDP(contour, 0.05*cv2.arcLength(contour, True), True)
+		return cv2.approxPolyDP(contour, w/3, True)

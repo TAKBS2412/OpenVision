@@ -13,6 +13,10 @@ class ImageProc:
 		if contours is None:
 			return None
 		largestCnt, secondLargestCnt = contours
-		if largestCnt is None or secondLargestCnt is None:
+		if largestCnt is None and secondLargestCnt is None:
 			return None
-		return contours
+		contours2 = []
+		for cnt in contours:
+			if cnt != None:
+				contours2.append(cnt)
+		return contours2
