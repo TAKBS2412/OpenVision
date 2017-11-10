@@ -53,38 +53,38 @@ CMAKE_SOURCE_DIR = /home/ubuntu/src/jetson
 CMAKE_BINARY_DIR = /home/ubuntu/src/jetson/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/cv_hello.dir
+# Target rules for target CMakeFiles/cv_main.dir
 
 # All Build rule for target.
-CMakeFiles/cv_hello.dir/all:
-	$(MAKE) -f CMakeFiles/cv_hello.dir/build.make CMakeFiles/cv_hello.dir/depend
-	$(MAKE) -f CMakeFiles/cv_hello.dir/build.make CMakeFiles/cv_hello.dir/build
+CMakeFiles/cv_main.dir/all:
+	$(MAKE) -f CMakeFiles/cv_main.dir/build.make CMakeFiles/cv_main.dir/depend
+	$(MAKE) -f CMakeFiles/cv_main.dir/build.make CMakeFiles/cv_main.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/ubuntu/src/jetson/build/CMakeFiles  1
-	@echo "Built target cv_hello"
-.PHONY : CMakeFiles/cv_hello.dir/all
+	@echo "Built target cv_main"
+.PHONY : CMakeFiles/cv_main.dir/all
 
 # Include target in all.
-all: CMakeFiles/cv_hello.dir/all
+all: CMakeFiles/cv_main.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/cv_hello.dir/rule: cmake_check_build_system
+CMakeFiles/cv_main.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/src/jetson/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/cv_hello.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/cv_main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/src/jetson/build/CMakeFiles 0
-.PHONY : CMakeFiles/cv_hello.dir/rule
+.PHONY : CMakeFiles/cv_main.dir/rule
 
 # Convenience name for target.
-cv_hello: CMakeFiles/cv_hello.dir/rule
-.PHONY : cv_hello
+cv_main: CMakeFiles/cv_main.dir/rule
+.PHONY : cv_main
 
 # clean rule for target.
-CMakeFiles/cv_hello.dir/clean:
-	$(MAKE) -f CMakeFiles/cv_hello.dir/build.make CMakeFiles/cv_hello.dir/clean
-.PHONY : CMakeFiles/cv_hello.dir/clean
+CMakeFiles/cv_main.dir/clean:
+	$(MAKE) -f CMakeFiles/cv_main.dir/build.make CMakeFiles/cv_main.dir/clean
+.PHONY : CMakeFiles/cv_main.dir/clean
 
 # clean rule for target.
-clean: CMakeFiles/cv_hello.dir/clean
+clean: CMakeFiles/cv_main.dir/clean
 .PHONY : clean
 
 #=============================================================================

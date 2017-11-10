@@ -99,41 +99,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named cv_hello
+# Target rules for targets named cv_main
 
 # Build rule for target.
-cv_hello: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 cv_hello
-.PHONY : cv_hello
+cv_main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cv_main
+.PHONY : cv_main
 
 # fast build rule for target.
-cv_hello/fast:
-	$(MAKE) -f CMakeFiles/cv_hello.dir/build.make CMakeFiles/cv_hello.dir/build
-.PHONY : cv_hello/fast
+cv_main/fast:
+	$(MAKE) -f CMakeFiles/cv_main.dir/build.make CMakeFiles/cv_main.dir/build
+.PHONY : cv_main/fast
 
-hello.o: hello.cpp.o
-.PHONY : hello.o
+main.o: main.cpp.o
+.PHONY : main.o
 
 # target to build an object file
-hello.cpp.o:
-	$(MAKE) -f CMakeFiles/cv_hello.dir/build.make CMakeFiles/cv_hello.dir/hello.cpp.o
-.PHONY : hello.cpp.o
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/cv_main.dir/build.make CMakeFiles/cv_main.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-hello.i: hello.cpp.i
-.PHONY : hello.i
+main.i: main.cpp.i
+.PHONY : main.i
 
 # target to preprocess a source file
-hello.cpp.i:
-	$(MAKE) -f CMakeFiles/cv_hello.dir/build.make CMakeFiles/cv_hello.dir/hello.cpp.i
-.PHONY : hello.cpp.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/cv_main.dir/build.make CMakeFiles/cv_main.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-hello.s: hello.cpp.s
-.PHONY : hello.s
+main.s: main.cpp.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-hello.cpp.s:
-	$(MAKE) -f CMakeFiles/cv_hello.dir/build.make CMakeFiles/cv_hello.dir/hello.cpp.s
-.PHONY : hello.cpp.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/cv_main.dir/build.make CMakeFiles/cv_main.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -141,12 +141,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... cv_hello"
+	@echo "... cv_main"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... hello.o"
-	@echo "... hello.i"
-	@echo "... hello.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 
