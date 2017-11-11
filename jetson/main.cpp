@@ -66,8 +66,16 @@ int main() {
 		std::cout << "Number of contours: " << goodcontours.size() << "\n";	
 		cv::Scalar color(0, 225, 0);
 		cv::drawContours(newimg, goodcontours, -1, color, CV_FILLED);
+		cv::Rect rect;
+		rect = cv::boundingRect(largestContour);
+		double hpx = rect.size().height;		
+		std::cout << "Height: " << hpx << "\n";
+		double distance = (480*5.08)/(2*hpx*tan(0.726/2));
+		std::cout << "Distance: " << distance << "\n";
+	
+
 	}
 
-	cv::imshow("Hello!", newimg);
-	cv::waitKey();
+	//cv::imshow("Hello!", newimg);
+	//cv::waitKey();
 }
