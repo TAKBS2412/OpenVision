@@ -81,11 +81,22 @@ int main() {
 		int cx = round2(moments.m10/moments.m00);
 		int cy = round2(moments.m01/moments.m00);
 		std::cout << "(" << cx << ", " << cy << ")\n";
+		cv::Moments moments2 = cv::moments(secondLargestContour);
+		if(moments2.m00 == 0) {
+			std::cout << "Invalid moments!\n";
+			return 1;
+		} 
+		int cx2 = round2(moments2.m10/moments2.m00);
+		int cy2 = round2(moments2.m01/moments2.m00);
+		std::cout << "(" << cx2 << ", " << cy2 << ")\n";
+		double pegx = (cx+cx2)/2;
+		double angle = atan(5.08*(pegx-320)/(hpx*distance));
+		std::cout << "Angle: " << angle << "\n";
 
 	}
 
-	//cv::imshow("Hello!", newimg);
-	//cv::waitKey();
+	cv::imshow("Hello!", newimg);
+	cv::waitKey();
 }
 
 int round2(double a) {
