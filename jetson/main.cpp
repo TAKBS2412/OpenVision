@@ -1,6 +1,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
+int round2(double);
 
 int main() {
 	cv::Mat img;
@@ -72,10 +73,26 @@ int main() {
 		std::cout << "Height: " << hpx << "\n";
 		double distance = (480*5.08)/(2*hpx*tan(0.726/2));
 		std::cout << "Distance: " << distance << "\n";
-	
+		cv::Moments moments = cv::moments(largestContour);
+		if(moments.m00 == 0) {
+			std::cout << "Invalid moments!\n";
+			return 1;
+		} 
+		int cx = round2(moments.m10/moments.m00);
+		int cy = round2(moments.m01/moments.m00);
+		std::cout << "(" << cx << ", " << cy << ")\n";
 
 	}
 
 	//cv::imshow("Hello!", newimg);
 	//cv::waitKey();
+}
+
+int round2(double a) {
+	if(a < 0) {
+		a -= 0.5;
+	} else if(a > 0) {
+		a += 0.5;
+	}
+	return (int) a;
 }
