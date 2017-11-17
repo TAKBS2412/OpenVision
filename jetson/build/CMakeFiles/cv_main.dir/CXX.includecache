@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/home/ubuntu/src/jetson/ImageFiltering.cpp
+opencv2/imgproc/imgproc.hpp
+-
+
 /home/ubuntu/src/jetson/main.cpp
 opencv2/highgui/highgui.hpp
 -
@@ -13,4 +17,6 @@ opencv2/imgproc/imgproc.hpp
 -
 iostream
 -
+ImageFiltering.cpp
+/home/ubuntu/src/jetson/ImageFiltering.cpp
 
