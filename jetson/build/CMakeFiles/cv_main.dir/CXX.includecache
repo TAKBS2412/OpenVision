@@ -10,6 +10,10 @@
 opencv2/imgproc/imgproc.hpp
 -
 
+/home/ubuntu/src/jetson/ImageProc.cpp
+opencv2/imgproc/imgproc.hpp
+-
+
 /home/ubuntu/src/jetson/main.cpp
 opencv2/highgui/highgui.hpp
 -
@@ -19,4 +23,6 @@ iostream
 -
 ImageFiltering.cpp
 /home/ubuntu/src/jetson/ImageFiltering.cpp
+ImageProc.cpp
+/home/ubuntu/src/jetson/ImageProc.cpp
 
