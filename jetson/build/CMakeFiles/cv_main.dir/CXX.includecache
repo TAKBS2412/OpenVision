@@ -9,6 +9,8 @@
 /home/ubuntu/src/jetson/ImageFiltering.cpp
 opencv2/imgproc/imgproc.hpp
 -
+opencv2/gpu/gpu.hpp
+-
 
 /home/ubuntu/src/jetson/ImageProc.cpp
 opencv2/imgproc/imgproc.hpp

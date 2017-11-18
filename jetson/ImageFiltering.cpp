@@ -1,9 +1,16 @@
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/gpu/gpu.hpp>
 
 class ImageFiltering {
 	public:
 	cv::Mat& filterImage(cv::Mat &img) {
-	 	cv::cvtColor(img, img, CV_BGR2HSV);
+		cv::gpu::GpuMat dst, src;
+		src.upload(img);
+
+		cv::gpu::cvtColor(src, dst, CV_BGR2HSV);
+
+		dst.download(img);
+
 		int lowerh = 50;
 		int lowers = 200;
 		int lowerv = 30;
