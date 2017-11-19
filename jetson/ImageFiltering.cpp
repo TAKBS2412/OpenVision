@@ -4,12 +4,14 @@
 class ImageFiltering {
 	public:
 	cv::Mat& filterImage(cv::Mat &img) {
-		cv::gpu::GpuMat dst, src;
-		src.upload(img);
+		cv::gpu::GpuMat *src = new cv::gpu::GpuMat();
+		cv::gpu::GpuMat *dst = new cv::gpu::GpuMat();
 
-		cv::gpu::cvtColor(src, dst, CV_BGR2HSV);
+		src->upload(img);
 
-		dst.download(img);
+		cv::gpu::cvtColor(*src, *dst, CV_BGR2HSV);
+
+		dst->download(img);
 
 		int lowerh = 50;
 		int lowers = 200;
@@ -20,6 +22,9 @@ class ImageFiltering {
 
 		cv::inRange(img, cv::Scalar(lowerh, lowers, lowerv), cv::Scalar(higherh, highers, higherv), img);
 		
+		delete src;
+		delete dst;
+	
 		return img;
 	}
 };
