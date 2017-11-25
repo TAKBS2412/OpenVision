@@ -43,7 +43,7 @@ class TargetProc {
 		double pegx = (cx+cx2)/2;
 		double angle = atan(5.08*(pegx-320)/(hpx*distance));
 		std::cout << "Angle: " << angle << "\n";
-		networking.senddouble(angle);
+		networking.senddouble("Angle", angle);
 	}
 };
 

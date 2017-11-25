@@ -41,12 +41,12 @@ class Networking {
 			error("ERROR connecting");
 	}
 
-	int senddouble(double data)
+	int senddouble(const char* name, double data)
 	{
 		char buffer[256];
 		char oldbuffer[256];
 		bzero(buffer,256);
-		int num = sprintf(buffer, "%f\n", data);
+		int num = sprintf(buffer, "%s: %f\n", name, data);
 		if (num > 256) 
 			error("ERROR, data too large!");
 		strncpy(oldbuffer, buffer, 256);
