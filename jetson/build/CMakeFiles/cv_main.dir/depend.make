@@ -3,6 +3,7 @@
 
 CMakeFiles/cv_main.dir/main.cpp.o: ../ImageFiltering.cpp
 CMakeFiles/cv_main.dir/main.cpp.o: ../ImageProc.cpp
+CMakeFiles/cv_main.dir/main.cpp.o: ../Networking.cpp
 CMakeFiles/cv_main.dir/main.cpp.o: ../TargetProc.cpp
 CMakeFiles/cv_main.dir/main.cpp.o: ../main.cpp
 

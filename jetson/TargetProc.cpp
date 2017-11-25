@@ -11,7 +11,7 @@ class TargetProc {
 		return (int) a;
 	}
 	public:
-	void procTarget(cv::Mat &img, cv::vector<cv::vector<cv::Point> > &contours) {
+	void procTarget(cv::Mat &img, cv::vector<cv::vector<cv::Point> > &contours, Networking networking) {
 		cv::vector<cv::Point> largestContour = contours[0];
 		cv::vector<cv::Point> secondLargestContour = contours[1];
 
@@ -43,6 +43,7 @@ class TargetProc {
 		double pegx = (cx+cx2)/2;
 		double angle = atan(5.08*(pegx-320)/(hpx*distance));
 		std::cout << "Angle: " << angle << "\n";
+		networking.senddouble(angle);
 	}
 };
 
