@@ -4,5 +4,6 @@
 CMakeFiles/cv_main.dir/main.cpp.o
  /home/ubuntu/src/jetson/ImageFiltering.cpp
  /home/ubuntu/src/jetson/ImageProc.cpp
+ /home/ubuntu/src/jetson/Networking.cpp
  /home/ubuntu/src/jetson/TargetProc.cpp
  /home/ubuntu/src/jetson/main.cpp
