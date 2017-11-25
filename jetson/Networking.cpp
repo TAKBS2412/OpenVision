@@ -21,7 +21,7 @@ class Networking {
 	}
 	
 	public:
-	Networking(char* hostname, int port) {
+	Networking(const char* hostname, int port) {
 		portno = port;
 		sockfd = socket(AF_INET, SOCK_STREAM, 0);
 		if (sockfd < 0)
