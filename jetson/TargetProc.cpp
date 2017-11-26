@@ -24,6 +24,7 @@ class TargetProc {
 		std::cout << "Height: " << hpx << "\n";
 		double distance = (480*5.08)/(2*hpx*tan(0.726/2));
 		std::cout << "Distance: " << distance << "\n";
+		networking.senddouble("Distance", distance);
 		cv::Moments moments = cv::moments(largestContour);
 		if(moments.m00 == 0) {
 			std::cout << "Invalid moments!\n";
