@@ -22,6 +22,7 @@ int main() {
 		img = cv::imread("/home/ubuntu/src/jetson/faketargets.png", cv::IMREAD_COLOR);
 		
 		img = imageFilter.filterImage(img);
+		
 		cv::vector<cv::vector<cv::Point> > contours;
 		cv::vector<cv::vector<cv::Point> > goodcontours;
 		cv::vector<cv::Vec4i> hierarchy;
@@ -31,13 +32,11 @@ int main() {
 			return 1;
 		}
 		targetProc.procTarget(newimg, goodcontours, networking);
-		/*
 		cv::imshow("Hello!", newimg);
 		char c = cv::waitKey(1);
 		if(c == 'q') {
 			break;
 		}
-		*/
 	}
 	networking.closeSocket();
 }
