@@ -11,7 +11,7 @@ class TargetProc {
 		return (int) a;
 	}
 	public:
-	void procTarget(cv::Mat &img, cv::vector<cv::vector<cv::Point> > &contours) {
+	void procTarget(cv::Mat &img, cv::vector<cv::vector<cv::Point> > &contours, Networking networking) {
 		cv::vector<cv::Point> largestContour = contours[0];
 		cv::vector<cv::Point> secondLargestContour = contours[1];
 
@@ -24,6 +24,7 @@ class TargetProc {
 		std::cout << "Height: " << hpx << "\n";
 		double distance = (480*5.08)/(2*hpx*tan(0.726/2));
 		std::cout << "Distance: " << distance << "\n";
+		networking.senddouble("Distance", distance);
 		cv::Moments moments = cv::moments(largestContour);
 		if(moments.m00 == 0) {
 			std::cout << "Invalid moments!\n";
@@ -43,6 +44,7 @@ class TargetProc {
 		double pegx = (cx+cx2)/2;
 		double angle = atan(5.08*(pegx-320)/(hpx*distance));
 		std::cout << "Angle: " << angle << "\n";
+		networking.senddouble("Angle", angle);
 	}
 };
 
