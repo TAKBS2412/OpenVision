@@ -19,8 +19,6 @@ class ImageFiltering {
 		cv::gpu::threshold(shsv[1], thresch[1], lower[1], 255, cv::THRESH_BINARY);
 		cv::gpu::threshold(shsv[2], thresch[2], lower[2], 255, cv::THRESH_BINARY);
 
-		dst->download(img);
-			
 		cv::gpu::threshold(shsv[0], threscl[0], higher[0], 255, cv::THRESH_BINARY_INV);
 		cv::gpu::threshold(shsv[1], threscl[1], higher[1], 255, cv::THRESH_BINARY_INV);
 		cv::gpu::threshold(shsv[2], threscl[2], higher[2], 255, cv::THRESH_BINARY_INV);
@@ -38,6 +36,7 @@ class ImageFiltering {
 	}
 	public:
 	cv::Mat& filterImage(cv::Mat &img) {
+		clock_t t;
 		int lowerh = 50;
 		int lowers = 200;
 		int lowerv = 30;
@@ -51,9 +50,10 @@ class ImageFiltering {
 		src->upload(img);
 		
 		cv::gpu::cvtColor(*src, *dst, CV_BGR2HSV);
-
+		dst->download(img);
 		t = clock();
 		inRange(dst, cv::Scalar(lowerh, lowers, lowerv), cv::Scalar(higherh, highers, higherv));
+		//cv::inRange(img, cv::Scalar(lowerh, lowers, lowerv), cv::Scalar(higherh, highers, higherv), img);
 		t = clock() - t;
 		std::cout << "ImageFiltering (inRange) - Time elapsed (s): " << ((float)t)/CLOCKS_PER_SEC << "\n";
 

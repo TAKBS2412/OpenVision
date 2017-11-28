@@ -22,6 +22,9 @@ int main() {
 		cv::Mat newimg(480, 640, CV_8UC3, cv::Scalar(0, 0, 0));
 
 		img = cv::imread("/home/ubuntu/src/jetson/faketargets.png", cv::IMREAD_COLOR);
+
+		t = clock();
+		img = imageFilter.filterImage(img);
 		t = clock() - t;
 		std::cout << "ImageFiltering - Time elapsed (s): " << ((float)t)/CLOCKS_PER_SEC << "\n";
 		
