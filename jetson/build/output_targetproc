@@ -1,0 +1,396 @@
+ImageFiltering (gpuinit) - Time elapsed (s): 1.1e-05
+ImageFiltering (imgupload) - Time elapsed (s): 7.9077
+ImageFiltering (inRange) - Time elapsed (s): 0.00255
+ImageFiltering - Time elapsed (s): 7.91746
+ImageProc - Time elapsed (s): 0.001686
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000337
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000907
+ImageFiltering (inRange) - Time elapsed (s): 0.002361
+ImageFiltering - Time elapsed (s): 0.009891
+ImageProc - Time elapsed (s): 0.001461
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000247
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000864
+ImageFiltering (inRange) - Time elapsed (s): 0.002329
+ImageFiltering - Time elapsed (s): 0.009862
+ImageProc - Time elapsed (s): 0.001446
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000242
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000893
+ImageFiltering (inRange) - Time elapsed (s): 0.002334
+ImageFiltering - Time elapsed (s): 0.009872
+ImageProc - Time elapsed (s): 0.00146
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000249
+ImageFiltering (gpuinit) - Time elapsed (s): 1e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000868
+ImageFiltering (inRange) - Time elapsed (s): 0.002323
+ImageFiltering - Time elapsed (s): 0.009888
+ImageProc - Time elapsed (s): 0.001446
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000245
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.00088
+ImageFiltering (inRange) - Time elapsed (s): 0.002336
+ImageFiltering - Time elapsed (s): 0.009819
+ImageProc - Time elapsed (s): 0.001453
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000249
+ImageFiltering (gpuinit) - Time elapsed (s): 1e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000998
+ImageFiltering (inRange) - Time elapsed (s): 0.002331
+ImageFiltering - Time elapsed (s): 0.009987
+ImageProc - Time elapsed (s): 0.001438
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000241
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000894
+ImageFiltering (inRange) - Time elapsed (s): 0.002329
+ImageFiltering - Time elapsed (s): 0.009906
+ImageProc - Time elapsed (s): 0.001447
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000244
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000867
+ImageFiltering (inRange) - Time elapsed (s): 0.002327
+ImageFiltering - Time elapsed (s): 0.009874
+ImageProc - Time elapsed (s): 0.001432
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000247
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000889
+ImageFiltering (inRange) - Time elapsed (s): 0.002334
+ImageFiltering - Time elapsed (s): 0.009899
+ImageProc - Time elapsed (s): 0.00145
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000244
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000891
+ImageFiltering (inRange) - Time elapsed (s): 0.002322
+ImageFiltering - Time elapsed (s): 0.009887
+ImageProc - Time elapsed (s): 0.001446
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000246
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000882
+ImageFiltering (inRange) - Time elapsed (s): 0.002328
+ImageFiltering - Time elapsed (s): 0.009869
+ImageProc - Time elapsed (s): 0.001452
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000248
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000867
+ImageFiltering (inRange) - Time elapsed (s): 0.002326
+ImageFiltering - Time elapsed (s): 0.009841
+ImageProc - Time elapsed (s): 0.00144
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000246
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000891
+ImageFiltering (inRange) - Time elapsed (s): 0.002326
+ImageFiltering - Time elapsed (s): 0.009889
+ImageProc - Time elapsed (s): 0.001438
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000255
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000865
+ImageFiltering (inRange) - Time elapsed (s): 0.002339
+ImageFiltering - Time elapsed (s): 0.00982
+ImageProc - Time elapsed (s): 0.001454
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000243
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000867
+ImageFiltering (inRange) - Time elapsed (s): 0.002332
+ImageFiltering - Time elapsed (s): 0.009839
+ImageProc - Time elapsed (s): 0.001436
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000259
+ImageFiltering (gpuinit) - Time elapsed (s): 1e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.00087
+ImageFiltering (inRange) - Time elapsed (s): 0.002339
+ImageFiltering - Time elapsed (s): 0.009875
+ImageProc - Time elapsed (s): 0.001449
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000245
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000874
+ImageFiltering (inRange) - Time elapsed (s): 0.002326
+ImageFiltering - Time elapsed (s): 0.009904
+ImageProc - Time elapsed (s): 0.001441
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000244
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000876
+ImageFiltering (inRange) - Time elapsed (s): 0.002337
+ImageFiltering - Time elapsed (s): 0.009875
+ImageProc - Time elapsed (s): 0.001454
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000283
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000875
+ImageFiltering (inRange) - Time elapsed (s): 0.002329
+ImageFiltering - Time elapsed (s): 0.009881
+ImageProc - Time elapsed (s): 0.001455
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000246
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000881
+ImageFiltering (inRange) - Time elapsed (s): 0.00233
+ImageFiltering - Time elapsed (s): 0.00984
+ImageProc - Time elapsed (s): 0.001449
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000244
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.00088
+ImageFiltering (inRange) - Time elapsed (s): 0.002321
+ImageFiltering - Time elapsed (s): 0.009882
+ImageProc - Time elapsed (s): 0.001448
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000246
+ImageFiltering (gpuinit) - Time elapsed (s): 1e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000866
+ImageFiltering (inRange) - Time elapsed (s): 0.002332
+ImageFiltering - Time elapsed (s): 0.00987
+ImageProc - Time elapsed (s): 0.001454
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000248
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000884
+ImageFiltering (inRange) - Time elapsed (s): 0.002331
+ImageFiltering - Time elapsed (s): 0.009839
+ImageProc - Time elapsed (s): 0.001455
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000244
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.00087
+ImageFiltering (inRange) - Time elapsed (s): 0.00234
+ImageFiltering - Time elapsed (s): 0.009888
+ImageProc - Time elapsed (s): 0.001435
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000254
+ImageFiltering (gpuinit) - Time elapsed (s): 1e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000894
+ImageFiltering (inRange) - Time elapsed (s): 0.002378
+ImageFiltering - Time elapsed (s): 0.009928
+ImageProc - Time elapsed (s): 0.001453
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000246
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000878
+ImageFiltering (inRange) - Time elapsed (s): 0.002334
+ImageFiltering - Time elapsed (s): 0.009888
+ImageProc - Time elapsed (s): 0.001446
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000257
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000896
+ImageFiltering (inRange) - Time elapsed (s): 0.002343
+ImageFiltering - Time elapsed (s): 0.009866
+ImageProc - Time elapsed (s): 0.001452
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000243
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000862
+ImageFiltering (inRange) - Time elapsed (s): 0.002334
+ImageFiltering - Time elapsed (s): 0.009885
+ImageProc - Time elapsed (s): 0.001458
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000257
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000886
+ImageFiltering (inRange) - Time elapsed (s): 0.002336
+ImageFiltering - Time elapsed (s): 0.009877
+ImageProc - Time elapsed (s): 0.00146
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000247
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000853
+ImageFiltering (inRange) - Time elapsed (s): 0.002344
+ImageFiltering - Time elapsed (s): 0.009843
+ImageProc - Time elapsed (s): 0.001477
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000258
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000883
+ImageFiltering (inRange) - Time elapsed (s): 0.002347
+ImageFiltering - Time elapsed (s): 0.00989
+ImageProc - Time elapsed (s): 0.001455
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+TargetProc - Time elapsed (s): 0.000246
+ImageFiltering (gpuinit) - Time elapsed (s): 2e-06
+ImageFiltering (imgupload) - Time elapsed (s): 0.000868
+ImageFiltering (inRange) - Time elapsed (s): 0.002336
+ImageFiltering - Time elapsed (s): 0.009833
+ImageProc - Time elapsed (s): 0.001438
+Number of contours: 2
+Height: 214
+Distance: 14.9993
+(554, 326)
+(289, 401)
+Angle: 0.158505
+Ta
