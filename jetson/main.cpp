@@ -32,7 +32,9 @@ int main() {
 			return 1;
 		}
 		targetProc.procTarget(newimg, goodcontours, networking);
-		cv::imshow("Hello!", newimg);
+
+		cv::imshow("Original Frame: ", img);
+		cv::imshow("Processed Frame: ", newimg);
 		char c = cv::waitKey(1);
 		if(c == 'q') {
 			break;
