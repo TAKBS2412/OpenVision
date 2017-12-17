@@ -27,7 +27,7 @@ int main() {
 		cv::vector<cv::vector<cv::Point> > goodcontours;
 		cv::vector<cv::Vec4i> hierarchy;
 		int error = 0;
-		goodcontours = imageProc.procImage(img, contours, goodcontours, hierarchy, error);
+		goodcontours = imageProc.procImage(img, contours, goodcontours, hierarchy, &error);
 		if(error == 1) {
 			return 1;
 		}
