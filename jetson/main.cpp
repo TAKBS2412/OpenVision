@@ -30,11 +30,9 @@ int main() {
 		cv::vector<cv::Vec4i> hierarchy;
 		int error = 0;
 		goodcontours = imageProc.procImage(img, contours, goodcontours, hierarchy, &error);
-		if(error == 1) {
-			return 1;
+		if(error == 0) {
+			targetProc.procTarget(newimg, goodcontours);
 		}
-		targetProc.procTarget(newimg, goodcontours, networking);
-
 		cv::imshow("Original Frame: ", img);
 		cv::imshow("Processed Frame: ", newimg);
 		char c = cv::waitKey(1);
