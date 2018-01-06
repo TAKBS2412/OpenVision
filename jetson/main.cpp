@@ -33,7 +33,7 @@ int main() {
 		int error = 0;
 		goodcontours = imageProc.procImage(img, contours, goodcontours, hierarchy, &error);
 		if(error == 0) {
-			targetProc.procTarget(newimg, goodcontours);
+			targetProc.procTarget(newimg, goodcontours, networking);
 		}
 		cv::imshow("Original Frame: ", img);
 		cv::imshow("Processed Frame: ", newimg);
