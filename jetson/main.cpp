@@ -15,7 +15,8 @@ int main() {
 	char hostname[] = "192.168.0.10"; //TODO Change this to 10.24.12.2
 	int port = 2412;
 	Networking networking = Networking(hostname, port);
-	const std::string cameraAddress = "http://192.168.0.11/mjpg/video.mjpg";
+	//const std::string cameraAddress = "http://192.168.0.11/mjpg/video.mjpg";
+	const std::string cameraAddress = "v4l2src ! ffmpegcolorspace ! appsink";
 	cv::VideoCapture vcap(cameraAddress);
 	while(1) {
 		cv::Mat img;
@@ -23,6 +24,7 @@ int main() {
 
 		//img = cv::imread("/home/ubuntu/src/jetson/faketargets.png", cv::IMREAD_COLOR);
 		vcap >> img;	
+		cv::imwrite("error_notargets.jpg", img);
 		img = imageFilter.filterImage(img);
 		
 		cv::vector<cv::vector<cv::Point> > contours;
