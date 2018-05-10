@@ -21,3 +21,4 @@ imagesaved=False
 useGUI=False
 senddata=True
 printdata=True
+shutterspeed=800

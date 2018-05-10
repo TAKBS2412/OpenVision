@@ -39,7 +39,7 @@ time.sleep(0.1)
 rawCapture = PiRGBArray(constants.camera, size=constants.camera.resolution)
 
 # Lower the shutter_speed
-constants.camera.shutter_speed = 300
+constants.camera.shutter_speed = constants.getValue("shutterspeed")
 	
 # Capture and display frames from camera
 for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
