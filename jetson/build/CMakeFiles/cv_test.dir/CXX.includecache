@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ubuntu/src/jetson/test.cpp
+iostream
+-
+opencv2/opencv.hpp
+/home/ubuntu/src/jetson/opencv2/opencv.hpp
+
