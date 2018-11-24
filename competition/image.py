@@ -119,16 +119,13 @@ def getSecondLargestContour(image):
 	for cnt in contours:
 		cntArea = cv2.contourArea(cnt)
 		approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
-		
 		if len(approx) != 4: continue
 
 		polygonArea = cv2.contourArea(approx)
-		if polygonArea == 0: continue
+		if polygonArea == 0 or cntArea == 0: continue
 		percentFilled = polygonArea/cntArea*100
 		if percentFilled < 70: continue
-
-		if len(approx) != 4: continue
-
+		
 		if cntArea > largestCntArea:
 			secondLargestCntArea = largestCntArea
 			secondLargestCnt = largestCnt
