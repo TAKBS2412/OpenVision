@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
  
@@ -7,6 +8,8 @@ using namespace std;
  
 int main(int argc,char ** argv)
 {
+  system("v4l2-ctl -c auto_exposure=1");
+  system("v4l2-ctl -c exposure_time_absolute=10");
   VideoCapture cap(0);
   if (!cap.isOpened()) {
     cerr << "ERROR: Unable to open the camera" << endl;
