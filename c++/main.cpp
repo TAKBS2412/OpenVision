@@ -20,12 +20,16 @@ int main() {
 	cv::VideoCapture vcap(cameraAddress);
 	while(1) {
 		cv::Mat img;
-		cv::Mat newimg(480, 640, CV_8UC3, cv::Scalar(0, 0, 0));
+		cv::Mat oldimg(img.size(), img.type());
+		cv::Mat newimg(img.size(), img.type());
+
 
 		t = clock();
 		//img = cv::imread("/home/ubuntu/src/jetson/faketargets.png", cv::IMREAD_COLOR);
 		//vcap >> img;	
 		img = cv::imread("../waamv/orig1.jpg");
+		oldimg = img.clone();
+
 		imageFilter.filterImage(img, newimg);
 		t = clock() - t;
 		std::cout << "ImageFiltering - Time elapsed (s): " << ((float)t)/CLOCKS_PER_SEC << "\n";
@@ -55,7 +59,7 @@ int main() {
 		if(error == 0) {
 			targetProc.procTarget(newimg, goodcontours);
 		}*/
-		cv::imshow("Original Frame: ", img);
+		cv::imshow("Original Frame: ", oldimg);
 		cv::imshow("Processed Frame: ", newimg);
 		char c = cv::waitKey(1);
 		if(c == 'q') {
