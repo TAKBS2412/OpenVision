@@ -2,11 +2,11 @@
 
 class ImageProc {
 	public:
-	cv::vector<cv::vector<cv::Point> >& procImage(cv::Mat &img, cv::vector<cv::vector<cv::Point> > &oldContours, cv::vector<cv::vector<cv::Point> > &newContours, cv::vector<cv::Vec4i> &hierarchy, int *error) {
+	std::vector<std::vector<cv::Point> >& procImage(cv::Mat &img, std::vector<std::vector<cv::Point> > &oldContours, std::vector<std::vector<cv::Point> > &newContours, std::vector<cv::Vec4i> &hierarchy, int *error) {
 
 		cv::findContours(img.clone(), oldContours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_TC89_KCOS);
-		cv::vector<cv::Point> largestContour;
-		cv::vector<cv::Point> secondLargestContour;
+		std::vector<cv::Point> largestContour;
+		std::vector<cv::Point> secondLargestContour;
 
 		if(oldContours.size() < 2) {
 			std::cerr << "Not enough contours!\n";
@@ -17,9 +17,9 @@ class ImageProc {
 					
 			int i;
 			for(i = 0; i < oldContours.size(); i++) {
-				cv::vector<cv::Point> currentContour = oldContours[i];
+				std::vector<cv::Point> currentContour = oldContours[i];
 				double contourArea = cv::contourArea(currentContour);
-				cv::vector<cv::Point> approx;
+				std::vector<cv::Point> approx;
 				cv::approxPolyDP(currentContour, approx, 0.05*cv::arcLength(currentContour, true), true);
 				if(approx.size() != 4) {
 					continue;

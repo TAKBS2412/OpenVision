@@ -3,13 +3,14 @@
 #include <iostream>
 #include "Networking.cpp"
 #include "ImageFiltering.cpp"
+#include "ImageProc.cpp"
 #include <time.h>
 
 int round2(double);
 
 int main() {
 	ImageFiltering imageFilter = ImageFiltering();
-	//ImageProc imageProc = ImageProc();
+	ImageProc imageProc = ImageProc();
 	//TargetProc targetProc = TargetProc();
 	clock_t t;
 	char hostname[] = "192.168.0.10"; //TODO Change this to 10.24.12.2
@@ -28,21 +29,24 @@ int main() {
 		imageFilter.filterImage(img, newimg);
 		t = clock() - t;
 		std::cout << "ImageFiltering - Time elapsed (s): " << ((float)t)/CLOCKS_PER_SEC << "\n";
-		/*
-		cv::vector<cv::vector<cv::Point> > contours;
-		cv::vector<cv::vector<cv::Point> > goodcontours;
-		cv::vector<cv::Vec4i> hierarchy;
+
+		cv::imshow("Intermediate: ", newimg);
+
+		std::vector<std::vector<cv::Point> > contours;
+		std::vector<std::vector<cv::Point> > goodcontours;
+		std::vector<cv::Vec4i> hierarchy;
+		
 		int error = 0;
 		
 		t = clock();
-		goodcontours = imageProc.procImage(img, contours, goodcontours, hierarchy, error);
+		goodcontours = imageProc.procImage(newimg, contours, goodcontours, hierarchy, &error);
 		t = clock() - t;
 		std::cout << "ImageProc - Time elapsed (s): " << ((float)t)/CLOCKS_PER_SEC << "\n";
 
 		if(error == 1) {
 			return 1;
 		}
-		t = clock();
+		/*t = clock();
 		targetProc.procTarget(newimg, goodcontours, networking);
 		t = clock() - t;
 		std::cout << "TargetProc - Time elapsed (s): " << ((float)t)/CLOCKS_PER_SEC << "\n";
