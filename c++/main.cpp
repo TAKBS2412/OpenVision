@@ -4,6 +4,7 @@
 #include "Networking.cpp"
 #include "ImageFiltering.cpp"
 #include "ImageProc.cpp"
+#include "TargetProc.cpp"
 #include <time.h>
 
 int round2(double);
@@ -11,13 +12,13 @@ int round2(double);
 int main() {
 	ImageFiltering imageFilter = ImageFiltering();
 	ImageProc imageProc = ImageProc();
-	//TargetProc targetProc = TargetProc();
+	TargetProc targetProc = TargetProc();
 	clock_t t;
 	char hostname[] = "192.168.0.10"; //TODO Change this to 10.24.12.2
 	int port = 2412;
-	//Networking networking = Networking(hostname, port);
+	Networking networking = Networking(hostname, port);
 	const std::string cameraAddress = "http://192.168.0.11/mjpg/video.mjpg";
-	cv::VideoCapture vcap(cameraAddress);
+	//cv::VideoCapture vcap(cameraAddress);
 	while(1) {
 		cv::Mat img;
 		cv::Mat oldimg(img.size(), img.type());
@@ -50,11 +51,11 @@ int main() {
 		if(error == 1) {
 			return 1;
 		}
-		/*t = clock();
+		t = clock();
 		targetProc.procTarget(newimg, goodcontours, networking);
 		t = clock() - t;
 		std::cout << "TargetProc - Time elapsed (s): " << ((float)t)/CLOCKS_PER_SEC << "\n";
-		*/
+		
 		/*goodcontours = imageProc.procImage(img, contours, goodcontours, hierarchy, &error);
 		if(error == 0) {
 			targetProc.procTarget(newimg, goodcontours);

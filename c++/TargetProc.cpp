@@ -11,9 +11,9 @@ class TargetProc {
 		return (int) a;
 	}
 	public:
-	void procTarget(cv::Mat &img, cv::vector<cv::vector<cv::Point> > &contours, Networking networking) {
-		cv::vector<cv::Point> largestContour = contours[0];
-		cv::vector<cv::Point> secondLargestContour = contours[1];
+	void procTarget(cv::Mat &img, std::vector<std::vector<cv::Point> > &contours, Networking networking) {
+		std::vector<cv::Point> largestContour = contours[0];
+		std::vector<cv::Point> secondLargestContour = contours[1];
 
 		std::cout << "Number of contours: " << contours.size() << "\n";	
 		cv::Scalar color(0, 225, 0);
