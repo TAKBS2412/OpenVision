@@ -11,6 +11,8 @@ class ImageFiltering {
 		int higherh = 66;
 		int highers = 255;
 		int higherv = 255;
+
+		cv::GaussianBlur(img, img, cv::Size(5, 5), 0, 0);
 	
 		cv::cvtColor(img, img, CV_BGR2HSV);
 	
