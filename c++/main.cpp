@@ -52,8 +52,10 @@ int main() {
 			return 1;
 		}
 		t = clock();
-		targetProc.procTarget(newimg, goodcontours, networking);
+		targetProc.procTarget(oldimg, newimg, goodcontours, networking);
 		t = clock() - t;
+		
+		cv::imshow("Intermediate (2): ", newimg);
 		std::cout << "TargetProc - Time elapsed (s): " << ((float)t)/CLOCKS_PER_SEC << "\n";
 		
 		/*goodcontours = imageProc.procImage(img, contours, goodcontours, hierarchy, &error);

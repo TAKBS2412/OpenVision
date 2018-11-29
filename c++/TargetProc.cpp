@@ -11,13 +11,18 @@ class TargetProc {
 		return (int) a;
 	}
 	public:
-	void procTarget(cv::Mat &img, std::vector<std::vector<cv::Point> > &contours, Networking networking) {
+	void procTarget(cv::Mat &oldimg, cv::Mat &newimg, std::vector<std::vector<cv::Point> > &contours, Networking networking) {
 		std::vector<cv::Point> largestContour = contours[0];
 		std::vector<cv::Point> secondLargestContour = contours[1];
 
+		newimg.release();
+		newimg = cv::Mat(oldimg.size(), oldimg.type());
+
+		cv::Scalar color = cv::Scalar(0, 255, 0);
+		cv::drawContours(newimg, contours, -1, color, CV_FILLED);
+
 		std::cout << "Number of contours: " << contours.size() << "\n";	
-		cv::Scalar color(0, 225, 0);
-		cv::drawContours(img, contours, -1, color, CV_FILLED);
+	
 		cv::Rect rect;
 		rect = cv::boundingRect(largestContour);
 		double hpx = rect.size().height;		
