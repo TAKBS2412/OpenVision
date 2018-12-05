@@ -23,6 +23,17 @@ std::string getType(std::string input) {
     }
 }
 
+/** Splits up the string input using the delimiter delim, and stores the resulting substring in the vector splits. */
+void splitString(std::vector<std::string> &splits, std::string input, std::string delim) {
+  size_t lastIndex = 0; // This will either be 0 or the index of the last character of delim.
+  for(size_t i = 0; i < input.size() - delim.size() + 1; i++) {
+    if(input.substr(i, delim.size()) == delim) {
+      splits.push_back(input.substr(lastIndex, i - lastIndex));
+      lastIndex = i + delim.size();
+    }
+  }
+}
+
 std::string stos(std::string input, int& errorCode) {
 	if(input[0] == '\"' && input[input.size()-1] == '\"') {
 		errorCode = 0;
