@@ -24,8 +24,7 @@ std::string getType(std::string input) {
 }
 
 std::string stos(std::string input, int& errorCode) {
-	// Assume that the first character is a double quotation mark " because we've already checked.
-	if(input[input.size()-1] == '\"') {
+	if(input[0] == '\"' && input[input.size()-1] == '\"') {
 		errorCode = 0;
 		return input.substr(1, input.size()-2);
 	}
