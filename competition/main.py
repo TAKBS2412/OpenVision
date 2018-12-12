@@ -2,6 +2,7 @@
 from __future__ import division
 from picamera.array import PiRGBArray
 from picamera import PiCamera
+import sys
 import time
 import cv2
 import image # Custom library
@@ -15,8 +16,14 @@ import KeyUpdater
 import numpy as np
 #import points
 
+# Read command-line arguments
+defaultsettingspath = "/home/pi/src/competition/settings"
+currentsettingspath = defaultsettingspath
+if len(sys.argv) == 2:
+	currentsettingspath = sys.argv[1]
+
 # Create Constants
-constants = Constants.Constants("/home/pi/src/competition/settings")
+constants = Constants.Constants(currentsettingspath)
 
 # Create ImageFiltering
 imagefilter = ImageFiltering.ImageFiltering()
