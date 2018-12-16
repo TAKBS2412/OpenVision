@@ -13,8 +13,8 @@ import ImageProc # Yet another custom library
 import TargetProc # Yet another custom library
 import Updater # Yet another custom library
 import KeyUpdater
+import FPS
 import numpy as np
-import datetime
 #import points
 
 # Read command-line arguments
@@ -49,11 +49,8 @@ rawCapture = PiRGBArray(constants.camera, size=constants.camera.resolution)
 # Lower the shutter_speed
 constants.camera.shutter_speed = constants.getValue("shutterspeed")
 
-# When the loop first starts 
-starttime = datetime.datetime.now()
-
-# The number of frames we've processed since the beginning
-framesprocessed = 0.0
+# FPS tracker
+fps = FPS.FPS()
 
 # Capture and display frames from camera
 for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
@@ -75,16 +72,18 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 
 	img = imagefilter.filterImage(img, constants)
 
-	
 	if constants.getValue("procImage"):
 		contours = imageproc.procImage(img, constants)
 		if contours is None:
 			# Clear the stream for the next frame
 			updater.contoursNotFound(constants, img, oldimg)
 			rawCapture.truncate(0)
-
+		
 			if constants.getValue("senddata"):
 				updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
+
+			fps.updateAndPrint()
+
 			continue
 		
 		pegclose = targetproc.procTarget(constants, contours, updater)
@@ -100,10 +99,4 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
 
-	# Calculate FPS
-	framesprocessed += 1
-	elapsedtime = datetime.datetime.now() - starttime
-	fps = framesprocessed / elapsedtime.total_seconds()
-	
-	print("FPS: " + str(fps))
-
+	fps.updateAndPrint()
