@@ -1,8 +1,17 @@
 import cv2
+import datetime
 '''
 This class displays the GUI and prints/logs data, depending on the settings in Constants.
 '''
 class Updater:
+	# Returns the current date and time as a string.
+	def getDateTime(self):
+		return str(datetime.datetime.now()).replace(" ", "_")
+
+	# Finds the folder and date to use as a file name prefix
+	def getFilePrefix(self):
+		return "loggedimages/" + self.getDateTime() + "-"
+
 	# Updates the GUI.
 	def updateGUI(self, constants, img, oldimg):
 		# Show the original and processed frames
@@ -46,12 +55,12 @@ class Updater:
 		if constants.getValue("printdata"):
 			print("Contours not found!")
 		if not constants.getValue("imagesaved"):
-			cv2.imwrite("no-targets-found.jpg", oldimg)
-			cv2.imwrite("no-targets-found-proc.jpg", img)
+			cv2.imwrite(self.getFilePrefix() + "no-targets-found.jpg", oldimg)
+			cv2.imwrite(self.getFilePrefix() + "no-targets-found-proc.jpg", img)
 			constants.setValue("imagesaved", True)
 	# Called when the peg is close.
 	def pegclose(self, constants, img, oldimg):
 		if not constants.getValue("imagesaved"):
-			cv2.imwrite("pegclose.jpg", oldimg)
-			cv2.imwrite("pegclose-proc.jpg", img)
+			cv2.imwrite(self.getFilePrefix() + "pegclose.jpg", oldimg)
+			cv2.imwrite(self.getFilePrefix() + "pegclose-proc.jpg", img)
 			constants.setValue("imagesaved", True)
