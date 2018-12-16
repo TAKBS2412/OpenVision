@@ -82,7 +82,7 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 			if constants.getValue("senddata"):
 				updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 
-			fps.updateAndPrint()
+			fps.update(constants.getValue("printdata"))
 
 			continue
 		
@@ -98,5 +98,5 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 	
 	# Clear the stream for the next frame
 	rawCapture.truncate(0)
-
-	fps.updateAndPrint()
+	
+	fps.update(constants.getValue("printdata"))
