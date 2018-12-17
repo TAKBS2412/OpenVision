@@ -55,47 +55,48 @@ time.sleep(2.0)
 fps = FPS.FPS()
 
 # Capture and display frames from camera
-#for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
-while True:
-	
-	# Break from loop if needed.
-	if constants.getValue("endloop"):
-		break
-	
-	# Get the currently pressed key if useGUI is enabled.
-	if constants.getValue("useGUI"):
-		key = cv2.waitKey(1)
-
-	# Grab array representing image
-	if constants.getValue("usevideo"):
-		img = vs.read()
-	else:
-		img = cv2.imread(constants.getValue("images")[constants.getValue("index")])
-
-	oldimg = img
-
-	img = imagefilter.filterImage(img, constants)
-
-	if constants.getValue("procImage"):
-		contours = imageproc.procImage(img, constants)
-		if contours is None:
-			updater.contoursNotFound(constants, img, oldimg)
+try:
+	while True:
+		# Break from loop if needed.
+		if constants.getValue("endloop"):
+			break
 		
-			if constants.getValue("senddata"):
-				updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
+		# Get the currently pressed key if useGUI is enabled.
+		if constants.getValue("useGUI"):
+			key = cv2.waitKey(1)
+
+		# Grab array representing image
+		if constants.getValue("usevideo"):
+			img = vs.read()
 		else:
-			pegclose = targetproc.procTarget(constants, contours, updater)
-			img = np.zeros((constants.getValue("imghpx"), constants.getValue("imgwpx"), 3), np.uint8)		
-			cv2.drawContours(img, contours, -1, (0, 255, 0), cv2.FILLED)
+			img = cv2.imread(constants.getValue("images")[constants.getValue("index")])
 
-			if pegclose:
-				updater.pegclose(constants, img, oldimg)
+		oldimg = img
 
-	if constants.getValue("useGUI"):		
-		keyupdater.update(constants, key, updater, img, oldimg)
-		updater.updateGUI(constants, img, oldimg)
-	
-	fps.update(constants.getValue("printdata"))
+		img = imagefilter.filterImage(img, constants)
+
+		if constants.getValue("procImage"):
+			contours = imageproc.procImage(img, constants)
+			if contours is None:
+				updater.contoursNotFound(constants, img, oldimg)
+			
+				if constants.getValue("senddata"):
+					updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
+			else:
+				pegclose = targetproc.procTarget(constants, contours, updater)
+				img = np.zeros((constants.getValue("imghpx"), constants.getValue("imgwpx"), 3), np.uint8)		
+				cv2.drawContours(img, contours, -1, (0, 255, 0), cv2.FILLED)
+
+				if pegclose:
+					updater.pegclose(constants, img, oldimg)
+
+		if constants.getValue("useGUI"):		
+			keyupdater.update(constants, key, updater, img, oldimg)
+			updater.updateGUI(constants, img, oldimg)
+		
+		fps.update(constants.getValue("printdata"))
+except KeyboardInterrupt:
+	print("Interrupted! Exiting...")
 
 cv2.destroyAllWindows()	
 vs.stop()
