@@ -5,5 +5,5 @@ workon cv
 # Ping 10 times
 ping 10.24.12.1 -c 10 > /home/pi/src/logs/ping.log
 
-echo "-----------------------" >> /home/pi/src/logs/output.log
+echo "---`date`---" >> /home/pi/src/logs/output.log
 python ~/src/competition/main.py >> /home/pi/src/logs/output.log 2>&1
