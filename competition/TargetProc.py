@@ -30,8 +30,8 @@ class TargetProc:
 			        cx2, cy2 = cnt2coords
 			        pegx = (cx + cx2) / 2 # Find the x-coord of the peg (the average of the x-coordinates of the two vision targets)
 			# Print out information
-			distance = image_proc.getDistance(constants.imghpx, 5.08, hpx, constants.getValue("viewangle"))
-			angle = image_proc.getHorizAngle(constants.imgwpx, 5.08, distance, hpx, pegx)
+			distance = image_proc.getDistance(constants.getValue("imghpx"), 5.08, hpx, constants.getValue("viewangle"))
+			angle = image_proc.getHorizAngle(constants.getValue("imgwpx"), 5.08, distance, hpx, pegx)
 			ratio = float(hpx)/float(wpx)
 			pegclose = ratio < 2
 			if constants.getValue("printdata"):

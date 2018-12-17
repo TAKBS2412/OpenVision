@@ -15,6 +15,7 @@ import Updater # Yet another custom library
 import KeyUpdater
 import FPS
 import numpy as np
+import PiVideoStream
 #import points
 
 # Read command-line arguments
@@ -41,19 +42,22 @@ updater = Updater.Updater()
 # Create KeyUpdater
 keyupdater = KeyUpdater.KeyUpdater()
 
-# Let the camera warm up
-time.sleep(0.1)
-
-rawCapture = PiRGBArray(constants.camera, size=constants.camera.resolution)
+# Threaded video stream
+vs = PiVideoStream.PiVideoStream(resolution=(constants.getValue("imgwpx"), constants.getValue("imghpx"))).start()
 
 # Lower the shutter_speed
-constants.camera.shutter_speed = constants.getValue("shutterspeed")
+vs.camera.shutter_speed = constants.getValue("shutterspeed")
+
+# Let the camera warm up
+time.sleep(2.0)
 
 # FPS tracker
 fps = FPS.FPS()
 
 # Capture and display frames from camera
-for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
+#for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):	
+while True:
+	
 	# Break from loop if needed.
 	if constants.getValue("endloop"):
 		break
@@ -64,7 +68,7 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 
 	# Grab array representing image
 	if constants.getValue("usevideo"):
-		img = frame.array
+		img = vs.read()
 	else:
 		img = cv2.imread(constants.getValue("images")[constants.getValue("index")])
 
@@ -75,28 +79,23 @@ for frame in constants.camera.capture_continuous(rawCapture, format="bgr", use_v
 	if constants.getValue("procImage"):
 		contours = imageproc.procImage(img, constants)
 		if contours is None:
-			# Clear the stream for the next frame
 			updater.contoursNotFound(constants, img, oldimg)
-			rawCapture.truncate(0)
 		
 			if constants.getValue("senddata"):
 				updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
+		else:
+			pegclose = targetproc.procTarget(constants, contours, updater)
+			img = np.zeros((constants.getValue("imghpx"), constants.getValue("imgwpx"), 3), np.uint8)		
+			cv2.drawContours(img, contours, -1, (0, 255, 0), cv2.FILLED)
 
-			fps.update(constants.getValue("printdata"))
+			if pegclose:
+				updater.pegclose(constants, img, oldimg)
 
-			continue
-		
-		pegclose = targetproc.procTarget(constants, contours, updater)
-		img = np.zeros((constants.getValue("imghpx"), constants.getValue("imgwpx"), 3), np.uint8)		
-		cv2.drawContours(img, contours, -1, (0, 255, 0), cv2.FILLED)
-
-		if pegclose:
-			updater.pegclose(constants, img, oldimg)
 	if constants.getValue("useGUI"):		
 		keyupdater.update(constants, key, updater, img, oldimg)
 		updater.updateGUI(constants, img, oldimg)
 	
-	# Clear the stream for the next frame
-	rawCapture.truncate(0)
-	
 	fps.update(constants.getValue("printdata"))
+
+cv2.destroyAllWindows()	
+vs.stop()

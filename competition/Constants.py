@@ -8,8 +8,6 @@ A class that holds different constants and global variables.
 class Constants:
 	def __init__(self, filename):
                 self.readFromFile(filename)
-		self.camera = camera = image.initCamera((self.values["imgwpx"], self.values["imghpx"])) # Initialize the camera.
-                self.imgwpx, self.imghpx = self.camera.resolution # Image resolution.
 		if self.getValue("senddata"):
 			NetworkTables.initialize(server=self.getValue("ip"))
 			self.sd = NetworkTables.getTable(self.getValue("tablename"))
