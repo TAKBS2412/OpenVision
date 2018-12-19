@@ -43,7 +43,7 @@ updater = Updater.Updater()
 keyupdater = KeyUpdater.KeyUpdater()
 
 # Threaded video stream
-vs = PiVideoStream.PiVideoStream(resolution=(constants.getValue("imgwpx"), constants.getValue("imghpx"))).start()
+vs = PiVideoStream.PiVideoStream(constants, resolution=(constants.getValue("imgwpx"), constants.getValue("imghpx"))).start()
 
 # Lower the shutter_speed
 vs.camera.shutter_speed = constants.getValue("shutterspeed")
@@ -67,13 +67,10 @@ try:
 
 		# Grab array representing image
 		if constants.getValue("usevideo"):
-			img = vs.read()
+			oldimg, img = vs.read()
 		else:
-			img = cv2.imread(constants.getValue("images")[constants.getValue("index")])
-
-		oldimg = img
-
-		img = imagefilter.filterImage(img, constants)
+			oldimg = img = cv2.imread(constants.getValue("images")[constants.getValue("index")])
+			img = imagefilter.filterImage(img, constants)
 
 		if constants.getValue("procImage"):
 			contours = imageproc.procImage(img, constants)
