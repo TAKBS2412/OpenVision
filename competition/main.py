@@ -54,6 +54,9 @@ time.sleep(2.0)
 # FPS tracker
 fps = FPS.FPS()
 
+# The contours from Imageproc
+contours = None
+
 # Capture and display frames from camera
 try:
 	while True:
@@ -81,13 +84,13 @@ try:
 					updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			else:
 				pegclose = targetproc.procTarget(constants, contours, updater)
-				img = np.zeros((constants.getValue("imghpx"), constants.getValue("imgwpx"), 3), np.uint8)		
-				cv2.drawContours(img, contours, -1, (0, 255, 0), cv2.FILLED)
-
 				if pegclose:
 					updater.pegclose(constants, img, oldimg)
 
-		if constants.getValue("useGUI"):		
+		if constants.getValue("useGUI"):
+			if contours is not None:
+				img = np.zeros((constants.getValue("imghpx"), constants.getValue("imgwpx"), 3), np.uint8)		
+				cv2.drawContours(img, contours, -1, (0, 255, 0), cv2.FILLED)
 			keyupdater.update(constants, key, updater, img, oldimg)
 			updater.updateGUI(constants, img, oldimg)
 		
