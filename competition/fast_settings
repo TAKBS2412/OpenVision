@@ -1,4 +1,4 @@
-ip="10.24.12.2"
+ip="192.168.0.10"
 tablename="datatable"
 imgwpx=640
 imghpx=480
@@ -19,6 +19,6 @@ index=1
 lastoldimgname=""
 imagesaved=False
 useGUI=False
-senddata=False
+senddata=True
 printdata=True
 shutterspeed=800
