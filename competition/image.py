@@ -91,12 +91,23 @@ def sortContours(image):
 	if len(contours) == 0:
 		#sys.exit("Error: No targets found!")
 		return []
-	# Sort the contours using DSU (Decorate-Sort-Undecorate)
-	# "Decorate" the array
-	decorated = [(cv2.contourArea(cnt), cv2.contourArea(cnt)/cv2.contourArea(np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))) if cv2.contourArea(np.int0(cv2.boxPoints(cv2.minAreaRect(cnt)))) else 0, cnt) for cnt in contours]
-	npDecorated = np.array(decorated, dtype=object)
-	# Sort the array
-	sortedarr = np.sort(npDecorated)	
+	
+	return sorted(contours, key=lambda x: cv2.contourArea(x), reverse=True)
+
+# Checks the contour to make sure it fulfills the requirements (nonzero size, rectangular, etc.)
+# TODO: Make this function accept array of functions (for checking the contour) as a parameter
+def checkContour(cnt):
+	cntArea = cv2.contourArea(cnt)
+	approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
+	if len(approx) != 4: return False # Make sure the contour's rectangular
+
+	polygonArea = cv2.contourArea(approx)
+	if polygonArea == 0 or cntArea == 0: return False # Make sure the contour has a nonzero area
+	percentFilled = polygonArea/cntArea*100
+	if percentFilled < 70: return False # Make sure the contour is filled
+
+	return True
+
 
 # Finds the largest and second-largest contour in the processed image
 # image - the HSV-filtered image to process
@@ -104,39 +115,20 @@ def sortContours(image):
 # Otherwise, returns an array - the first element is the largest contour, the second is the second-largest contour
 def getSecondLargestContour(image):
 	# Find contours
-	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
+	#image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
+
+	# Find sorted list of contours
+	contours = sortContours(image)
 	
 	# If no contours have been found, quit
 	if len(contours) == 0:
 		#sys.exit("Error: No targets found!")
 		return None
 
-	# Find the largest contour
-	largestCntArea = 0 # Area of the largest contour
-	largestCnt = None
-	secondLargestCntArea = 0 # Area of the second largest contour
-	secondLargestCnt = None
-	for cnt in contours:
-		cntArea = cv2.contourArea(cnt)
-		approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
-		if len(approx) != 4: continue
+	# Filter the list based on checkContour()
+	filteredcontours = [cnt for cnt in contours if checkContour(cnt)]
 
-		polygonArea = cv2.contourArea(approx)
-		if polygonArea == 0 or cntArea == 0: continue
-		percentFilled = polygonArea/cntArea*100
-		if percentFilled < 70: continue
-		
-		if cntArea > largestCntArea:
-			secondLargestCntArea = largestCntArea
-			secondLargestCnt = largestCnt
-			largestCntArea = cntArea
-			largestCnt = cnt
-		elif cntArea > secondLargestCntArea:
-			secondLargestCntArea = cntArea
-			secondLargestCnt = cnt
-	return [largestCnt, secondLargestCnt]
-
-
+	return filteredcontours[:2]
 
 # Finds the x and y coordinates of the contours's centroid
 # Returns an array with the centroid's x and y coordinates as the first and second elements
