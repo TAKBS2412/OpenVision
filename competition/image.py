@@ -95,8 +95,9 @@ def sortContours(image):
 	return sorted(contours, key=lambda x: cv2.contourArea(x), reverse=True)
 
 # Checks the contour to make sure it fulfills the requirements (nonzero size, rectangular, etc.)
-# TODO: Make this function accept array of functions (for checking the contour) as a parameter
-def checkContour(cnt):
+# The parameter funcs is an array of functions that checks each contour
+def checkContour(cnt, funcs):
+	'''
 	cntArea = cv2.contourArea(cnt)
 	approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
 	if len(approx) != 4: return False # Make sure the contour's rectangular
@@ -105,9 +106,33 @@ def checkContour(cnt):
 	if polygonArea == 0 or cntArea == 0: return False # Make sure the contour has a nonzero area
 	percentFilled = polygonArea/cntArea*100
 	if percentFilled < 70: return False # Make sure the contour is filled
-
+	'''
+	for func in funcs:
+		if not func(cnt): return False
 	return True
 
+# Checks if the contour cnt has a nonzero area
+# Returns True if cnt's area is not equal to zero
+def isContourEmpty(cnt):
+	cntArea = cv2.contourArea(cnt)
+	approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
+
+	polygonArea = cv2.contourArea(approx)
+	return polygonArea != 0 and cntArea != 0
+
+# Checks if the contour is rectangular
+def isContourRectangular(cnt):
+	approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
+	return len(approx) == 4
+
+# Checks how filled the contour is
+def isContourFilled(cnt):
+	cntArea = cv2.contourArea(cnt)
+	approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
+
+	polygonArea = cv2.contourArea(approx)
+	percentFilled = polygonArea/cntArea*100
+	return percentFilled > 70
 
 # Finds the largest and second-largest contour in the processed image
 # image - the HSV-filtered image to process
@@ -126,7 +151,8 @@ def getSecondLargestContour(image):
 		return None
 
 	# Filter the list based on checkContour()
-	filteredcontours = [cnt for cnt in contours if checkContour(cnt)]
+	funcs = [isContourEmpty, isContourRectangular, isContourFilled]
+	filteredcontours = [cnt for cnt in contours if checkContour(cnt, funcs)]
 
 	return filteredcontours[:2]
 
@@ -139,6 +165,4 @@ def getContourCentroidCoords(contour):
 	cx = int(M["m10"]/M["m00"])
 	cy = int(M["m01"]/M["m00"])
 	return [cx, cy]
-
-
 
