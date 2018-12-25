@@ -44,11 +44,12 @@ class ImageProc:
 		percentFilled = self.polygonArea/self.cntArea*100
 		return percentFilled > 70
 
-	# Finds the largest and second-largest contour in the processed image
+	# Finds the top num largest contours in the processed image
 	# image - the HSV-filtered image to process
+	# num - the number of contours to find
 	# Returns None if no targets were found
 	# Otherwise, returns an array - the first element is the largest contour, the second is the second-largest contour
-	def getSecondLargestContour(self, image):
+	def getNumLargestContours(self, image, num):
 		# Find contours
 		#image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
 
@@ -64,12 +65,12 @@ class ImageProc:
 		funcs = [self.isContourEmpty, self.isContourRectangular, self.isContourFilled]
 		filteredcontours = [cnt for cnt in contours if self.checkContour(cnt, funcs)]
 
-		return filteredcontours[:2]
+		return filteredcontours[:num]
 
 	# Returns None if there was an error.
 	# Otherwise, returns the two contours that will be used.
 	def procImage(self, img, constants):
-		contours = self.getSecondLargestContour(img)
+		contours = self.getNumLargestContours(img, 2)
 		if contours is None:
 			return None
 		largestCnt, secondLargestCnt = contours

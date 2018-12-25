@@ -52,35 +52,6 @@ def procImage(image, lowerh, lowers, lowerv, higherh, highers, higherv):
 
 	return image
 
-# Finds the largest contour in the processed image
-# image - the HSV-filtered image to process
-# Returns None if no targets were found
-def getLargestContour(image):
-	# Find contours
-	image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
-
-	# If no contours have been found, quit
-	if len(contours) == 0:
-		#sys.exit("Error: No targets found!")
-		return None
-
-	# Find the largest contour
-	largestCntArea = 0 # Area of the largest contour
-	largestCnt = None
-	for cnt in contours:
-		cntArea = cv2.contourArea(cnt)
-		a = cv2.minAreaRect(cnt)
-		b = cv2.boxPoints(a)
-		polygonArea = cv2.contourArea(b)
-		if polygonArea == 0: continue
-		percentFilled = cntArea/polygonArea*100
-		if percentFilled < 80: continue
-
-		if cntArea > largestCntArea:
-			largestCntArea = cntArea
-			largestCnt = cnt
-	return largestCnt # Finds the x and y coordinates of the contours's centroid
-
 # Returns an array with the centroid's x and y coordinates as the first and second elements
 def getContourCentroidCoords(contour):
 	M = cv2.moments(contour)
