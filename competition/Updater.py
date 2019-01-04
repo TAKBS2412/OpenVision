@@ -32,13 +32,13 @@ class Updater:
 		print("Peg close: " + str(pegclose))
 
 	# Sends data using NetworkTables.
+	# DEPRECATED: Use Networking.sendData() instead (sends via UDP)
 	def sendData(self, sd, angle, distance, pegclose, targetsFound):
 		# Send the variables to the roboRIO
 		sd.putNumber("angle", angle)
 		sd.putNumber("distance", distance)
 		sd.putBoolean("pegclose", pegclose) 
 		sd.putBoolean("targetsFound", targetsFound)
-
 
 	# Prints out the HSV values for filtering
 	def printHSV(self, constants):
