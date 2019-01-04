@@ -33,12 +33,12 @@ class TargetProc:
 			distance = image_proc.getDistance(constants.getValue("imghpx"), 5.08, hpx, constants.getValue("viewangle"))
 			angle = image_proc.getHorizAngle(constants.getValue("imgwpx"), 5.08, distance, hpx, pegx)
 			ratio = float(hpx)/float(wpx)
-			pegclose = ratio < 2
+			doextake = ratio < 2
 			if constants.getValue("printdata"):
-				updater.printData(ratio, angle, distance, pegclose)
+				updater.printData(ratio, angle, distance, doextake)
 			if constants.getValue("senddata"):
-				networking.sendData(angle, distance, pegclose, True)
-		return pegclose
+				networking.sendData(angle, distance, doextake, True)
+		return doextake
 	
 	# Returns a polygonal approximation of the specified target.
 	def approxTarget(self, contour):

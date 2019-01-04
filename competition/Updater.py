@@ -25,19 +25,19 @@ class Updater:
 			cv2.destroyWindow(constants.getValue("lastoldimgname"))
 		constants.setValue("lastoldimgname", oldimgname)
 	# Prints data.
-	def printData(self, ratio, angle, distance, pegclose):
+	def printData(self, ratio, angle, distance, doextake):
 		print("Ratio: " + str(ratio))
 		print("Angle: " + str(angle))
 		print("Distance: " + str(distance))
-		print("Peg close: " + str(pegclose))
+		print("Should Extake: " + str(doextake))
 
 	# Sends data using NetworkTables.
 	# DEPRECATED: Use Networking.sendData() instead (sends via UDP)
-	def sendData(self, sd, angle, distance, pegclose, targetsFound):
+	def sendData(self, sd, angle, distance, doextake, targetsFound):
 		# Send the variables to the roboRIO
 		sd.putNumber("angle", angle)
 		sd.putNumber("distance", distance)
-		sd.putBoolean("pegclose", pegclose) 
+		sd.putBoolean("doextake", doextake) 
 		sd.putBoolean("targetsFound", targetsFound)
 
 	# Prints out the HSV values for filtering
@@ -59,8 +59,8 @@ class Updater:
 			cv2.imwrite(self.getFilePrefix() + "no-targets-found-proc.jpg", img)
 			constants.setValue("imagesaved", True)
 	# Called when the peg is close.
-	def pegclose(self, constants, img, oldimg):
+	def doextake(self, constants, img, oldimg):
 		if not constants.getValue("imagesaved"):
-			cv2.imwrite(self.getFilePrefix() + "pegclose.jpg", oldimg)
-			cv2.imwrite(self.getFilePrefix() + "pegclose-proc.jpg", img)
+			cv2.imwrite(self.getFilePrefix() + "doextake.jpg", oldimg)
+			cv2.imwrite(self.getFilePrefix() + "doextake-proc.jpg", img)
 			constants.setValue("imagesaved", True)

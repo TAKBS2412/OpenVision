@@ -87,9 +87,9 @@ try:
 				if constants.getValue("senddata"):
 					networking.sendData(0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			else:
-				pegclose = targetproc.procTarget(constants, contours, updater, networking)
-				if pegclose:
-					updater.pegclose(constants, img, oldimg)
+				doextake = targetproc.procTarget(constants, contours, updater, networking)
+				if doextake:
+					updater.doextake(constants, img, oldimg)
 
 		if constants.getValue("useGUI"):
 			if contours is not None:
