@@ -44,7 +44,7 @@ updater = Updater.Updater()
 keyupdater = KeyUpdater.KeyUpdater()
 
 # Create Networking
-networking = Networking.Networking("192.168.0.10", 2412)
+networking = Networking.Networking(constants.getValue("ip"), constants.getValue("port"))
 
 # Threaded video stream
 vs = PiVideoStream.PiVideoStream(constants, resolution=(constants.getValue("imgwpx"), constants.getValue("imghpx"))).start()

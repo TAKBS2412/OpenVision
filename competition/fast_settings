@@ -1,4 +1,5 @@
-ip="192.168.0.10"
+ip="127.0.0.1"
+port=2412
 tablename="datatable"
 imgwpx=640
 imghpx=480
