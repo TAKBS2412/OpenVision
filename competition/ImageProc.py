@@ -70,14 +70,6 @@ class ImageProc:
 	# Returns None if there was an error.
 	# Otherwise, returns the two contours that will be used.
 	def procImage(self, img, constants):
-		contours = self.getNumLargestContours(img, 2)
-		if contours is None or len(contours) < 2:
-			return None
-		largestCnt, secondLargestCnt = contours
-		if largestCnt is None and secondLargestCnt is None:
-			return None
-		contours2 = []
-		for cnt in contours:
-			if cnt != None:
-				contours2.append(cnt)
-		return contours2
+		numcontours = 2
+		return [cnt for cnt in self.getNumLargestContours(img, numcontours)]
+
