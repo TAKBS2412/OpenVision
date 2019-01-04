@@ -32,10 +32,9 @@ class TargetProc:
 			# Print out information
 			distance = image_proc.getDistance(constants.getValue("imghpx"), 5.08, hpx, constants.getValue("viewangle"))
 			angle = image_proc.getHorizAngle(constants.getValue("imgwpx"), 5.08, distance, hpx, pegx)
-			ratio = float(hpx)/float(wpx)
-			doextake = ratio < 2
+			doextake = abs(angle) < 0.087
 			if constants.getValue("printdata"):
-				updater.printData(ratio, angle, distance, doextake)
+				updater.printData(angle, distance, doextake)
 			if constants.getValue("senddata"):
 				networking.sendData(angle, distance, doextake, True)
 		return doextake

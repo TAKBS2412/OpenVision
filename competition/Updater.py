@@ -25,8 +25,7 @@ class Updater:
 			cv2.destroyWindow(constants.getValue("lastoldimgname"))
 		constants.setValue("lastoldimgname", oldimgname)
 	# Prints data.
-	def printData(self, ratio, angle, distance, doextake):
-		print("Ratio: " + str(ratio))
+	def printData(self, angle, distance, doextake):
 		print("Angle: " + str(angle))
 		print("Distance: " + str(distance))
 		print("Should Extake: " + str(doextake))
