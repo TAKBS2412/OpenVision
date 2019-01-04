@@ -13,6 +13,7 @@ import ImageProc # Yet another custom library
 import TargetProc # Yet another custom library
 import Updater # Yet another custom library
 import KeyUpdater
+import Networking
 import FPS
 import numpy as np
 import PiVideoStream
@@ -41,6 +42,9 @@ updater = Updater.Updater()
 
 # Create KeyUpdater
 keyupdater = KeyUpdater.KeyUpdater()
+
+# Create Networking
+networking = Networking.Networking("192.168.0.10", 2412)
 
 # Threaded video stream
 vs = PiVideoStream.PiVideoStream(constants, resolution=(constants.getValue("imgwpx"), constants.getValue("imghpx"))).start()
@@ -81,9 +85,9 @@ try:
 				updater.contoursNotFound(constants, img, oldimg)
 			
 				if constants.getValue("senddata"):
-					updater.sendData(constants.sd, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
+					networking.sendData(0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			else:
-				pegclose = targetproc.procTarget(constants, contours, updater)
+				pegclose = targetproc.procTarget(constants, contours, updater, networking)
 				if pegclose:
 					updater.pegclose(constants, img, oldimg)
 

@@ -7,7 +7,7 @@ A class that processes targets.
 '''
 class TargetProc:
 	# Calculates the distance, angle, and height to width ratio of the specified contour.
-	def procTarget(self, constants, contours, updater):
+	def procTarget(self, constants, contours, updater, networking):
                 if len(contours) == 1:
                         largestCnt = contours[0]
                 else: 
@@ -37,7 +37,7 @@ class TargetProc:
 			if constants.getValue("printdata"):
 				updater.printData(ratio, angle, distance, pegclose)
 			if constants.getValue("senddata"):
-				updater.sendData(constants.sd, angle, distance, pegclose, True)
+				networking.sendData(angle, distance, pegclose, True)
 		return pegclose
 	
 	# Returns a polygonal approximation of the specified target.
