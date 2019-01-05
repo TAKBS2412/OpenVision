@@ -71,5 +71,7 @@ class ImageProc:
 	# Otherwise, returns the two contours that will be used.
 	def procImage(self, img, constants):
 		numcontours = 2
-		return [cnt for cnt in self.getNumLargestContours(img, numcontours)]
+		contours = self.getNumLargestContours(img, numcontours)
+		if contours is None: return contours
+		return [cnt for cnt in contours]
 
