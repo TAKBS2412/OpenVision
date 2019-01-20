@@ -23,7 +23,7 @@ class ImageProc:
 	# The parameter funcs is an array of functions that checks each contour
 	def checkContour(self, cnt, funcs):
 		self.cntArea = cv2.contourArea(cnt)
-		self.approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
+		self.approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True) # Polygonal approximation, accounts for rotation as well
 		self.polygonArea = cv2.contourArea(self.approx)
 		
 		for func in funcs:
