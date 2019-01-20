@@ -81,7 +81,7 @@ try:
 
 		if constants.getValue("procImage"):
 			contours = imageproc.procImage(img, constants)
-			if contours is None:
+			if contours is None or len(contours) == 0:
 				updater.contoursNotFound(constants, img, oldimg)
 			
 				if constants.getValue("senddata"):
