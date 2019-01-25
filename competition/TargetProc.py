@@ -33,7 +33,7 @@ class TargetProc:
 		if constants.getValue("printdata"):
 			updater.printData(angle, distance, doextake)
 		if constants.getValue("senddata"):
-			networking.sendData(angle, distance, doextake, True)
+			networking.sendData(constants, angle, distance, doextake, True)
 		return doextake
 	
 	# Returns a polygonal approximation of the specified target.

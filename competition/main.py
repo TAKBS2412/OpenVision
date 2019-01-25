@@ -44,7 +44,7 @@ updater = Updater.Updater()
 keyupdater = KeyUpdater.KeyUpdater()
 
 # Create Networking
-networking = Networking.Networking(constants.getValue("ip"), constants.getValue("port"))
+networking = Networking.Networking(constants)
 
 # Threaded video stream
 vs = PiVideoStream.PiVideoStream(constants, resolution=(constants.getValue("imgwpx"), constants.getValue("imghpx"))).start()
@@ -85,7 +85,7 @@ try:
 				updater.contoursNotFound(constants, img, oldimg)
 			
 				if constants.getValue("senddata"):
-					networking.sendData(0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
+					networking.sendData(constants, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			else:
 				doextake = targetproc.procTarget(constants, contours, updater, networking)
 				if doextake:
