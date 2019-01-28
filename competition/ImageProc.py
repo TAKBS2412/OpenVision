@@ -25,7 +25,6 @@ class ImageProc:
 		self.cntArea = cv2.contourArea(cnt)
 		self.approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True) # Polygonal approximation, accounts for rotation as well
 		self.polygonArea = cv2.contourArea(self.approx)
-		
 		for func in funcs:
 			if not func(cnt): return False
 		return True
@@ -62,7 +61,7 @@ class ImageProc:
 			return None
 
 		# Filter the list based on checkContour()
-		funcs = [self.isContourEmpty, self.isContourRectangular, self.isContourFilled]
+		funcs = [self.isContourEmpty, self.isContourRectangular]
 		filteredcontours = [cnt for cnt in contours if self.checkContour(cnt, funcs)]
 
 		return filteredcontours[:num]
