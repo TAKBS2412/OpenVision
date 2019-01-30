@@ -31,7 +31,7 @@ class Updater:
 		print("Should Extake: " + str(doextake))
 
 	# Sends data using NetworkTables.
-	# DEPRECATED: Use Networking.sendData() instead (sends via UDP)
+	# DEPRECATED: Use Networking.sendDataNT() function instead
 	def sendData(self, sd, angle, distance, doextake, targetsFound):
 		# Send the variables to the roboRIO
 		sd.putNumber("angle", angle)
