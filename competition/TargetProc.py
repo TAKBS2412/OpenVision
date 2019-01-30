@@ -11,7 +11,7 @@ class TargetProc:
 		largestCnt = contours[0]
 		
 		# Approximate a line running through the contours to find the angle of the contours.
-		vx, vy, cx, cy = cv2.fitLine(contours[1], cv2.DIST_L2, 0, 0.01, 0.01)
+		vx, vy, cx, cy = cv2.fitLine(largestCnt, cv2.DIST_L2, 0, 0.01, 0.01)
 		vproduct = vx * vy
 		if vproduct > 0:
 			print("Right target")
