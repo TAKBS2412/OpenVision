@@ -14,6 +14,16 @@ class TargetProc:
 		left = True
 		offx = 8 / 2 * 2.54 # Halve the 8 inches and convert to cm
 
+		imghpx = constants.getValue("imghpx")
+		imgwpx = constants.getValue("imgwpx")
+
+		# Make the center of the contours default to the middle of the image
+		cx = imgwpx / 2.0
+		cy = imghpx / 2.0
+
+		# Calculate the height and width of the largest contour
+		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
+
 		# Check if there's only one contour
 		if len(contours) == 1:
 			onecnt = True
@@ -27,24 +37,23 @@ class TargetProc:
 				left = True
 				print("Left target")
 
-		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
-						
-		# Find the centroid's coordinates
-		centerxsum = centerysum = numcoords = 0.0
-		for cnt in contours:
-			cntcoords = image.getContourCentroidCoords(cnt)
-			if cntcoords == None:
-				continue
-			centerxsum += cntcoords[0]
-			centerysum += cntcoords[1]
-			numcoords += 1
-		
-		cx = centerxsum / numcoords
-		cy = centerysum / numcoords
-		
+		else:
+			# Find the centroid's coordinates
+			centerxsum = centerysum = numcoords = 0.0
+			for cnt in contours:
+				cntcoords = image.getContourCentroidCoords(cnt)
+				if cntcoords == None:
+					continue
+				centerxsum += cntcoords[0]
+				centerysum += cntcoords[1]
+				numcoords += 1
+			
+			cx = centerxsum / numcoords
+			cy = centerysum / numcoords
+
 		# Print out information
-		distance = image_proc.getDistance(constants.getValue("imghpx"), 5.08, hpx, constants.getValue("viewangle"))
-		angle = image_proc.getHorizAngle(constants.getValue("imgwpx"), 5.08, distance, hpx, cx, onecnt, offx, left)
+		distance = image_proc.getDistance(imghpx, 5.08, hpx, constants.getValue("viewangle"))
+		angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, cx, onecnt, offx, left)
 		doextake = abs(angle) < 0.087
 
 		if constants.getValue("printdata"):
