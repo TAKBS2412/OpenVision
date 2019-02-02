@@ -22,5 +22,5 @@ imagesaved=False
 useGUI=False
 senddata=True
 printdata=True
-shutterspeed=800
+shutterspeed=500
 protocol="UDP"
