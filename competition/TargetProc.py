@@ -10,14 +10,21 @@ class TargetProc:
 	def procTarget(self, constants, contours, updater, networking):
 		largestCnt = contours[0]
 
+		onecnt = False
+		left = True
+		offx = 8 / 2 * 2.54 # Halve the 8 inches and convert to cm
+
 		# Check if there's only one contour
 		if len(contours) == 1:
+			onecnt = True
 			# Approximate a line running through the contours to find the angle of the contours.
 			vx, vy, cx, cy = cv2.fitLine(largestCnt, cv2.DIST_L2, 0, 0.01, 0.01)
 			vproduct = vx * vy
 			if vproduct > 0:
+				left = False
 				print("Right target")
 			else:
+				left = True
 				print("Left target")
 
 		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
@@ -37,7 +44,7 @@ class TargetProc:
 		
 		# Print out information
 		distance = image_proc.getDistance(constants.getValue("imghpx"), 5.08, hpx, constants.getValue("viewangle"))
-		angle = image_proc.getHorizAngle(constants.getValue("imgwpx"), 5.08, distance, hpx, cx)
+		angle = image_proc.getHorizAngle(constants.getValue("imgwpx"), 5.08, distance, hpx, cx, onecnt, offx, left)
 		doextake = abs(angle) < 0.087
 
 		if constants.getValue("printdata"):
