@@ -87,7 +87,7 @@ try:
 				if constants.getValue("senddata"):
 					networking.sendData(constants, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			else:
-				doextake = targetproc.procTarget(constants, contours, updater, networking)
+				doextake = targetproc.procTarget(constants, contours, updater, networking, imageproc.approx)
 				if doextake:
 					updater.doextake(constants, img, oldimg)
 

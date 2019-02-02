@@ -7,7 +7,7 @@ A class that processes targets.
 '''
 class TargetProc:
 	# Calculates the distance, angle, and height to width ratio of the specified contour.
-	def procTarget(self, constants, contours, updater, networking):
+	def procTarget(self, constants, contours, updater, networking, approx):
 		largestCnt = contours[0]
 
 		onecnt = False
@@ -28,15 +28,19 @@ class TargetProc:
 		if len(contours) == 1:
 			onecnt = True
 			# Approximate a line running through the contours to find the angle of the contours.
-			vx, vy, cx, cy = cv2.fitLine(largestCnt, cv2.DIST_L2, 0, 0.01, 0.01)
+			vx, vy, _cx, _cy = cv2.fitLine(largestCnt, cv2.DIST_L2, 0, 0.01, 0.01)
 			vproduct = vx * vy
-			if vproduct > 0:
-				left = False
-				print("Right target")
-			else:
-				left = True
+			left = vproduct < 0
+			if left:
 				print("Left target")
+			else:
+				print("Right target")
 
+			# Find the left or rightmost point on the target
+			sortedcorners = sorted(approx, key=self.getXValue, reverse=left)
+
+			cx = sortedcorners[0][0][0]
+			cy = sortedcorners[0][0][1]
 		else:
 			# Find the centroid's coordinates
 			centerxsum = centerysum = numcoords = 0.0
@@ -67,3 +71,7 @@ class TargetProc:
 		x, y, w, h = cv2.boundingRect(contour)
 		print("Width: " + str(w))
 		return cv2.approxPolyDP(contour, 0.05*cv2.arcLength(contour, True), True)
+
+	# Returns the x-value of the given point for sorting.
+	def getXValue(self, point):
+		return point[0][0]
