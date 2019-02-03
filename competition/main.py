@@ -66,6 +66,7 @@ try:
 	while True:
 		# Break from loop if needed.
 		if constants.getValue("endloop"):
+			vs.stop()
 			break
 		
 		# Get the currently pressed key if useGUI is enabled.
