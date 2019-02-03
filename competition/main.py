@@ -87,14 +87,16 @@ try:
 				if constants.getValue("senddata"):
 					networking.sendData(constants, 0.0, 0.0, False, False) # Tell the roboRIO that targets haven't been found yet.
 			else:
-				doextake = targetproc.procTarget(constants, contours, updater, networking, imageproc.approx)
+				doextake = targetproc.procTarget(constants, contours, updater, networking, imageproc.approx, img)
 				if doextake:
 					updater.doextake(constants, img, oldimg)
 
 		if constants.getValue("useGUI"):
+			'''
 			if contours is not None:
 				img = np.zeros((constants.getValue("imghpx"), constants.getValue("imgwpx"), 3), np.uint8)		
 				cv2.drawContours(img, contours, -1, (0, 255, 0), cv2.FILLED)
+			'''
 			keyupdater.update(constants, key, updater, img, oldimg)
 			updater.updateGUI(constants, img, oldimg)
 		

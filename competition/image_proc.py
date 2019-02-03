@@ -31,14 +31,5 @@ def getDistance(hpx, tcm, tpx, theta):
 # d - distance in cm
 # tpx - height of the target in px
 # cx - x-coord. of the contour's centroid in px
-# onecnt - if we should assume that there is one contour or not. If not, the following parameters are not read
-# offx - the horizontal offset from the contour to the middle of both contours, in cm
-# left - whether the one target is the left contour in its group
-def getHorizAngle(wpx, tcm, d, tpx, cx, onecnt, offx, left):
-	if onecnt:
-		sign = -1
-		if left:
-			sign = 1
-		return np.arctan(((tcm/tpx)*(cx-wpx/2)+sign*offx)/d)
-	else: # This is the original formula
-		return np.arctan(tcm*(cx-wpx/2)/(tpx*d))
+def getHorizAngle(wpx, tcm, d, tpx, cx):
+	return np.arctan(tcm*(cx-wpx/2)/(tpx*d))
