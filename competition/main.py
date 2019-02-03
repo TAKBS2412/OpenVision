@@ -46,11 +46,12 @@ keyupdater = KeyUpdater.KeyUpdater()
 # Create Networking
 networking = Networking.Networking(constants)
 
-# Threaded video stream
-vs = PiVideoStream.PiVideoStream(constants, resolution=(constants.getValue("imgwpx"), constants.getValue("imghpx"))).start()
+# If necessary, start up a threaded video stream
+if constants.getValue("usevideo"):
+	vs = PiVideoStream.PiVideoStream(constants, resolution=(constants.getValue("imgwpx"), constants.getValue("imghpx"))).start()
 
-# Lower the shutter_speed
-vs.camera.shutter_speed = constants.getValue("shutterspeed")
+	# Lower the shutter_speed
+	vs.camera.shutter_speed = constants.getValue("shutterspeed")
 
 # Let the camera warm up
 time.sleep(2.0)
