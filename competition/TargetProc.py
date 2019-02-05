@@ -10,6 +10,8 @@ class TargetProc:
 	def procTarget(self, constants, contours, updater, networking, approx, img):
 		largestCnt = contours[0]
 
+		approx = self.approxTarget(largestCnt)
+
 		onecnt = False
 		left = True
 		offx = 8 / 2 * 2.54 # Halve the 8 inches and convert to cm
