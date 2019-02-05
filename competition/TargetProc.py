@@ -27,10 +27,12 @@ class TargetProc:
 		# Check if there's only one contour
 		if len(contours) == 1:
 			onecnt = True
-			# Approximate a line running through the contours to find the angle of the contours.
-			vx, vy, _cx, _cy = cv2.fitLine(largestCnt, cv2.DIST_L2, 0, 0.01, 0.01)
-			vproduct = vx * vy
-			left = vproduct < 0
+
+			# Find the top two contour corners
+			sortedcorners = sorted(approx, key=self.getYValue)[:2]
+
+			# Check if the highest corner is to the left or to the right of the second-highest corner
+			left = sortedcorners[0][0][0] < sortedcorners[1][0][0]
 			sign = 1
 			if left:
 				print("Left target")
@@ -39,11 +41,8 @@ class TargetProc:
 				print("Right target")
 				sign = -1
 
-			# Find the top two contour corners
-			sortedcorners = sorted(approx, key=self.getYValue)[:2]
-
-			# Fnd the distance between the two points, which is also equal to half the distance from one of the corners to the center
-			# By adding (or subtracting) twice this distance to cx (wee below), we can determine where the middle of the two targets is, even if only one is visible
+			# Find the distance between the two points, which is also equal to half the distance from one of the corners to the center
+			# By adding (or subtracting) twice this distance to cx (see below), we can determine where the middle of the two targets is, even if only one is visible
 			distance = ((sortedcorners[1][0][0] - sortedcorners[0][0][0])**2 + (sortedcorners[1][0][1] - sortedcorners[0][0][1])**2)**0.5
 
 			# Find the left or rightmost point on the target
