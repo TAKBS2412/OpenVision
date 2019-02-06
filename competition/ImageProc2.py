@@ -21,25 +21,26 @@ class ImageProc:
 
 	# Checks the contour to make sure it fulfills the requirements (nonzero size, rectangular, etc.)
 	# The parameter funcs is an array of functions that checks each contour
-	def checkContour(self, cnt, funcs, num):
+	def checkContour(self, cnt, funcs):
 		# Use the tobytes() version as a key in the dictionary that has the values of the below things like cntArea
 		# Then convert the tobytes() version back to a contour (see below) in TargetProc
 		# TODO: Time the above operations to check efficiency
+		s = cnt.tobytes()
 
-		#ccnt = np.fromstring(s, dtype=np.int32)
-		#ccnt = np.reshape(ccnt, (-1, 2))
+		ccnt = np.fromstring(s, dtype=np.int32)
+		ccnt = np.reshape(ccnt, (-1, 2))
 
-		self.cntArea = cv2.contourArea(cnt)
+		self.cntArea = cv2.contourArea(ccnt)
 		self.approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True) # Polygonal approximation, accounts for rotation as well
 		self.polygonArea = cv2.contourArea(self.approx)
-				
+
+		'''
+		d = dict()
+		d[cnt.tobytes()] = [self.cntArea, self.approx, self.polygonArea]
+		'''
+		
 		for func in funcs:
 			if not func(cnt): return False
-
-		if len(self.cntdata) < num:
-			# Add the contour to the dictionary if it passed all the tests
-			self.cntdata[cnt.tobytes()] = [self.cntArea, self.approx, self.polygonArea]
-
 		return True
 
 	# Checks if the contour cnt has a nonzero area
@@ -65,9 +66,6 @@ class ImageProc:
 		# Find contours
 		#image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
 
-		# Initialize the dictionary of contours and data
-		self.cntdata = dict()
-
 		# Find sorted list of contours
 		contours = self.sortContours(image)
 		
@@ -78,10 +76,9 @@ class ImageProc:
 
 		# Filter the list based on checkContour()
 		funcs = [self.isContourEmpty, self.isContourRectangular]
-		for cnt in contours:
-			self.checkContour(cnt, funcs, num)
+		filteredcontours = [cnt for cnt in contours if self.checkContour(cnt, funcs)]
 
-		return self.cntdata
+		return filteredcontours[:num]
 
 	# Returns None if there was an error.
 	# Otherwise, returns the two contours that will be used.
@@ -89,6 +86,5 @@ class ImageProc:
 		numcontours = 2
 		contours = self.getNumLargestContours(img, numcontours)
 		if contours is None: return contours
-		return contours
-		#return [cnt for cnt in contours]
+		return [cnt for cnt in contours]
 

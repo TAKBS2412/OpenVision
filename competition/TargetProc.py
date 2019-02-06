@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 import image # Custom library
 import image_proc # Another custom library
 
@@ -8,9 +9,11 @@ A class that processes targets.
 class TargetProc:
 	# Calculates the distance, angle, and height to width ratio of the specified contour.
 	def procTarget(self, constants, contours, updater, networking, approx, img):
-		largestCnt = contours[0]
+		largestCntAndData = next(iter(contours.items()))
+		largestCnt = self.bytesToCnt(largestCntAndData[0])
+		largestCntData = largestCntAndData[1]
 
-		approx = self.approxTarget(largestCnt)
+		approx = largestCntData[1]
 
 		onecnt = False
 		left = True
@@ -67,7 +70,8 @@ class TargetProc:
 		else:
 			# Find the centroid's coordinates
 			centerxsum = centerysum = numcoords = 0.0
-			for cnt in contours:
+			for cnt, data in contours.iteritems():
+				cnt = self.bytesToCnt(cnt)
 				cntcoords = image.getContourCentroidCoords(cnt)
 				if cntcoords == None:
 					continue
@@ -102,3 +106,8 @@ class TargetProc:
 	# Returns the y-value of the given point for sorting.
 	def getYValue(self, point):
 		return point[0][1]
+
+	# Converts a string of bytes into a contour.
+	def bytesToCnt(self, bytesstr):
+		return np.reshape(np.fromstring(bytesstr, dtype=np.int32), (-1, 2))
+
