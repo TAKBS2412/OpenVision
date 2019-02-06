@@ -2,15 +2,16 @@ import cv2
 import image # Custom library
 import image_proc # Another custom library
 
+INCHES_TO_CM = 2.54
+TARGET_HEIGHT_CM = 5.5 * INCHES_TO_CM
+
 '''
 A class that processes targets.
 '''
 class TargetProc:
-	# Calculates the distance, angle, and height to width ratio of the specified contour.
+		# Calculates the distance, angle, and height to width ratio of the specified contour.
 	def procTarget(self, constants, contours, updater, networking, approx, img):
 		largestCnt = contours[0]
-
-		approx = self.approxTarget(largestCnt)
 
 		onecnt = False
 		left = True
@@ -23,50 +24,50 @@ class TargetProc:
 		cx = imgwpx / 2.0
 		cy = imghpx / 2.0
 
-		# Calculate the height and width of the largest contour
-		_x, _y, wpx, hpx = cv2.boundingRect(largestCnt)
+		# Find the top two and bottom two contour corners
+		approx = self.approxTarget(largestCnt)
+		sortedcorners = sorted(approx, key=self.getYValue)
+		toptwocorners = sortedcorners[:2]
+		bottomtwocorners = sortedcorners[2:]
+
+		# Sort the corners by their x-values
+		topleft, topright = sorted(toptwocorners, key=self.getXValue)
+		bottomleft, bottomright = sorted(bottomtwocorners, key=self.getXValue)
+
+		# Check if the top left corner is above or below the top right corner
+		left = topleft[0][1] < topright[0][1]
+		sign = 1
+
+		# Find the two points on the side closest to the other target	
+		closesttoppoint, closestbottompoint = topleft, topright
+
+		if left:
+			print("Left target")
+			sign = 1
+			closesttoppoint = topright
+			closestbottompoint = bottomright
+			
+		else:
+			print("Right target")
+			sign = -1
+			closesttoppoint = topleft
+			closestbottompoint = bottomleft
+
+		# Find the distance between the closest points, which is also equal to 5.5/4 times the distance from one of the corners to the center
+		# By adding (or subtracting) 4/5.5 times this distance to cx (see below), we can determine where the middle of the two targets is, even if only one is visible
+		# We always calculate this distance between the closest points because the chance that they'll be cut off at the edge of the frame is unlikely, so our results will be more accurate
+		# We also use this value as the height of the contour for distance calculations, which is why it's named hpx
+		hpx = self.getDistance(closesttoppoint, closestbottompoint)
 
 		# Check if there's only one contour
 		if len(contours) == 1:
 			onecnt = True
-
-			# Find the top two and bottom two contour corners
-			sortedcorners = sorted(approx, key=self.getYValue)
-			toptwocorners = sortedcorners[:2]
-			bottomtwocorners = sortedcorners[2:]
-
-			# Sort the corners by their x-values
-			topleft, topright = sorted(toptwocorners, key=self.getXValue)
-			bottomleft, bottomright = sorted(bottomtwocorners, key=self.getXValue)
-
-			# Check if the top left corner is above or below the top right corner
-			left = topleft[0][1] < topright[0][1]
-			sign = 1
-
-			# Find the two points on the side closest to the other target	
-			closesttoppoint, closestbottompoint = topleft, topright
-
-			if left:
-				print("Left target")
-				sign = 1
-				closesttoppoint = topright
-				closestbottompoint = bottomright
-				
-			else:
-				print("Right target")
-				sign = -1
-				closesttoppoint = topleft
-				closestbottompoint = bottomleft
-
-			# Find the distance between the closest points, which is also equal to 5.5/4 times the distance from one of the corners to the center
-			# By adding (or subtracting) 4/5.5 times this distance to cx (see below), we can determine where the middle of the two targets is, even if only one is visible
-			distance = self.getDistance(closesttoppoint, closestbottompoint)
-
+			
 			# Find cx (the horizontal center that the robot's trying to drive to) based on the detected corner and distance
 			cx = closesttoppoint[0][0]
 			cy = closesttoppoint[0][1]
 
-			cx += sign*distance*4/5.5
+			cx += sign*hpx*4/5.5
 			
 			print("cx: " + str(cx))
 			print("cy: " + str(cy))
@@ -90,8 +91,8 @@ class TargetProc:
 			cy = centerysum / numcoords
 
 		# Print out information
-		distance = image_proc.getDistance(imghpx, 5.08, hpx, constants.getValue("viewangle"))
-		angle = image_proc.getHorizAngle(imgwpx, 5.08, distance, hpx, cx)
+		distance = image_proc.getDistance(imghpx, TARGET_HEIGHT_CM, hpx, constants.getValue("viewangle"))
+		angle = image_proc.getHorizAngle(imgwpx, TARGET_HEIGHT_CM, distance, hpx, cx)
 		doextake = abs(angle) < 0.087
 
 		if constants.getValue("printdata"):
