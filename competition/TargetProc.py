@@ -30,11 +30,17 @@ class TargetProc:
 		if len(contours) == 1:
 			onecnt = True
 
-			# Find the top two contour corners
-			sortedcorners = sorted(approx, key=self.getYValue)[:2]
+			# Find the top two and bottom two contour corners
+			sortedcorners = sorted(approx, key=self.getYValue)
+			toptwocorners = sortedcorners[:2]
+			bottomtwocorners = sortedcorners[2:]
 
-			# Check if the highest corner is to the left or to the right of the second-highest corner
-			left = sortedcorners[0][0][0] < sortedcorners[1][0][0]
+			# Sort the corners by their x-values
+			topleft, topright = sorted(toptwocorners, key=self.getXValue)
+			bottomleft, bottomright = sorted(bottomtwocorners, key=self.getXValue)
+
+			# Check if the top left corner is above or below the top right corner
+			left = topleft[0][1] < topright[0][1]
 			sign = 1
 			if left:
 				print("Left target")
@@ -43,26 +49,25 @@ class TargetProc:
 				print("Right target")
 				sign = -1
 
-			# Find the distance between the two points, which is also equal to half the distance from one of the corners to the center
+			# Find the distance between the top two corners, which is also equal to half the distance from one of the corners to the center
 			# By adding (or subtracting) twice this distance to cx (see below), we can determine where the middle of the two targets is, even if only one is visible
-			distance = ((sortedcorners[1][0][0] - sortedcorners[0][0][0])**2 + (sortedcorners[1][0][1] - sortedcorners[0][0][1])**2)**0.5
+			distance = ((topleft[0][0] - topright[0][0])**2 + (topleft[0][1] - topright[0][1])**2)**0.5
 
-			# Find the left or rightmost point on the target
-			sortedcorners = sorted(sortedcorners, key=self.getXValue, reverse=left)
+			# Find the point closest to the other target
+			closestpoint = topright if left else topleft
 
 			# Find cx (the horizontal center that the robot's trying to drive to) based on the detected corner and distance
-			cx = sortedcorners[0][0][0]
-			cy = sortedcorners[0][0][1]
+			cx = closestpoint[0][0]
+			cy = closestpoint[0][1]
 
 			cx += sign*distance*2
 			
 			print("cx: " + str(cx))
 			print("cy: " + str(cy))
 
-			# Draw the highest detected corners and the point in the middle of the two targets
+			# Draw the closest detected corner and the point in the middle of the two targets
 			cv2.circle(img, (int(cx), cy), 1, (255, 0, 0), -1)
-			cv2.circle(img, tuple(sortedcorners[0][0]), 5, (255, 0, 0), -1)
-			cv2.circle(img, tuple(sortedcorners[1][0]), 1, (255, 0, 0), -1)
+			cv2.circle(img, tuple(closestpoint[0]), 5, (255, 0, 0), -1)
 
 		else:
 			# Find the centroid's coordinates
