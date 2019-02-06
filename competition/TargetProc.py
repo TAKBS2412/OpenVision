@@ -42,32 +42,38 @@ class TargetProc:
 			# Check if the top left corner is above or below the top right corner
 			left = topleft[0][1] < topright[0][1]
 			sign = 1
+
+			# Find the two points on the side closest to the other target	
+			closesttoppoint, closestbottompoint = topleft, topright
+
 			if left:
 				print("Left target")
 				sign = 1
+				closesttoppoint = topright
+				closestbottompoint = bottomright
+				
 			else:
 				print("Right target")
 				sign = -1
+				closesttoppoint = topleft
+				closestbottompoint = bottomleft
 
-			# Find the distance between the top two corners, which is also equal to half the distance from one of the corners to the center
-			# By adding (or subtracting) twice this distance to cx (see below), we can determine where the middle of the two targets is, even if only one is visible
-			distance = ((topleft[0][0] - topright[0][0])**2 + (topleft[0][1] - topright[0][1])**2)**0.5
-
-			# Find the point closest to the other target
-			closestpoint = topright if left else topleft
+			# Find the distance between the closest points, which is also equal to 5.5/4 times the distance from one of the corners to the center
+			# By adding (or subtracting) 4/5.5 times this distance to cx (see below), we can determine where the middle of the two targets is, even if only one is visible
+			distance = self.getDistance(closesttoppoint, closestbottompoint)
 
 			# Find cx (the horizontal center that the robot's trying to drive to) based on the detected corner and distance
-			cx = closestpoint[0][0]
-			cy = closestpoint[0][1]
+			cx = closesttoppoint[0][0]
+			cy = closesttoppoint[0][1]
 
-			cx += sign*distance*2
+			cx += sign*distance*4/5.5
 			
 			print("cx: " + str(cx))
 			print("cy: " + str(cy))
 
 			# Draw the closest detected corner and the point in the middle of the two targets
 			cv2.circle(img, (int(cx), cy), 1, (255, 0, 0), -1)
-			cv2.circle(img, tuple(closestpoint[0]), 5, (255, 0, 0), -1)
+			cv2.circle(img, tuple(closesttoppoint[0]), 5, (255, 0, 0), -1)
 
 		else:
 			# Find the centroid's coordinates
@@ -107,3 +113,8 @@ class TargetProc:
 	# Returns the y-value of the given point for sorting.
 	def getYValue(self, point):
 		return point[0][1]
+
+	# Returns the distance between the two points.
+	def getDistance(self, pointA, pointB):
+		return ((pointA[0][0] - pointB[0][0])**2 + (pointA[0][1] - pointB[0][1])**2)**0.5
+
