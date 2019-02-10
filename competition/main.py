@@ -17,6 +17,7 @@ import Networking
 import FPS
 import numpy as np
 import PiVideoStream
+import printer
 #import points
 
 # Read command-line arguments
@@ -101,9 +102,10 @@ try:
 			keyupdater.update(constants, key, updater, img, oldimg)
 			updater.updateGUI(constants, img, oldimg)
 		
-		fps.update(constants.getValue("printdata"))
+		fps.update(constants)
 except KeyboardInterrupt:
-	print("Interrupted! Exiting...")
+	if constants.getValue("printdata"):
+		printer.printIfNeeded("Interrupted! Exiting...", constants)
 
 cv2.destroyAllWindows()	
 vs.stop()

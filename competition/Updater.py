@@ -1,5 +1,6 @@
 import cv2
 import datetime
+import printer
 '''
 This class displays the GUI and prints/logs data, depending on the settings in Constants.
 '''
@@ -24,11 +25,12 @@ class Updater:
 		if constants.getValue("lastoldimgname") and constants.getValue("lastoldimgname") != oldimgname:
 			cv2.destroyWindow(constants.getValue("lastoldimgname"))
 		constants.setValue("lastoldimgname", oldimgname)
+
 	# Prints data.
-	def printData(self, angle, distance, doextake):
-		print("Angle: " + str(angle))
-		print("Distance: " + str(distance))
-		print("Should Extake: " + str(doextake))
+	def printData(self, angle, distance, doextake, constants):
+		printer.printIfNeeded("Angle: " + str(angle), constants)
+		printer.printIfNeeded("Distance: " + str(distance), constants)
+		printer.printIfNeeded("Should Extake: " + str(doextake), constants)
 
 	# Sends data using NetworkTables.
 	# DEPRECATED: Use Networking.sendDataNT() function instead
@@ -46,13 +48,12 @@ class Updater:
 
 	# Called when the images have been written.
 	def imgWritten(self, constants):
-		if constants.getValue("printdata"):
-			print("Images written.")
+		printer.printIfNeeded("Images written.", constants)
 
 	# Called when no contours have been found.
 	def contoursNotFound(self, constants, img, oldimg):
 		if constants.getValue("printdata"):
-			print("Contours not found!")
+			printer.printIfNeeded("Contours not found!", constants)
 		if not constants.getValue("imagesaved"):
 			cv2.imwrite(self.getFilePrefix() + "no-targets-found.jpg", oldimg)
 			cv2.imwrite(self.getFilePrefix() + "no-targets-found-proc.jpg", img)

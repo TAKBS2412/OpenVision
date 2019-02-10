@@ -1,6 +1,7 @@
 import cv2
 import image # Custom library
 import image_proc # Another custom library
+import printer # Library for printing
 
 INCHES_TO_CM = 2.54
 TARGET_HEIGHT_CM = 5.5 * INCHES_TO_CM
@@ -9,7 +10,7 @@ TARGET_HEIGHT_CM = 5.5 * INCHES_TO_CM
 A class that processes targets.
 '''
 class TargetProc:
-		# Calculates the distance, angle, and height to width ratio of the specified contour.
+	# Calculates the distance, angle, and height to width ratio of the specified contour.
 	def procTarget(self, constants, contours, updater, networking, approx, img):
 		largestCnt = contours[0]
 
@@ -42,13 +43,13 @@ class TargetProc:
 		closesttoppoint, closestbottompoint = topleft, topright
 
 		if left:
-			print("Left target")
+			printer.printIfNeeded("Left target", constants)
 			sign = 1
 			closesttoppoint = topright
 			closestbottompoint = bottomright
 			
 		else:
-			print("Right target")
+			printer.printIfNeeded("Right target", constants)
 			sign = -1
 			closesttoppoint = topleft
 			closestbottompoint = bottomleft
@@ -69,8 +70,8 @@ class TargetProc:
 
 			cx += sign*hpx*4/5.5
 			
-			print("cx: " + str(cx))
-			print("cy: " + str(cy))
+			printer.printIfNeeded("cx: " + str(cx), constants)
+			printer.printIfNeeded("cy: " + str(cy), constants)
 
 			# Draw the closest detected corner and the point in the middle of the two targets
 			cv2.circle(img, (int(cx), cy), 1, (255, 0, 0), -1)
@@ -96,7 +97,7 @@ class TargetProc:
 		doextake = abs(angle) < 0.087
 
 		if constants.getValue("printdata"):
-			updater.printData(angle, distance, doextake)
+			updater.printData(angle, distance, doextake, constants)
 		if constants.getValue("senddata"):
 			networking.sendData(constants, angle, distance, doextake, True)
 		return doextake
@@ -104,7 +105,6 @@ class TargetProc:
 	# Returns a polygonal approximation of the specified target.
 	def approxTarget(self, contour):
 		x, y, w, h = cv2.boundingRect(contour)
-		print("Width: " + str(w))
 		return cv2.approxPolyDP(contour, 0.05*cv2.arcLength(contour, True), True)
 
 	# Returns the x-value of the given point for sorting.
