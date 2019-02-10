@@ -12,6 +12,7 @@ lowerv=30
 higherh=66
 highers=255
 higherv=255
+tuneHSV=False
 adjustHigher=True
 raiseValue=1
 usevideo=False

@@ -43,8 +43,8 @@ class Updater:
 
 	# Prints out the HSV values for filtering
 	def printHSV(self, constants):
-		print("Upper HSV: " + str(constants.getValue("higherh")) + ", " + str(constants.getValue("highers")) + ", " + str(constants.getValue("higherv")))
-		print("Lower HSV: " + str(constants.getValue("lowerh")) + ", " + str(constants.getValue("lowers")) + ", " + str(constants.getValue("lowerv")))
+		printer.printIfNeededHSV("Upper HSV: " + str(constants.getValue("higherh")) + ", " + str(constants.getValue("highers")) + ", " + str(constants.getValue("higherv")), constants)
+		printer.printIfNeededHSV("Lower HSV: " + str(constants.getValue("lowerh")) + ", " + str(constants.getValue("lowers")) + ", " + str(constants.getValue("lowerv")), constants)
 
 	# Called when the images have been written.
 	def imgWritten(self, constants):

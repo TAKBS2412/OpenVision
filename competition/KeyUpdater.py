@@ -6,38 +6,33 @@ A class that updates constants based on which key has been pressed.
 class KeyUpdater:
 	# Updates all of the flags/settings based on which key was pressed.
 	def update(self, constants, key, updater, img, oldimg):
-		if key == ord("u"):
-			constants.setValue("adjustHigher", not constants.getValue("adjustHigher"))
-		if key == ord("r"):
-			constants.setValue("raiseValue", constants.getValue("raiseValue") * -1)
-		if key == ord("p"):
-			constants.setValue("procImage", not constants.getValue("procImage"))
-		elif key == ord("h"):
-			if constants.getValue("adjustHigher"):
-				constants.setValue("higherh", constants.getValue("higherh") + constants.getValue("raiseValue"))
-				if constants.getValue("printdata"):
+		if constants.getValue("tuneHSV"):
+			if key == ord("u"):
+				constants.setValue("adjustHigher", not constants.getValue("adjustHigher"))
+			if key == ord("r"):
+				constants.setValue("raiseValue", constants.getValue("raiseValue") * -1)
+			if key == ord("p"):
+				constants.setValue("procImage", not constants.getValue("procImage"))
+			elif key == ord("h"):
+				if constants.getValue("adjustHigher"):
+					constants.setValue("higherh", constants.getValue("higherh") + constants.getValue("raiseValue"))
 					updater.printHSV(constants)
-			else:
-				constants.setValue("lowerh", constants.getValue("lowerh") + constants.getValue("raiseValue"))
-				if constants.getValue("printdata"):
+				else:
+					constants.setValue("lowerh", constants.getValue("lowerh") + constants.getValue("raiseValue"))
 					updater.printHSV(constants)
-		elif key == ord("s"):
-			if constants.getValue("adjustHigher"):
-				constants.setValue("highers", constants.getValue("highers") + constants.getValue("raiseValue"))
-				if constants.getValue("printdata"):
+			elif key == ord("s"):
+				if constants.getValue("adjustHigher"):
+					constants.setValue("highers", constants.getValue("highers") + constants.getValue("raiseValue"))
 					updater.printHSV(constants)
-			else:
-				constants.setValue("lowers", constants.getValue("lowers") + constants.getValue("raiseValue"))
-				if constants.getValue("printdata"):
+				else:
+					constants.setValue("lowers", constants.getValue("lowers") + constants.getValue("raiseValue"))
 					updater.printHSV(constants)
-		elif key == ord("v"):
-			if constants.getValue("adjustHigher"):
-				constants.setValue("higherv", constants.getValue("higherv") + constants.getValue("raiseValue"))
-				if constants.getValue("printdata"):
+			elif key == ord("v"):
+				if constants.getValue("adjustHigher"):
+					constants.setValue("higherv", constants.getValue("higherv") + constants.getValue("raiseValue"))
 					updater.printHSV(constants)
-			else:
-				constants.setValue("lowerv", constants.getValue("lowerv") + constants.getValue("raiseValue"))
-				if constants.getValue("printdata"):
+				else:
+					constants.setValue("lowerv", constants.getValue("lowerv") + constants.getValue("raiseValue"))
 					updater.printHSV(constants)
 		if key == ord("w"):
 			# Write the image files
