@@ -94,7 +94,8 @@ class TargetProc:
 		# Print out information
 		distance = image_proc.getDistance(imghpx, TARGET_HEIGHT_CM, hpx, constants.getValue("viewangle"))
 		angle = image_proc.getHorizAngle(imgwpx, TARGET_HEIGHT_CM, distance, hpx, cx)
-		doextake = abs(angle) < 0.087
+		#doextake = abs(angle) < 0.087
+		doextake = distance < 50
 
 		if constants.getValue("printdata"):
 			updater.printData(angle, distance, doextake, constants)
