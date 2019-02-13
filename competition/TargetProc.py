@@ -40,7 +40,7 @@ class TargetProc:
 		sign = 1
 
 		# Find the two points on the side closest to the other target	
-		closesttoppoint, closestbottompoint = topleft, topright
+		closesttoppoint, closestbottompoint = topleft, bottomleft
 
 		if left:
 			printer.printIfNeeded("Left target", constants)
