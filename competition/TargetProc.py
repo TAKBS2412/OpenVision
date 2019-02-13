@@ -35,8 +35,8 @@ class TargetProc:
 		topleft, topright = sorted(toptwocorners, key=self.getXValue)
 		bottomleft, bottomright = sorted(bottomtwocorners, key=self.getXValue)
 
-		# Check if the top left corner is above or below the top right corner
-		left = topleft[0][1] < topright[0][1]
+		# Check if the top left point is to the left or to the right of the bottom left point
+		left = topleft[0][0] > bottomleft[0][0]
 		sign = 1
 
 		# Find the two points on the side closest to the other target	
