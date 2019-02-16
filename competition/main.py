@@ -81,6 +81,10 @@ try:
 			oldimg = img = cv2.imread(constants.getValue("images")[constants.getValue("index")])
 			img = imagefilter.filterImage(img, constants)
 
+		if img is None:
+			vs.stop()
+			break
+
 		if constants.getValue("procImage"):
 			contours = imageproc.procImage(img, constants)
 			if contours is None or len(contours) == 0:
