@@ -2,6 +2,7 @@
 from __future__ import division
 from picamera.array import PiRGBArray
 from picamera import PiCamera
+import os
 import sys
 import time
 import cv2
@@ -62,6 +63,9 @@ fps = FPS.FPS()
 # The contours from Imageproc
 contours = None
 
+# If we're checked the image paths to see if they're directories or not
+dirschecked = False
+
 # Capture and display frames from camera
 try:
 	while True:
@@ -78,9 +82,25 @@ try:
 		if constants.getValue("usevideo"):
 			oldimg, img = vs.read()
 		else:
+			allimgs = constants.getValue("images")
+			if not dirschecked:
+				for index, imgpath in enumerate(allimgs):
+					if os.path.isdir(imgpath):
+						innerfiles = []
+						# Use this instead of a list comprehension so we don't compute joinedname more than once
+						for filename in os.listdir(imgpath):
+							joinedname = os.path.join(imgpath, filename)
+							if os.path.isfile(joinedname):
+								innerfiles.append(joinedname)
+
+						allimgspart1 = allimgs[:index]
+						allimgspart2 = allimgs[index+1:]
+						allimgs = allimgspart1 + innerfiles + allimgspart2
+						constants.setValue("images", allimgs)
+				dirschecked = True
+
 			oldimg = img = cv2.imread(constants.getValue("images")[constants.getValue("index")])
 			img = imagefilter.filterImage(img, constants)
-
 		if img is None:
 			vs.stop()
 			break
