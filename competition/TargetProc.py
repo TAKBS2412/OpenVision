@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 import image # Custom library
 import image_proc # Another custom library
 import printer # Library for printing
@@ -11,7 +12,7 @@ A class that processes targets.
 '''
 class TargetProc:
 	# Calculates the distance, angle, and height to width ratio of the specified contour.
-	def procTarget(self, constants, contours, updater, networking, approx, img):
+	def procTarget(self, constants, contours, updater, networking, img):
 		largestCnt = contours[0]
 
 		onecnt = False
@@ -27,6 +28,7 @@ class TargetProc:
 
 		# Find the top two and bottom two contour corners
 		approx = self.approxTarget(largestCnt)
+		print(approx)
 		sortedcorners = sorted(approx, key=self.getYValue)
 		toptwocorners = sortedcorners[:2]
 		bottomtwocorners = sortedcorners[2:]
@@ -36,7 +38,7 @@ class TargetProc:
 		bottomleft, bottomright = sorted(bottomtwocorners, key=self.getXValue)
 
 		# Check if the top left point is to the left or to the right of the bottom left point
-		left = topleft[0][0] > bottomleft[0][0]
+		left = topleft[0] > bottomleft[0]
 		sign = 1
 
 		# Find the two points on the side closest to the other target	
@@ -65,8 +67,8 @@ class TargetProc:
 			onecnt = True
 			
 			# Find cx (the horizontal center that the robot's trying to drive to) based on the detected corner and distance
-			cx = closesttoppoint[0][0]
-			cy = closesttoppoint[0][1]
+			cx = closesttoppoint[0]
+			cy = closesttoppoint[1]
 
 			cx += sign*hpx*4/5.5
 			
@@ -75,7 +77,7 @@ class TargetProc:
 
 			# Draw the closest detected corner and the point in the middle of the two targets
 			cv2.circle(img, (int(cx), cy), 1, (255, 0, 0), -1)
-			cv2.circle(img, tuple(closesttoppoint[0]), 5, (255, 0, 0), -1)
+			cv2.circle(img, tuple(closesttoppoint), 5, (255, 0, 0), -1)
 
 		else:
 			# Find the centroid's coordinates
@@ -105,18 +107,18 @@ class TargetProc:
 	
 	# Returns a polygonal approximation of the specified target.
 	def approxTarget(self, contour):
-		x, y, w, h = cv2.boundingRect(contour)
-		return cv2.approxPolyDP(contour, 0.05*cv2.arcLength(contour, True), True)
+		rect = cv2.minAreaRect(contour)
+		return np.int0(cv2.boxPoints(rect))
 
 	# Returns the x-value of the given point for sorting.
 	def getXValue(self, point):
-		return point[0][0]
+		return point[0]
 
 	# Returns the y-value of the given point for sorting.
 	def getYValue(self, point):
-		return point[0][1]
+		return point[1]
 
 	# Returns the distance between the two points.
 	def getDistance(self, pointA, pointB):
-		return ((pointA[0][0] - pointB[0][0])**2 + (pointA[0][1] - pointB[0][1])**2)**0.5
+		return ((pointA[0] - pointB[0])**2 + (pointA[1] - pointB[1])**2)**0.5
 

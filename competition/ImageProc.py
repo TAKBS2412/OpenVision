@@ -19,21 +19,21 @@ class ImageProc:
 		
 		return sorted(contours, key=lambda x: cv2.contourArea(x), reverse=True)
 
-	# Checks the contour to make sure it fulfills the requirements (nonzero size, rectangular, etc.)
+	# Checks the contour to make sure it fulfills the requirements (nonzero size, etc.)
 	# The parameter funcs is an array of functions that checks each contour
 	def checkContour(self, cnt, funcs):
 		self.cntArea = cv2.contourArea(cnt)
 		arclength = cv2.arcLength(cnt, True)
-		#print("Arc length: " + str(arclength))
-		#print("Adjusted: " + str(0.04*arclength))
-		self.approx = cv2.approxPolyDP(cnt, 4.1, True) # Polygonal approximation, accounts for rotation as well
 
-		rect = cv2.minAreaRect(cnt)
-		box = cv2.boxPoints(rect)
-		box = np.int0(box)
-		#print(box)
-		self.polygonArea = cv2.contourArea(self.approx)
-		#print(self.approx)
+		self.rect = cv2.minAreaRect(cnt)
+
+		width = self.rect[1][0]
+		height = self.rect[1][1]
+		print(self.rect)
+		print(width)
+		print(height)
+		self.rectArea = width*height
+
 		for func in funcs:
 			if not func(cnt): return False
 		return True
@@ -41,16 +41,14 @@ class ImageProc:
 	# Checks if the contour cnt has a nonzero area
 	# Returns True if cnt's area is not equal to zero
 	def isContourEmpty(self, cnt):
-		return self.polygonArea != 0 and self.cntArea != 0
-
-	# Checks if the contour is rectangular
-	def isContourRectangular(self, cnt):
-		return len(self.approx) == 4
+		return self.rectArea != 0 and self.cntArea != 0
 
 	# Checks how filled the contour is
 	def isContourFilled(self, cnt):
-		percentFilled = self.polygonArea/self.cntArea*100
-		return percentFilled > 70
+		percentFilled = self.rectArea/self.cntArea*100
+		print("Filled %: " + str(percentFilled))
+
+		return 100 < percentFilled < 130
 
 	# Finds the top num largest contours in the processed image
 	# image - the HSV-filtered image to process
