@@ -23,8 +23,17 @@ class ImageProc:
 	# The parameter funcs is an array of functions that checks each contour
 	def checkContour(self, cnt, funcs):
 		self.cntArea = cv2.contourArea(cnt)
-		self.approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True) # Polygonal approximation, accounts for rotation as well
+		arclength = cv2.arcLength(cnt, True)
+		#print("Arc length: " + str(arclength))
+		#print("Adjusted: " + str(0.04*arclength))
+		self.approx = cv2.approxPolyDP(cnt, 4.1, True) # Polygonal approximation, accounts for rotation as well
+
+		rect = cv2.minAreaRect(cnt)
+		box = cv2.boxPoints(rect)
+		box = np.int0(box)
+		#print(box)
 		self.polygonArea = cv2.contourArea(self.approx)
+		#print(self.approx)
 		for func in funcs:
 			if not func(cnt): return False
 		return True
@@ -61,10 +70,12 @@ class ImageProc:
 			return None
 
 		# Filter the list based on checkContour()
-		funcs = [self.isContourEmpty, self.isContourRectangular]
+		#funcs = [self.isContourEmpty, self.isContourRectangular]
+		funcs = [self.isContourEmpty]
 		filteredcontours = [cnt for cnt in contours if self.checkContour(cnt, funcs)]
 
-		return filteredcontours[:num]
+		#return filteredcontours[:num]
+		return filteredcontours
 
 	# Returns None if there was an error.
 	# Otherwise, returns the two contours that will be used.
