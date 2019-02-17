@@ -28,8 +28,11 @@ class TargetProc:
 
 		# Find the top two and bottom two contour corners
 		approx = self.approxTarget(largestCnt)
-		print(approx)
-		sortedcorners = sorted(approx, key=self.getYValue)
+		wpx = approx[1][0]
+		hpx = approx[1][1]
+		approxpoints = np.int0(cv2.boxPoints(approx))
+
+		sortedcorners = sorted(approxpoints, key=self.getYValue)
 		toptwocorners = sortedcorners[:2]
 		bottomtwocorners = sortedcorners[2:]
 
@@ -60,7 +63,6 @@ class TargetProc:
 		# By adding (or subtracting) 4/5.5 times this distance to cx (see below), we can determine where the middle of the two targets is, even if only one is visible
 		# We always calculate this distance between the closest points because the chance that they'll be cut off at the edge of the frame is unlikely, so our results will be more accurate
 		# We also use this value as the height of the contour for distance calculations, which is why it's named hpx
-		hpx = self.getDistance(closesttoppoint, closestbottompoint)
 
 		# Check if there's only one contour
 		if len(contours) == 1:
@@ -107,9 +109,7 @@ class TargetProc:
 	
 	# Returns a polygonal approximation of the specified target.
 	def approxTarget(self, contour):
-		rect = cv2.minAreaRect(contour)
-		return np.int0(cv2.boxPoints(rect))
-
+		return cv2.minAreaRect(contour)
 	# Returns the x-value of the given point for sorting.
 	def getXValue(self, point):
 		return point[0]
