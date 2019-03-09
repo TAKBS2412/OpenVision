@@ -11,7 +11,7 @@ class Updater:
 
 	# Finds the folder and date to use as a file name prefix
 	def getFilePrefix(self):
-		return "loggedimages/" + self.getDateTime() + "-"
+		return "wasno/" + self.getDateTime() + "-"
 
 	# Updates the GUI.
 	def updateGUI(self, constants, img, oldimg):
